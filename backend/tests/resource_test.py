@@ -1,18 +1,15 @@
+import datetime
 import json
 import os
-import pytest
-import random
 import tempfile
-import time
-import datetime
-from jsonschema import validate
-from sqlalchemy.engine import Engine
-from sqlalchemy import event
-from sqlalchemy.exc import IntegrityError, StatementError
 
-from api import api, db
+import pytest
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 
 from api import Movie, User, Review, Category, UserType
+from api import api, db
+
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -231,7 +228,7 @@ def _get_user_json(number=1):
     """
     
     return {"id": number, "username": "extra-user-{}".format(number), 
-            "email_address" : "extra-email-{}".format(number), 
+            "email_address" : "extra-email-{}@gmail.com".format(number),
             "password": "extra-password-{}".format(number),
             "role": "Basic User"  }
 
