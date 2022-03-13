@@ -140,6 +140,12 @@ class TestCategoryCollection(object):
         resp = client.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 
+        # wrong datatype of title
+        valid["title"] = 1
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
+
 class TestCategoryItem(object):
     RESOURCE_URL = "/api/categories/1/"
     INVALID_URL = "/api/categories/x/"
@@ -272,14 +278,40 @@ class TestUserCollection(object):
         # assert body["title"] == "extra-category-1"
         """
         
-        # # send same data again for 409
-        # resp = client.post(self.RESOURCE_URL, json=valid)
-        # assert resp.status_code == 409              # RETURNING 400              
-        
         # remove username field for 400
         valid.pop("username")
         resp = client.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
+
+        valid = _get_user_json()
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 409  # email_address not unique
+
+        valid["email_address"] = "dd@gmail.com"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 409  # username not unique
+
+        valid["username"] = "dd"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 201
+
+        # test invalid email address
+        valid = _get_user_json()
+        valid["email_address"] = "ght"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # no valid mail address
+
+        # test invalid password
+        valid = _get_user_json()
+        valid["password"] = "ght"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # password too short
+
+        # test invalid role
+        valid = _get_user_json()
+        valid["role"] = "ght"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # not one of ['Admin', 'Basic User']
 
 class TestUserItem(object):
     RESOURCE_URL = "/api/users/1/"
@@ -445,6 +477,25 @@ class TestMovieCollection(object):
         resp = client.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 
+        # invalid category_id
+        valid = _get_movie_json()
+        valid["category_id"] = 20
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 409  # foreign key category_id does not exist
+
+        # invalid release_date
+        valid = _get_movie_json()
+        valid["release_date"] = "March 2019"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
+        # invalid length
+        valid = _get_movie_json()
+        valid["length"] = 0
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # must be bigger than 1
+
+
 class TestMovieItem(object):
     RESOURCE_URL = "/api/movies/1/"
     INVALID_URL = "/api/movies/x/"
@@ -579,14 +630,35 @@ class TestMovieReviewCollection(object):
         # assert body["title"] == "extra-category-1"
         """
         
-        # # send same data again for 409
-        # resp = client.post(self.RESOURCE_URL, json=valid)
-        # assert resp.status_code == 409              # RETURNING 400              
-        
         # remove username field for 400
         valid.pop("comment")
         resp = client.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
+
+        # invalid movie_id
+        valid = _get_review_json()
+        valid["author_id"] = 30
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 409  # foreign key user failed
+
+        # invalid rating
+        valid = _get_review_json()
+        valid["rating"] = 30
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # rating must be <= 5
+
+        # invalid rating
+        valid = _get_review_json()
+        valid["rating"] = 0
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # rating must be >= 1
+
+        # invalid rating
+        valid = _get_review_json()
+        valid["date"] = "dnjgnib"
+        resp = client.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400  # invalid date format
+
 
 class TestMovieReviewItem(object):
     RESOURCE_URL = "/api/movies/1/reviews/1/"
