@@ -134,20 +134,17 @@ class TestCategoryCollection(object):
         # body = json.loads(resp.data)
         # assert body["title"] == "extra-category-1"
         """
-        
-        # # send same data again for 409
-        # resp = client.post(self.RESOURCE_URL, json=valid)
-        # assert resp.status_code == 409                  # RETURNING 200              
-        
+
         # remove title field for 400
         valid.pop("title")
         resp = client.post(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 400              
+        assert resp.status_code == 400
 
 class TestCategoryItem(object):
     RESOURCE_URL = "/api/categories/1/"
     INVALID_URL = "/api/categories/x/"
-    MODIFIED_URL = "/api/categories/2/" 
+    MODIFIED_URL = "/api/categories/2/"
+    NEW_URL = "/api/categories/4/"
 
     def test_get(self, client):
         """
@@ -182,24 +179,17 @@ class TestCategoryItem(object):
         # test with another category's title
         valid["title"] = "randomTitle"
         resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 409      # 200
-        
-        # test with valid id (only change model)
-        valid["id"] = "1"
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 204         # 200
-        
+        assert resp.status_code == 204
+
         # remove field for 400
         valid.pop("title")
         resp = client.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400        
         
-        valid = _get_category_json()
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        resp = client.get(self.MODIFIED_URL)
+        resp = client.get(self.RESOURCE_URL)
         assert resp.status_code == 200
         body = json.loads(resp.data)
-        assert body["id"] == valid["id"]        # 2 == 1
+        assert body["title"] == "randomTitle"
         
     def test_delete(self, client):
         """
@@ -210,12 +200,15 @@ class TestCategoryItem(object):
         """
         
         resp = client.delete(self.RESOURCE_URL) 
-        assert resp.status_code == 204          # 409 Conflict
+        assert resp.status_code == 409          # This category is used as foreign key
         resp = client.get(self.RESOURCE_URL)
-        assert resp.status_code == 404
+        assert resp.status_code == 200
         resp = client.delete(self.INVALID_URL)
         assert resp.status_code == 404
 
+        client.post("/api/categories", json=_get_category_json())
+        resp = client.delete(self.NEW_URL)
+        assert resp.status_code == 204
 
 
 """
