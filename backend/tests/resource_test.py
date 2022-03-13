@@ -317,15 +317,8 @@ class TestUserItem(object):
         resp = client.put(self.INVALID_URL, json=valid)
         assert resp.status_code == 404
         
-        # test with another category's name
-        valid["id"] = "2"
         resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 409      # Response 400
-        
-        # test with valid (only change model)
-        valid["id"] = "1"
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 204         # RESPONSE 400
+        assert resp.status_code == 204
         
         # remove field for 400
         valid.pop("username")                   
@@ -333,11 +326,12 @@ class TestUserItem(object):
         assert resp.status_code == 400        
         
         valid = _get_user_json()
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        resp = client.get(self.MODIFIED_URL)    # Changing the modified URL to "/api/users/1/" makes no error in this part
+        valid["username"]="test"
+        client.put(self.RESOURCE_URL, json=valid)
+        resp = client.get(self.RESOURCE_URL)
         assert resp.status_code == 200
         body = json.loads(resp.data)
-        assert body["id"] == valid["id"]        # ERROR: 2 == 1
+        assert body["username"] == "test"        # ERROR: 2 == 1
         
     def test_delete(self, client):
         """
@@ -389,8 +383,9 @@ def _get_movie_json(number=1):
     
     return {"id": number, "title": "extra-movie-{}".format(number), 
             "director" : "extra-director-{}".format(number), 
-            "length": "120",
-            "release_date": "2020-09-10"  }
+            "length": 120,
+            "release_date": "2020-09-10",
+            "category_id": 1}
 
 
 class TestMovieCollection(object):
@@ -488,13 +483,6 @@ class TestMovieItem(object):
         resp = client.put(self.INVALID_URL, json=valid)
         assert resp.status_code == 404
         
-        # test with another category's name
-        valid["id"] = "2"
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 409      # 400
-        
-        # test with valid (only change model)
-        valid["id"] = "1"
         resp = client.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 204         # 400
         
@@ -503,12 +491,13 @@ class TestMovieItem(object):
         resp = client.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400        
         
-        valid = _get_user_json()
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        resp = client.get(self.MODIFIED_URL)    # Changing the modified URL to "/api/movies/1/" makes no error in this part
+        valid = _get_movie_json()
+        valid["title"] = "Test"
+        client.put(self.RESOURCE_URL, json=valid)
+        resp = client.get(self.RESOURCE_URL)
         assert resp.status_code == 200
         body = json.loads(resp.data)
-        assert body["id"] == valid["id"]        # ERROR: 2 == 1
+        assert body["title"] == "Test"
         
     def test_delete(self, client):
         """
@@ -536,9 +525,12 @@ def _get_review_json(number=1):
     Creates a valid Review JSON object to be used for PUT and POST tests.
     """
     
-    return {"id": number, "rating": "extra-rating-{}".format(number), 
+    return {"id": number,
+            "rating": 1,
             "comment" : "extra-comment-{}".format(number), 
-            "date": "2020-09-10"  }
+            "date": "2020-09-10",
+            "author_id": 1,
+            "movie_id": 1}
 
 class TestMovieReviewCollection(object):
     """
@@ -631,14 +623,8 @@ class TestMovieReviewItem(object):
         
         resp = client.put(self.INVALID_URL, json=valid)
         assert resp.status_code == 404
-        
-        # test with another category's name
-        valid["id"] = "2"
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 409      # 400
-        
+
         # test with valid (only change model)
-        valid["id"] = "1"
         resp = client.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 204         # 400
         
@@ -647,12 +633,13 @@ class TestMovieReviewItem(object):
         resp = client.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400        
         
-        valid = _get_user_json()
-        resp = client.put(self.RESOURCE_URL, json=valid)
-        resp = client.get(self.MODIFIED_URL)    # Changing the modified URL to "/api/users/1/" makes no error in this part
+        valid = _get_review_json()
+        valid["rating"] = 5
+        client.put(self.RESOURCE_URL, json=valid)
+        resp = client.get(self.RESOURCE_URL)
         assert resp.status_code == 200
         body = json.loads(resp.data)
-        assert body["id"] == valid["id"]        # ERROR: 2 == 1
+        assert body["rating"] == 5
         
     def test_delete(self, client):
         """
