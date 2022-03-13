@@ -13,5 +13,5 @@ We use Flask-SQLAlchemy in combination with SQLite3 to set up our database. The 
 
 When the databse was sucessfully set up, you can start the actual APi code. Before doing so you have to set the environment variable `FLASK_APP` to the file `api.py`. Then you can simply execute the command `flask run` and the backend is started. You can access it via the URL `http://localhost:5000`. All the endpoints are available under the path `http://localhost:5000/api`. The URL is also printed in the console after the successfull startup process.
 
-##Tests
+## Tests
 All the API tests are included in the file `tests/resource_test.py`. To execute it, you simply have to execute `pytest tests/resource_test.py` from the backend folder. Obviously this requires the setup to be completed in advance.
