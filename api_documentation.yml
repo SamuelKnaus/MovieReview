@@ -446,14 +446,10 @@ components:
     Category:
       type: object
       properties:
-        category_id:
-          description: User's unique id
-          type: integer
         title:
           description: Category's title
           type: string
       required:
-      - category_id
       - title
 
   parameters:
