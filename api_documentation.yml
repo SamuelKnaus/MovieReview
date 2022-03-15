@@ -380,9 +380,10 @@ components:
           format: email
         password:
           type: string
+          minLength: 6
         role:
-          type: UserType
-          enum: ["Basic User", "Admin"]
+          type: string
+          enum: ["Admin", "Basic User"]
       required:
       - username
       - email_address
@@ -393,17 +394,29 @@ components:
       type: object
       properties:
         rating:
-          description: Review's rating (between 1 and 5)
+          description: Review's rating in numerical form
           type: integer
+          minimum: 1
+          maximum: 5
         comment:
           description: Review's comment
           type: string
         date:
           description: Review's date as YYYYMMDD format
+          type: string
+          format: date
+        author_id:
+          description: Reference to the reviews's author (a user id)
+          type: integer
+        movie_id:
+          description: Reference to the movie this review was written for
           type: integer
       required:
       - rating
+      - comment
       - date
+      - author_id
+      - movie_id
 
     Movie:
       type: object
@@ -415,9 +428,10 @@ components:
         length:
           description: Movie's length in seconds
           type: integer
+          minimum: 1
         release_date:
           description: Movie's release date in YYYY-MM-DD format
-          type: integer
+          type: string
           format: date
         category_id:
           description: Reference to the movie's category
