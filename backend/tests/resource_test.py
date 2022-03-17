@@ -8,7 +8,7 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
 from api import Movie, User, Review, Category, UserType
-from api import api, db
+from api import API, DB
 
 
 @event.listens_for(Engine, "connect")
@@ -22,16 +22,16 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 @pytest.fixture
 def client():
     db_fd, db_fname = tempfile.mkstemp()
-    api.app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_fname
-    api.app.config["TESTING"] = True
+    API.APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_fname
+    API.APP.config["TESTING"] = True
 
-    with api.app.app_context():
-        db.create_all()
+    with API.APP.app_context():
+        DB.create_all()
         _populate_db()
 
-    yield api.app.test_client()
+    yield API.APP.test_client()
 
-    db.session.remove()
+    DB.session.remove()
     os.close(db_fd)
     os.unlink(db_fname)
 
@@ -73,12 +73,12 @@ def _populate_db():
         rev.movie = mov  # Relationship
         rev.user = usr  # Relationship
 
-        db.session.add(usr)
-        db.session.add(rev)
-        db.session.add(mov)
-        db.session.add(cat)
+        DB.session.add(usr)
+        DB.session.add(rev)
+        DB.session.add(mov)
+        DB.session.add(cat)
 
-    db.session.commit()
+    DB.session.commit()
 
 
 """

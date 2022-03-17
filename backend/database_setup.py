@@ -1,5 +1,9 @@
-import database
+"""
+This module can be used to set up a new database
+"""
 
-db = database.db
+import api
 
-db.create_all()
+DB = api.DB
+
+DB.create_all()
