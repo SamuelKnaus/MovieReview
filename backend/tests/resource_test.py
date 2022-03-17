@@ -22,14 +22,14 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 @pytest.fixture
 def client():
     db_fd, db_fname = tempfile.mkstemp()
-    API.APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_fname
-    API.APP.config["TESTING"] = True
+    API.app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_fname
+    API.app.config["TESTING"] = True
 
-    with API.APP.app_context():
+    with API.app.app_context():
         DB.create_all()
         _populate_db()
 
-    yield API.APP.test_client()
+    yield API.app.test_client()
 
     DB.session.remove()
     os.close(db_fd)
