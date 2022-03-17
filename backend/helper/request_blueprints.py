@@ -1,3 +1,4 @@
+from flask import Response
 from jsonschema import validate, ValidationError, draft7_format_checker
 from sqlalchemy import exc
 
@@ -15,12 +16,12 @@ def post_blueprint(request, json_schema, db, create_object):
         a http response object
     """
     if not request.json:
-        return "Unsupported media type", 415
+        return Response("Unsupported media type", status=415)
 
     try:
         validate(request.json, json_schema(), format_checker=draft7_format_checker)
     except ValidationError as e:
-        return e.message, 400
+        return Response(e.message, status=400)
 
     # here the actual object is created, using the method which is passed
     created_object = create_object()
@@ -28,9 +29,9 @@ def post_blueprint(request, json_schema, db, create_object):
     try:
         db.session.add(created_object)
         db.session.commit()
-        return "", 201
+        return Response(status=201)
     except exc.IntegrityError as e:
-        return str(e.orig), 409
+        return Response(str(e.orig), status=409)
 
 
 def put_blueprint(request, json_schema, db, update_object):
@@ -47,22 +48,21 @@ def put_blueprint(request, json_schema, db, update_object):
         a http response object
     """
     if not request.json:
-        return "Unsupported media type", 415
+        return Response("Unsupported media type", status=415)
 
     try:
         validate(request.json, json_schema(), format_checker=draft7_format_checker)
     except ValidationError as e:
-        return e.message, 400
+        return Response(e.message, status=400)
 
     # here the actual object is updated, using the method which is passed
     update_object()
 
     try:
         db.session.commit()
+        return Response(status=204)
     except exc.IntegrityError as e:
-        return str(e.orig), 409
-
-    return "", 204
+        return Response(str(e.orig), status=409)
 
 
 def delete_blueprint(db, object_to_delete):
@@ -78,6 +78,6 @@ def delete_blueprint(db, object_to_delete):
     try:
         db.session.delete(object_to_delete)
         db.session.commit()
-        return "", 204
+        return Response(status=204)
     except exc.IntegrityError as e:
-        return str(e.orig), 409
+        return Response(str(e.orig), status=409)

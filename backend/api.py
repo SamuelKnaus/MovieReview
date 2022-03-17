@@ -4,9 +4,10 @@ All endpoints, the database models and the url converters are defined in here
 """
 
 import enum
+import json
 from datetime import date
 
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -28,6 +29,8 @@ APP.url_map.strict_slashes = False
 
 API = Api(APP)
 DB = SQLAlchemy(APP)
+
+DATA_TYPE_JSON = "application/json"
 
 
 # Enable foreign key constraints for SQLite
@@ -335,7 +338,7 @@ class CategoryCollection(Resource):
         """
         categories = Category.query.all()
         categories = Category.serialize_list(categories)
-        return categories, 200
+        return Response(json.dumps(categories), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __create_category_object(cls, created_category):
@@ -377,7 +380,7 @@ class CategoryItem(Resource):
                 the http response object containing either the category with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return category.serialize()
+        return Response(json.dumps(category.serialize()), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __update_category_object(cls, category, update_category):
@@ -433,7 +436,7 @@ class MovieCollection(Resource):
         """
         movies = Movie.query.all()
         movies = Category.serialize_list(movies)
-        return movies, 200
+        return Response(json.dumps(movies), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __create_movie_object(cls, created_movie):
@@ -475,7 +478,7 @@ class MovieItem(Resource):
                 the http response object containing either the movie with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return movie.serialize()
+        return Response(json.dumps(movie.serialize()), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __update_movie_object(cls, movie, update_movie):
@@ -541,9 +544,9 @@ class MovieReviewCollection(Resource):
                 the http response object containing either the list of reviews of this movie
                 or a http error with the corresponding error message
         """
-        movies = Review.query.filter_by(movie_id=movie.id).all()
-        movies = Category.serialize_list(movies)
-        return movies, 200
+        reviews = Review.query.filter_by(movie_id=movie.id).all()
+        reviews = Category.serialize_list(reviews)
+        return Response(json.dumps(reviews), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __create_review_object(cls, movie, created_review):
@@ -591,7 +594,7 @@ class MovieReviewItem(Resource):
                 for the movie with the given id
                 or a 404 http error if no movie or no review with the given id exists
         """
-        return review.serialize()
+        return Response(json.dumps(review.serialize()), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __update_review_object(cls, review, update_review):
@@ -634,7 +637,7 @@ class MovieReviewItem(Resource):
 
 
 APP.url_map.converters["review"] = ReviewConverter
-API.add_resource(MovieReviewItem, "/api/movies/<movie:movie>/reviews/<review:review>")
+API.add_resource(MovieReviewItem, "/api/movies/<movie:_movie>/reviews/<review:review>")
 
 
 # USERS LOGIC
@@ -653,7 +656,7 @@ class UserCollection(Resource):
         """
         users = User.query.all()
         users = User.serialize_list(users)
-        return users, 200
+        return Response(json.dumps(users), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __create_user_object(cls, created_user):
@@ -695,7 +698,7 @@ class UserItem(Resource):
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
         """
-        return user.serialize()
+        return Response(json.dumps(user.serialize()), 200, mimetype=DATA_TYPE_JSON)
 
     @classmethod
     def __update_review_object(cls, user, update_user):
@@ -763,7 +766,7 @@ class UserReviewCollection(Resource):
         """
         reviews = Review.query.filter_by(author_id=user.id).all()
         reviews = Review.serialize_list(reviews)
-        return reviews, 200
+        return Response(json.dumps(reviews), 200, mimetype=DATA_TYPE_JSON)
 
 
 API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
