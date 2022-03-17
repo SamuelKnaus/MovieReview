@@ -1,6 +1,24 @@
+import json
+
 from flask import Response
 from jsonschema import validate, ValidationError, draft7_format_checker
 from sqlalchemy import exc
+
+from helper.ErrorResponse import ErrorResponse
+
+DATA_TYPE_JSON = "application/json"
+
+
+def get_blueprint(response_object):
+    """
+        This method is used to make get http requests, which return objects from the database.
+        It acts as a blueprint to enable a similar behaviour for all get endpoints
+        input:
+            request: The response content as json string, which is sent back
+        output:
+            a http response object
+    """
+    return Response(json.dumps(response_object), 200, mimetype=DATA_TYPE_JSON)
 
 
 def post_blueprint(request, json_schema, db, create_object):
@@ -16,12 +34,12 @@ def post_blueprint(request, json_schema, db, create_object):
         a http response object
     """
     if not request.json:
-        return Response("Unsupported media type", status=415)
+        return ErrorResponse.get_unsupported_media_type()
 
     try:
         validate(request.json, json_schema(), format_checker=draft7_format_checker)
     except ValidationError as e:
-        return Response(e.message, status=400)
+        return ErrorResponse(e.message, 400).get_http_response()
 
     # here the actual object is created, using the method which is passed
     created_object = create_object()
@@ -31,7 +49,7 @@ def post_blueprint(request, json_schema, db, create_object):
         db.session.commit()
         return Response(status=201)
     except exc.IntegrityError as e:
-        return Response(str(e.orig), status=409)
+        return ErrorResponse(str(e.orig), 409).get_http_response()
 
 
 def put_blueprint(request, json_schema, db, update_object):
@@ -48,12 +66,12 @@ def put_blueprint(request, json_schema, db, update_object):
         a http response object
     """
     if not request.json:
-        return Response("Unsupported media type", status=415)
+        return ErrorResponse.get_unsupported_media_type()
 
     try:
         validate(request.json, json_schema(), format_checker=draft7_format_checker)
     except ValidationError as e:
-        return Response(e.message, status=400)
+        return ErrorResponse(e.message, 400).get_http_response()
 
     # here the actual object is updated, using the method which is passed
     update_object()
@@ -62,7 +80,7 @@ def put_blueprint(request, json_schema, db, update_object):
         db.session.commit()
         return Response(status=204)
     except exc.IntegrityError as e:
-        return Response(str(e.orig), status=409)
+        return ErrorResponse(str(e.orig), 409).get_http_response()
 
 
 def delete_blueprint(db, object_to_delete):
@@ -80,4 +98,4 @@ def delete_blueprint(db, object_to_delete):
         db.session.commit()
         return Response(status=204)
     except exc.IntegrityError as e:
-        return Response(str(e.orig), status=409)
+        return ErrorResponse(str(e.orig), 409).get_http_response()

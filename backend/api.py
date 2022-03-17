@@ -4,10 +4,9 @@ All endpoints, the database models and the url converters are defined in here
 """
 
 import enum
-import json
 from datetime import date
 
-from flask import Flask, request, Response
+from flask import Flask, request
 from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -15,7 +14,7 @@ from sqlalchemy.engine import Engine
 from werkzeug.exceptions import NotFound
 from werkzeug.routing import BaseConverter
 
-from helper.request_blueprints import post_blueprint, put_blueprint, delete_blueprint
+from helper.request_blueprints import post_blueprint, put_blueprint, delete_blueprint, get_blueprint
 from helper.serializer import Serializer
 from json_schemas.category_json_schema import get_category_json_schema
 from json_schemas.movie_json_schema import get_movie_json_schema
@@ -29,8 +28,6 @@ APP.url_map.strict_slashes = False
 
 API = Api(APP)
 DB = SQLAlchemy(APP)
-
-DATA_TYPE_JSON = "application/json"
 
 
 # Enable foreign key constraints for SQLite
@@ -338,7 +335,7 @@ class CategoryCollection(Resource):
         """
         categories = Category.query.all()
         categories = Category.serialize_list(categories)
-        return Response(json.dumps(categories), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(categories)
 
     @classmethod
     def __create_category_object(cls, created_category):
@@ -380,7 +377,7 @@ class CategoryItem(Resource):
                 the http response object containing either the category with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return Response(json.dumps(category.serialize()), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(category.serialize())
 
     @classmethod
     def __update_category_object(cls, category, update_category):
@@ -436,7 +433,7 @@ class MovieCollection(Resource):
         """
         movies = Movie.query.all()
         movies = Category.serialize_list(movies)
-        return Response(json.dumps(movies), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(movies)
 
     @classmethod
     def __create_movie_object(cls, created_movie):
@@ -478,7 +475,7 @@ class MovieItem(Resource):
                 the http response object containing either the movie with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return Response(json.dumps(movie.serialize()), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(movie.serialize())
 
     @classmethod
     def __update_movie_object(cls, movie, update_movie):
@@ -546,7 +543,7 @@ class MovieReviewCollection(Resource):
         """
         reviews = Review.query.filter_by(movie_id=movie.id).all()
         reviews = Category.serialize_list(reviews)
-        return Response(json.dumps(reviews), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(reviews)
 
     @classmethod
     def __create_review_object(cls, movie, created_review):
@@ -594,7 +591,7 @@ class MovieReviewItem(Resource):
                 for the movie with the given id
                 or a 404 http error if no movie or no review with the given id exists
         """
-        return Response(json.dumps(review.serialize()), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(review.serialize())
 
     @classmethod
     def __update_review_object(cls, review, update_review):
@@ -656,7 +653,7 @@ class UserCollection(Resource):
         """
         users = User.query.all()
         users = User.serialize_list(users)
-        return Response(json.dumps(users), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(users)
 
     @classmethod
     def __create_user_object(cls, created_user):
@@ -698,7 +695,7 @@ class UserItem(Resource):
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
         """
-        return Response(json.dumps(user.serialize()), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(user.serialize())
 
     @classmethod
     def __update_review_object(cls, user, update_user):
@@ -766,7 +763,7 @@ class UserReviewCollection(Resource):
         """
         reviews = Review.query.filter_by(author_id=user.id).all()
         reviews = Review.serialize_list(reviews)
-        return Response(json.dumps(reviews), 200, mimetype=DATA_TYPE_JSON)
+        return get_blueprint(reviews)
 
 
 API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
