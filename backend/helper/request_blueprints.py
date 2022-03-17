@@ -1,7 +1,6 @@
 from jsonschema import validate, ValidationError, draft7_format_checker
 from sqlalchemy import exc
 
-
 '''
 This method is used to make post http requests, which add objects to the database.
 It acts as a blueprint to enable a similar behaviour for all post endpoints
@@ -11,6 +10,8 @@ input:
     db: a database object, which is used to persist changes
     create_object: a method which creates the object that is to be added to the database
 '''
+
+
 def post_blueprint(request, json_schema, db, create_object):
     if not request.json:
         return "Unsupported media type", 415
@@ -40,6 +41,8 @@ input:
     db: a database object, which is used to persist changes
     create_object: a method which creates the updated object that is then used to overwrite the original object in the database
 '''
+
+
 def put_blueprint(request, json_schema, db, update_object):
     if not request.json:
         return "Unsupported media type", 415
@@ -67,6 +70,8 @@ input:
     db: a database object, which is used to persist changes
     object: the object, which is to be removed
 '''
+
+
 def delete_blueprint(db, object):
     try:
         db.session.delete(object)

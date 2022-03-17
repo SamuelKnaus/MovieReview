@@ -1,4 +1,3 @@
-
 def get_movie_json_schema():
     schema = {
         "type": "object",
