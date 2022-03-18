@@ -30,7 +30,6 @@ API = Api(APP)
 DB = SQLAlchemy(APP)
 
 
-# Enable foreign key constraints for SQLite
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, _connection_record):
     """
