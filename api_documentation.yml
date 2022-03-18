@@ -1,18 +1,18 @@
 openapi: 3.0.3
 info:
-  title: Movie Review OpenAPI documentation
-  description: Documentation of the movie review resources
-  version: 0.0.1
+  title: Movie Review OpenAPI Documentation
+  description: Documentation of the resources offered by the Movie Review API. Each of the URLs work either with or without the trailing slash, so it is up to you how you want to use them.
+  version: 1.0.0
 
 paths:
   /users/:
     get:
       tags:
-      - "users"
-      description: Fetch the list of users from the system.
+      - "Users"
+      description: Fetch a list of all users from the database.
       responses:
         '200':
-          description: List of users
+          description: Successfully returned all users from the database.
           content:
             application/json:
               example:
@@ -26,17 +26,8 @@ paths:
                 role: Admin
     post:
       tags:
-      - "users"
-      description: Create a new user
-      responses:
-        '201':
-          description: The user was created successfully.
-        '400':
-          description: Request doesn't match the JSON schema. For example username, email_address, password must be string and role must be enum of UserType ('Basic User' or 'Admin').
-        '409':
-          description: Restrictions from the database e.g., foreign key constraints.
-        '415':
-          description: Unsupported media type. The request content type must be of type JSON.
+      - "Users"
+      description: Create a new user in the database.
       requestBody:
         description: JSON document that contains the username, email, password, and role to create a new user.
         content:
@@ -48,41 +39,40 @@ paths:
               email_address: new-test-user-1@oulu.fi
               password: e19h63
               role: Basic User
+      responses:
+        '201':
+          description: The user was created successfully.
+        '400':
+          description: Request doesn't match the JSON schema. The username, email_address, password must be string and the role must be an enum of UserType ('Basic User' or 'Admin').
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
 
   /users/{user_id}/:
     parameters:
     - $ref: '#/components/parameters/user_id'
     get:
       tags:
-      - "users"
-      description: Fetch data from a certain user by using the ID.
+      - "Users"
+      description: Fetch a single user from the database by using his ID.
       responses:
         '200':
-          description: Data fron a single user.
+          description: Successfully fetched data for the requested user.
           content:
             application/json:
-              examples:
-                user-example:
-                  description: Examplary data of a single user entry.
-                  value:
-                    id: 12054
-                    username: test-user-1
-                    email_address: test-user-1@oulu.fi
-                    role: BasicUser
+              example:
+                id: 12054
+                username: test-user-1
+                email_address: test-user-1@oulu.fi
+                role: BasicUser
 
         '404':
-          description: There exists no user with the provided ID.
+          description: The user/endpoint was not found.
     put:
       tags:
-      - "users"
-      description: Update a user by his ID.
-      responses:
-        '204':
-          description: The user has been updated.
-        '404':
-          description: The user/endpoint was not found.
-        '415':
-          description: Unsupported media type. The request content type must be of type JSON.
+      - "Users"
+      description: Update a user by using his ID.
       requestBody:
         description: JSON document that contains either username, email, password, or all of them to update user data.
         content:
@@ -94,21 +84,27 @@ paths:
               email_address: updated-test-user-1@oulu.fi
               password: e19h63123
               role: Admin
-
-    delete:
-      tags:
-      - "users"
-      description: Delete a user by his ID.
       responses:
         '204':
-          description: The user has been deleted.
+          description: The user was updated successfully.
+        '404':
+          description: The user/endpoint was not found.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
+    delete:
+      tags:
+      - "Users"
+      description: Delete a user by using his ID.
+      responses:
+        '204':
+          description: The user was deleted successfully.
         '404':
           description: The user/endpoint was not found.
 
   /movies/:
     get:
       tags:
-      - "movies"
+      - "Movies"
       description: Fetch the list of movies from the system.
       responses:
         '200':
@@ -130,7 +126,7 @@ paths:
                 category_id: 3
     post:
       tags:
-      - "movies"
+      - "Movies"
       description: Create a new movie.
       responses:
         '201':
@@ -158,7 +154,7 @@ paths:
     - $ref: '#/components/parameters/movie_id'
     get:
       tags:
-      - "movies"
+      - "Movies"
       description: Featch data from single movie by the ID.
       responses:
         '200':
@@ -178,7 +174,7 @@ paths:
           description: The movie was not found.
     put:
       tags:
-      - "movie"
+      - "Movies"
       description: Update a movie by movie_id
       responses:
         '204':
@@ -188,20 +184,20 @@ paths:
 
     delete:
       tags:
-      - "movie"
+      - "Movies"
       description: Delete a movie by movie_id
       responses:
         '204':
           description: The movie has been deleted
         '409':
           description: The movie was not found
-          
+
   /users/{user_id}/reviews/:
     parameters:
     - $ref: '#/components/parameters/user_id'
     get:
       tags:
-      - "reviews"
+      - "Reviews"
       description: Get the list of all the reviews that were written by a user through his ID.
       responses:
         '200':
@@ -219,13 +215,13 @@ paths:
                 date: 20210323
         '404':
           description: The user/endpoint was not found.
-          
+
   /movies/{movie_id}/reviews/:
     parameters:
     - $ref: '#/components/parameters/movie_id'
     get:
       tags:
-      - "review"
+      - "Reviews"
       description: Get the list of a movie's reviews by movie_id
       responses:
         '200':
@@ -247,7 +243,7 @@ paths:
     - $ref: '#/components/parameters/review_id'
     get:
       tags:
-      - "review"
+      - "Reviews"
       description: Get details of one review by movie_id and review_id
       responses:
         '200':
@@ -267,7 +263,7 @@ paths:
           description: The review was not found
     put:
       tags:
-      - "review"
+      - "Reviews"
       description: Update a review by review_id
       responses:
         '204':
@@ -277,7 +273,7 @@ paths:
 
     delete:
       tags:
-      - "review"
+      - "Reviews"
       description: Delete a review by review_id
       responses:
         '204':
@@ -288,7 +284,7 @@ paths:
   /categories/:
     get:
       tags:
-      - "category"
+      - "Categories"
       description: Get the list of manage categories
       responses:
         '200':
@@ -302,7 +298,7 @@ paths:
                 title: test-category-2
     post:
       tags:
-      - "category"
+      - "Categories"
       description: Create a new category
       responses:
         '201':
@@ -332,7 +328,7 @@ paths:
     - $ref: '#/components/parameters/category_id'
     get:
       tags:
-      - "category"
+      - "Categories"
       description: Get details of one category by category_id
       responses:
         '200':
@@ -350,7 +346,7 @@ paths:
           description: The category was not found
     put:
       tags:
-      - "category"
+      - "Categories"
       description: Update a category by category_id
       responses:
         '204':
@@ -360,7 +356,7 @@ paths:
 
     delete:
       tags:
-      - "category"
+      - "Categories"
       description: Delete a category by category_id
       responses:
         '204':
@@ -383,7 +379,7 @@ components:
           minLength: 6
         role:
           type: string
-          enum: ["Admin", "Basic User"]
+          enum: [Admin, Basic User]
       required:
       - username
       - email_address
@@ -394,22 +390,17 @@ components:
       type: object
       properties:
         rating:
-          description: Review's rating in numerical form
           type: integer
           minimum: 1
           maximum: 5
         comment:
-          description: Review's comment
           type: string
         date:
-          description: Review's date as YYYYMMDD format
           type: string
-          format: date
+          format: date-time
         author_id:
-          description: Reference to the reviews's author (a user id)
           type: integer
         movie_id:
-          description: Reference to the movie this review was written for
           type: integer
       required:
       - rating
@@ -426,15 +417,14 @@ components:
         director:
           type: string
         length:
-          description: Movie's length in seconds
           type: integer
           minimum: 1
+          description: Movie's length in seconds
         release_date:
-          description: Movie's release date in YYYY-MM-DD format
           type: string
           format: date
+          description: Movie's release date in YYYY-MM-DD format
         category_id:
-          description: Reference to the movie's category
           type: integer
       required:
       - title
@@ -447,37 +437,39 @@ components:
       type: object
       properties:
         title:
-          description: Category's title
           type: string
       required:
       - title
 
   parameters:
     user_id:
-      description: Select user by his unique ID.
-      in: path
       name: user_id
+      in: path
+      description: Used for selecting a user by his unique ID.
       required: true
       schema:
         type: integer
+
     movie_id:
-      description: Select movie by its unique ID.
-      in: path
       name: movie_id
+      in: path
+      description: Used for selecting a movie by its unique ID.
       required: true
       schema:
         type: integer
+
     review_id:
-      description: Select review by its unique ID
-      in: path
       name: review_id
+      in: path
+      description: Used for selecting a review by its unique ID.
       required: true
       schema:
         type: integer
+
     category_id:
-      description: Select category by its unique ID
-      in: path
       name: category_id
+      in: path
+      description: Used for selecting a category by its unique ID.
       required: true
       schema:
         type: integer
