@@ -15,6 +15,10 @@ paths:
           description: Successfully returned all users from the database.
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserWithId"
               example:
               - user_id: 1
                 username: mario456
@@ -33,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWithPassword'
             example:
               user_id: 3
               username: eric16
@@ -62,6 +66,8 @@ paths:
           description: Successfully fetched data for the requested user.
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithId'
               example:
                 user_id: 1
                 username: mario456
@@ -78,7 +84,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWithPassword'
             example:
               user_id: 1
               username: mario456
@@ -111,6 +117,10 @@ paths:
           description: List of movies.
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieWithId'
               example:
               - movie_id: 1
                 title: Leon, the professional
@@ -163,6 +173,8 @@ paths:
           description: Data of a single movie.
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/MovieWithId'
               example:
                 description: A movie that has been created
                 value:
@@ -220,6 +232,10 @@ paths:
           description: List of reviews
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewWithId'
               example:
               - review_id: 1
                 rating: 3
@@ -244,6 +260,10 @@ paths:
           description: List of reviews by movie_id
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewWithId'
               example:
               - review_id: 3
                 rating:
@@ -290,6 +310,8 @@ paths:
           description: Data of single review
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewWithId'
               examples:
                 user-example:
                   description: A review that has been created
@@ -342,6 +364,10 @@ paths:
           description: List of categories
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryWithId'
               example:
               - category_id: 1
                 title: Science-Fiction
@@ -387,6 +413,8 @@ paths:
           description: Data of single category
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryWithId'
               examples:
                 category-example:
                   description: A category that has been created
@@ -436,17 +464,34 @@ components:
         email_address:
           type: string
           format: email
-        password:
-          type: string
-          minLength: 6
         role:
           type: string
           enum: [Admin, Basic User]
       required:
       - username
       - email_address
-      - password
       - role
+
+    UserWithPassword:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+        - properties:
+              password:
+                type: string
+                minLength: 6
+      required:
+        - password
+
+    UserWithId:
+      allOf:
+        - properties:
+              id:
+                type: integer
+        - $ref: '#/components/schemas/User'
+        - type: object
+      required:
+        - id
 
     Review:
       type: object
@@ -470,6 +515,16 @@ components:
       - date
       - author_id
       - movie_id
+
+    ReviewWithId:
+      allOf:
+        - properties:
+              id:
+                type: integer
+        - $ref: '#/components/schemas/Review'
+        - type: object
+      required:
+        - id
 
     Movie:
       type: object
@@ -495,6 +550,16 @@ components:
       - release_date
       - category_id
 
+    MovieWithId:
+      allOf:
+        - properties:
+              id:
+                type: integer
+        - $ref: '#/components/schemas/Movie'
+        - type: object
+      required:
+        - id
+
     Category:
       type: object
       properties:
@@ -502,6 +567,16 @@ components:
           type: string
       required:
       - title
+
+    CategoryWithId:
+      allOf:
+        - properties:
+              id:
+                type: integer
+        - $ref: '#/components/schemas/Category'
+        - type: object
+      required:
+        - id
 
   parameters:
     user_id:
