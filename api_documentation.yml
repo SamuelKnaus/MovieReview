@@ -16,13 +16,13 @@ paths:
           content:
             application/json:
               example:
-              - id: 12054
-                username: test-user-1
-                email_address: test-user-1@oulu.fi
+              - user_id: 1
+                username: mario456
+                email_address: mario.lo@oulu.fi
                 role: Basic User
-              - id: 12055
-                username: test-user-2
-                email_address: test-user-2@oulu.fi
+              - user_id: 2
+                username: jules
+                email_address: jules.fte@hotmail.com
                 role: Admin
     post:
       tags:
@@ -35,8 +35,9 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
             example:
-              username: new-test-user-1
-              email_address: new-test-user-1@oulu.fi
+              user_id: 3
+              username: eric16
+              email_address: ericloco@gmail.com
               password: e19h63
               role: Basic User
       responses:
@@ -62,11 +63,10 @@ paths:
           content:
             application/json:
               example:
-                id: 12054
-                username: test-user-1
-                email_address: test-user-1@oulu.fi
-                role: BasicUser
-
+                user_id: 1
+                username: mario456
+                email_address: mario.lo@oulu.fi
+                role: Basic User
         '404':
           description: The user/endpoint was not found.
     put:
@@ -80,10 +80,10 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
             example:
-              username: updated-test-user-1
-              email_address: updated-test-user-1@oulu.fi
-              password: e19h63123
-              role: Admin
+              user_id: 1
+              username: mario456
+              email_address: new.mario.lo@oulu.fi
+              role: Basic User
       responses:
         '204':
           description: The user was updated successfully.
@@ -112,22 +112,35 @@ paths:
           content:
             application/json:
               example:
-              - id: 1
-                title: test-movie-1
+              - movie_id: 1
+                title: Leon, the professional
                 director: Luc Besson
-                length: 110
+                length: 6600
                 release_date: 1999-09-14
                 category_id: 2
-              - id: 2
-                title: test-movie-2
-                director: Jon Watts
-                length: 148
-                release_date: 2021-12-13
+              - movie_id: 2
+                title: Apocalypse now
+                director: Francis Copola
+                length: 8820
+                release_date: 1979-05-19
                 category_id: 3
     post:
       tags:
       - "Movies"
       description: Create a new movie.
+      requestBody:
+        description: JSON document that contains the data for creating a new movie
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+            example:
+              movie_id: 3
+              title: Dune
+              director: Denis Villeneuve
+              length: 9360
+              release_date: 2021-09-22
+              category_id: 1
       responses:
         '201':
           description: The movie was created successfully.
@@ -137,18 +150,7 @@ paths:
           description: Restrictions from the database e.g, foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be JSON.
-      requestBody:
-        description: JSON document that contains the data for creating a new movie
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Movie'
-            example:
-              title: new-test-movie-1
-              director: villeneuve
-              length: 660
-              release_date: "1999-03-24"
-              category_id: 1
+
   /movies/{movie_id}/:
     parameters:
     - $ref: '#/components/parameters/movie_id'
@@ -164,10 +166,11 @@ paths:
               example:
                 description: A movie that has been created
                 value:
-                  id: 2
-                  title: test-movie-1
-                  length: 843
-                  release_date: "1997-08-15"
+                  movie_id: 1
+                  title: Leon, the professional
+                  director: Luc Besson
+                  length: 6600
+                  release_date: 1999-09-14
                   category_id: 2
 
         '404':
@@ -176,9 +179,22 @@ paths:
       tags:
       - "Movies"
       description: Update a movie by movie_id
+      requestBody:
+        description: JSON document that contains either title, directore, length, release date or category id, or all of them to update movie data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+            example:
+              movie_id: 1
+              title: Leon, the professional
+              director: Luc Besson
+              length: 8160
+              release_date: 1999-09-14
+              category_id: 2
       responses:
         '204':
-          description: The movie has been deleted
+          description: The movie has been updated
         '409':
           description: The movie was not found
 
@@ -198,21 +214,21 @@ paths:
     get:
       tags:
       - "Reviews"
-      description: Get the list of all the reviews that were written by a user through his ID.
+      description: Fetch the list of all the reviews that were written by a user through his ID.
       responses:
         '200':
           description: List of reviews
           content:
             application/json:
               example:
-              - id: 6981
+              - review_id: 1
                 rating: 3
                 comment: The movie is ok
-                date: 20210322
-              - id: 6982
+                date: 2021-03-22
+              - review_id: 2
                 rating: 5
                 comment: The movie is great
-                date: 20210323
+                date: 2021-03-23
         '404':
           description: The user/endpoint was not found.
 
@@ -222,21 +238,45 @@ paths:
     get:
       tags:
       - "Reviews"
-      description: Get the list of a movie's reviews by movie_id
+      description: Fetch the list of a movie's reviews by movie_id
       responses:
         '200':
           description: List of reviews by movie_id
           content:
             application/json:
               example:
-              - review_id: 5687
-                rating: 3
-                comment: The movie is ok
-                date: 20210322
-              - review_id: 5688
+              - review_id: 3
+                rating:
+                comment: I didn't like the movie at all
+                date: 2021-03-25
+              - review_id: 4
                 rating: 5
-                comment: The movie is great
-                date: 20210323
+                comment: A masterpiece !
+                date: 2021-03-13
+    post:
+      tags:
+      - "Reviews"
+      description: Create a new review in the database.
+      requestBody:
+        description: JSON document that contains the rating score, the comment and the comment date to create a new review.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+            example:
+              review_id: 5
+              rating: 1
+              comment: A real disaster
+              date: 2022-01-17
+      responses:
+        '201':
+          description: The review was created successfully.
+        '400':
+          description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
   /movies/{movie_id}/reviews/{review_id}:
     parameters:
     - $ref: '#/components/parameters/movie_id'
@@ -244,7 +284,7 @@ paths:
     get:
       tags:
       - "Reviews"
-      description: Get details of one review by movie_id and review_id
+      description: Fetch details of one review by movie_id and review_id
       responses:
         '200':
           description: Data of single review
@@ -254,10 +294,10 @@ paths:
                 user-example:
                   description: A review that has been created
                   value:
-                    review_id: 5687
+                    review_id: 1
                     rating: 3
                     comment: The movie is ok
-                    date: 20210322
+                    date: 2021-03-22
 
         '404':
           description: The review was not found
@@ -265,9 +305,20 @@ paths:
       tags:
       - "Reviews"
       description: Update a review by review_id
+      requestBody:
+        description: JSON document that contains either rating score, comment, comment date, or all of them to update movie data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+            example:
+              review_id: 1
+              rating: 4
+              comment: The movie is ok, but I changed my mind, it's pretty good
+              date: 2021-03-23
       responses:
         '204':
-          description: The review has been deleted
+          description: The review has been updated
         '409':
           description: The review was not found
 
@@ -285,17 +336,17 @@ paths:
     get:
       tags:
       - "Categories"
-      description: Get the list of manage categories
+      description: Fetch the list of manage categories
       responses:
         '200':
           description: List of categories
           content:
             application/json:
               example:
-              - category_id: 87675
-                title: test-category-1
-              - category_id: 87676
-                title: test-category-2
+              - category_id: 1
+                title: Science-Fiction
+              - category_id: 2
+                title: Thriller
     post:
       tags:
       - "Categories"
@@ -321,15 +372,16 @@ paths:
             schema:
               $ref: '#/components/schemas/Category'
             example:
-              category_id: 27521
-              title: new-test-category-1
+              category_id: 3
+              title: War
+
   /categories/{category_id}/:
     parameters:
     - $ref: '#/components/parameters/category_id'
     get:
       tags:
       - "Categories"
-      description: Get details of one category by category_id
+      description: Fetch details of one category by category_id
       responses:
         '200':
           description: Data of single category
@@ -339,18 +391,28 @@ paths:
                 category-example:
                   description: A category that has been created
                   value:
-                    category_id: 87675
-                    title: test-category-1
-
+                    category_id: 1
+                    title: Science-Fiction
         '404':
           description: The category was not found
     put:
       tags:
       - "Categories"
       description: Update a category by category_id
+      requestBody:
+        description: JSON document that contains either rating score, comment, comment date, or all of them to update movie data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+            example:
+              review_id: 1
+              rating: 4
+              comment: The movie is ok, but I changed my mind, it's pretty good
+              date: 2021-03-23
       responses:
         '204':
-          description: The category has been deleted
+          description: The category has been updated
         '409':
           description: The category was not found
 
