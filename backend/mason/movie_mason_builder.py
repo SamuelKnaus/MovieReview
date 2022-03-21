@@ -1,7 +1,7 @@
 """
     The movie mason builder class
 """
-
+import api
 from json_schemas.movie_json_schema import get_movie_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
 
@@ -10,6 +10,11 @@ class MovieMasonBuilder(GenericMasonBuilder):
     """
         The mason builder which is responsible for all movie endpoints
     """
+    def __init__(self):
+        self.api = api.API
+        self.movie_item = api.MovieItem
+        self.movie_collection = api.MovieCollection
+
     def add_control_get_movies(self):
         """
             This method adds the mason documentation for the get all movies endpoint

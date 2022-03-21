@@ -2,6 +2,7 @@
     The generic mason builder class
 """
 
+
 class GenericMasonBuilder(dict):
     """
     A convenience class for managing dictionaries that represent Mason
@@ -14,7 +15,6 @@ class GenericMasonBuilder(dict):
     specific relation name from the application namespace. The IANA standard
     does not define a link relation for deleting something.
     """
-
     def _add_error(self, title, details):
         """
         Adds an error element to the object. Should only be used for the root

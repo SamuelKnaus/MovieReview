@@ -1,7 +1,7 @@
 """
     The review mason builder class
 """
-
+import api
 from json_schemas.review_json_schema import get_review_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
 
@@ -10,6 +10,13 @@ class ReviewMasonBuilder(GenericMasonBuilder):
     """
         The mason builder which is responsible for all review endpoints
     """
+
+    def __init__(self):
+        self.api = api.API
+        self.review_item = api.MovieReviewItem
+        self.movie_review_collection = api.MovieReviewCollection
+        self.user_review_collection = api.UserReviewCollection
+
     def add_control_get_reviews_of_user(self, user):
         """
             This method adds the mason documentation for the get all reviews of a user endpoint

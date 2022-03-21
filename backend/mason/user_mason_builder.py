@@ -2,6 +2,7 @@
     The user mason builder class
 """
 
+import api
 from json_schemas.user_json_schema import get_user_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
 
@@ -10,6 +11,12 @@ class UserMasonBuilder(GenericMasonBuilder):
     """
         The mason builder which is responsible for all review endpoints
     """
+
+    def __init__(self):
+        self.api = api.API
+        self.user_item = api.UserItem
+        self.user_collection = api.UserCollection
+
     def add_control_get_users(self):
         """
             This method adds the mason documentation for the get all users endpoint

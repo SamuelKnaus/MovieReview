@@ -1,7 +1,7 @@
 """
 The category mason builder class
 """
-
+import api
 from json_schemas.category_json_schema import get_category_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
 
@@ -10,6 +10,11 @@ class CategoryMasonBuilder(GenericMasonBuilder):
     """
     The mason builder which is responsible for all category endpoints
     """
+    def __init__(self):
+        self.api = api.API
+        self.category_item = api.CategoryItem
+        self.category_collection = api.CategoryCollection
+
     def add_control_get_categories(self):
         """
             This method adds the mason documentation for the get all categories endpoint

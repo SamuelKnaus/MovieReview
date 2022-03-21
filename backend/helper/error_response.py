@@ -19,7 +19,7 @@ class ErrorResponse(Response):
         """
         self.message = message
         self.status_code = status_code
-        
+
     def get_http_response(self):
         """
             This function transforms the object to a http response object
@@ -29,7 +29,7 @@ class ErrorResponse(Response):
             "message": self.message,
         }
         return Response(json.dumps(json_string), status=self.status_code, mimetype=DATA_TYPE_JSON)
-    
+
     @staticmethod
     def get_unsupported_media_type():
         return ErrorResponse("Unsupported media type", 415).get_http_response()
