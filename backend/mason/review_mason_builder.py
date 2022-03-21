@@ -12,6 +12,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
     """
 
     def __init__(self):
+        super().__init__()
         self.api = api.API
         self.review_item = api.MovieReviewItem
         self.movie_review_collection = api.MovieReviewCollection

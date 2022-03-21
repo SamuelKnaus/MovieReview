@@ -5,7 +5,7 @@ It uses the definitions of the api module and adds dummy data to the database
 
 import datetime
 import api
-from api import Category, Movie, Review, User, UserType
+from database.models import Category, Movie, Review, User, UserType
 
 DB = api.DB
 
@@ -18,35 +18,35 @@ USER_1 = User(
     username="dummyGuy",
     email_address="red.unicorn@gmail.com",
     password="thisisnotapassword",
-    role=UserType.basicUser
+    role=UserType.BASIC_USER
 )
 
 USER_2 = User(
     username="dummyAdmin",
     email_address="omnipotent.pencil@yahoo.com",
     password="1234",
-    role=UserType.admin
+    role=UserType.ADMIN
 )
 
 USER_3 = User(
     username="grantorinohurricane",
     email_address="grantorinohurricane@gmail.com",
     password="Grantorino1234",
-    role=UserType.basicUser
+    role=UserType.BASIC_USER
 )
 
 USER_4 = User(
     username="lightningbasketball",
     email_address="lightningbasketbal@gmail.com",
     password="Basketball1234",
-    role=UserType.basicUser
+    role=UserType.BASIC_USER
 )
 
 USER_5 = User(
     username="johnkennedy",
     email_address="kennedyj@moviereview.com",
     password="$KenJon9908",
-    role=UserType.admin
+    role=UserType.ADMIN
 )
 
 DB.session.add(USER_1)

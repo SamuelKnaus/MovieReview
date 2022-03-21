@@ -11,6 +11,7 @@ class MovieMasonBuilder(GenericMasonBuilder):
         The mason builder which is responsible for all movie endpoints
     """
     def __init__(self):
+        super().__init__()
         self.api = api.API
         self.movie_item = api.MovieItem
         self.movie_collection = api.MovieCollection

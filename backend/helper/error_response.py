@@ -1,3 +1,6 @@
+"""
+    Contains the error response helper class
+"""
 import json
 
 from flask import Response
@@ -32,4 +35,9 @@ class ErrorResponse:
 
     @staticmethod
     def get_unsupported_media_type():
+        """
+            static helper function to get consistent 417 http error responses
+            result:
+                A http response with the http error code 415
+        """
         return ErrorResponse("Unsupported media type", 415).get_http_response()

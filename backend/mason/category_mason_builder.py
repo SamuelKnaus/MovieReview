@@ -11,6 +11,7 @@ class CategoryMasonBuilder(GenericMasonBuilder):
     The mason builder which is responsible for all category endpoints
     """
     def __init__(self):
+        super().__init__()
         self.api = api.API
         self.category_item = api.CategoryItem
         self.category_collection = api.CategoryCollection

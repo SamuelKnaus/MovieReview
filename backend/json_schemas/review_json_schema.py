@@ -1,4 +1,12 @@
+"""
+    contains the review json schema
+"""
+
+
 def get_review_json_schema():
+    """
+        returns the json schema of a review object
+    """
     schema = {
         "type": "object",
         "required": ["rating", "comment", "date", "author_id", "movie_id"]

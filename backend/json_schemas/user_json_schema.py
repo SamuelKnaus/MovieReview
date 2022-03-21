@@ -1,4 +1,12 @@
+"""
+    contains the user json schema
+"""
+
+
 def get_user_json_schema():
+    """
+        returns the json schema of a user object
+    """
     schema = {
         "type": "object",
         "required": ["username", "email_address", "password", "role"]

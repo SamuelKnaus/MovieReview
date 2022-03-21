@@ -1,4 +1,12 @@
+"""
+    contains the movie json schema
+"""
+
+
 def get_movie_json_schema():
+    """
+        returns the json schema of a movie object
+    """
     schema = {
         "type": "object",
         "required": ["title", "director", "length", "release_date", "category_id"]

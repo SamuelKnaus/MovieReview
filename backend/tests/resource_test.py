@@ -7,8 +7,8 @@ import pytest
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
-from api import Movie, User, Review, Category, UserType
 from api import API, DB
+from database.models import User, UserType, Movie, Category, Review
 
 
 @event.listens_for(Engine, "connect")
@@ -67,7 +67,7 @@ def _populate_db():
             username="dummyGuy" + str(idx),
             email_address="dummyGuy" + str(idx) + "@gmail.com",
             password="dummyGuy1234" + str(idx),
-            role=UserType.basicUser  # DO: RANDOMIZE THE ROLE
+            role=UserType.BASIC_USER  # DO: RANDOMIZE THE ROLE
         )
 
         rev.movie = mov  # Relationship

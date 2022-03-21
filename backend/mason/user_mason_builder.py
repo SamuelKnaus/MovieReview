@@ -13,6 +13,7 @@ class UserMasonBuilder(GenericMasonBuilder):
     """
 
     def __init__(self):
+        super().__init__()
         self.api = api.API
         self.user_item = api.UserItem
         self.user_collection = api.UserCollection

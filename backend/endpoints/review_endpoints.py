@@ -1,0 +1,139 @@
+"""
+    All the endpoints for the review resources
+"""
+
+from flask import request
+from flask_restful import Resource
+
+import api
+from database.models import Review
+from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
+from json_schemas.review_json_schema import get_review_json_schema
+
+
+class UserReviewCollection(Resource):
+    """
+        This class represents the user review collection endpoints
+        ALl endpoints in this class are out of the perspective of a user,
+        so the reviews belong to/are written by one specific user
+        It contains the definition of a get endpoint only
+        To add new reviews you have to use the MovieReviewCollection endpoints
+    """
+    @classmethod
+    def get(cls, user):
+        """
+            This method represents the get endpoint of this resource
+            input:
+                user: the user, who wrote the reviews
+            output:
+                the http response object containing either the list of reviews written by this
+                user or a http error with the corresponding error message
+        """
+        reviews = Review.query.filter_by(author_id=user.id).all()
+        reviews = Review.serialize_list(reviews)
+        return get_blueprint(reviews)
+
+
+class MovieReviewCollection(Resource):
+    """
+        This class represents the movie review collection endpoints
+        ALl endpoints in this class are out of the perspective of a movie,
+        so the reviews belong to/are written for one specific movie
+        It contains the definition of a get and a post endpoint
+    """
+    @classmethod
+    def get(cls, movie):
+        """
+            This method represents the get endpoint of this resource
+            input:
+                movie: the movie which the reviews have been requested for
+            output:
+                the http response object containing either the list of reviews of this movie
+                or a http error with the corresponding error message
+        """
+        reviews = Review.query.filter_by(movie_id=movie.id).all()
+        reviews = Review.serialize_list(reviews)
+        return get_blueprint(reviews)
+
+    @classmethod
+    def __create_review_object(cls, movie, created_review):
+        created_review.deserialize(request.json)
+        # ignore the foreign key and set it to the parameter given in the url
+        created_review.movie_id = movie.id
+        return created_review
+
+    def post(self, movie):
+        """
+            This method represents the post endpoint of this resource,
+            which is used to add a new review for the given movie to the database
+            It uses the blueprint function of the helper module
+            input:
+                movie: the movie which this review is associated to
+            output:
+                a http response object representing the result of this operation
+        """
+        review = Review()
+        return post_blueprint(
+            request,
+            get_review_json_schema,
+            api.DB,
+            lambda: self.__create_review_object(movie, review)
+        )
+
+class MovieReviewItem(Resource):
+    """
+        This class represents the movie review item endpoints
+        It contains the definition of a get, a put and a delete endpoint
+    """
+    @classmethod
+    def get(cls, _movie, review):
+        """
+            This method represents the get endpoint of this resource
+            input:
+                _movie: the movie, this review has been written for
+                review: the review, the url parameter refers to
+            output:
+                the http response object containing either the review with the given id
+                for the movie with the given id
+                or a 404 http error if no movie or no review with the given id exists
+        """
+        return get_blueprint(review.serialize())
+
+    @classmethod
+    def __update_review_object(cls, review, update_review):
+        update_review.deserialize(request.json)
+
+        review.rating = update_review.rating
+        review.comment = update_review.comment
+        review.date = update_review.date
+        review.author_id = update_review.author_id
+        review.movie_id = update_review.movie_id
+
+    def put(self, _movie, review):
+        """
+            This method represents the put endpoint of this resource,
+            which is used to update the review of a movie in the database
+            It uses the blueprint function of the helper module
+            input:
+                _movie: the movie, this review was written for
+                review: the old review object which is to be updated
+            output:
+                a http response object representing the result of this operation
+        """
+        update_review = Review()
+        return put_blueprint(request, get_review_json_schema, api.DB,
+                             lambda: self.__update_review_object(review, update_review))
+
+    @classmethod
+    def delete(cls, _movie, review):
+        """
+            This method represents the delete endpoint of this resource,
+            which is used to remove a review of a certain movie from the database
+            It uses the blueprint function of the helper module
+            input:
+                _movie: the movie, this review was written for
+                review: the review object which is to be deleted
+            output:
+                a http response object representing the result of this operation
+        """
+        return delete_blueprint(api.DB, review)

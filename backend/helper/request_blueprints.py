@@ -1,3 +1,7 @@
+"""
+    http request helper module which contains blueprints for http methods
+"""
+
 import json
 
 from flask import Response
