@@ -4,7 +4,7 @@ from flask import Response
 from jsonschema import validate, ValidationError, draft7_format_checker
 from sqlalchemy import exc
 
-from helper.ErrorResponse import ErrorResponse
+from helper.error_response import ErrorResponse
 
 DATA_TYPE_JSON = "application/json"
 

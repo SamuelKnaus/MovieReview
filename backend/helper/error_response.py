@@ -6,7 +6,7 @@ from flask import Response
 DATA_TYPE_JSON = "application/json"
 
 
-class ErrorResponse(Response):
+class ErrorResponse:
     """
     This helper class is used to enable similar behaviour for all http error responses
     """
