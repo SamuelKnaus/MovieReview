@@ -9,6 +9,7 @@ import api
 from database.models import Movie
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.movie_json_schema import get_movie_json_schema
+from mason.mason_builder import MasonBuilder
 
 
 class MovieCollection(Resource):
@@ -25,8 +26,14 @@ class MovieCollection(Resource):
                 or a http error with the corresponding error message
         """
         movies = Movie.query.all()
-        movies = Movie.serialize_list(movies)
-        return get_blueprint(movies)
+        body = []
+        for movie in movies:
+            item = MasonBuilder(movie.serialize())
+            item.add_control_get_movie(movie)
+            item.add_control_update_movie(movie)
+            item.add_control_delete_movie(movie)
+            body.append(item)
+        return get_blueprint(body)
 
     @classmethod
     def __create_movie_object(cls, created_movie):
@@ -65,7 +72,11 @@ class MovieItem(Resource):
                 the http response object containing either the movie with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return get_blueprint(movie.serialize())
+        body = MasonBuilder(movie.serialize())
+        body.add_control_get_movie(movie)
+        body.add_control_update_movie(movie)
+        body.add_control_delete_movie(movie)
+        return get_blueprint(body)
 
     @classmethod
     def __update_movie_object(cls, movie, update_movie):

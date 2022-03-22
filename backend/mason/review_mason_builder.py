@@ -55,7 +55,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             schema=get_review_json_schema()
         )
 
-    def add_control_get_review(self, review):
+    def add_control_get_review(self, movie, review):
         """
             This method adds the mason documentation for the get a single review of a movie endpoint
         """
@@ -64,11 +64,12 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Get a single review",
             href=self.api.url_for(
                 self.review_item,
+                _movie=movie,
                 review=review
             )
         )
 
-    def add_control_update_review(self, review):
+    def add_control_update_review(self, movie, review):
         """
             This method adds the mason documentation for the update an existing review endpoint
         """
@@ -77,12 +78,13 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Update a review",
             href=self.api.url_for(
                 self.review_item,
+                _movie=movie,
                 review=review
             ),
             schema=get_review_json_schema()
         )
 
-    def add_control_delete_review(self, review):
+    def add_control_delete_review(self, movie, review):
         """
             This method adds the mason documentation for the delete a review endpoint
         """
@@ -91,6 +93,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Delete a review",
             href=self.api.url_for(
                 self.review_item,
+                _movie=movie,
                 review=review
             )
         )

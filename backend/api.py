@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
+from mason.mason_builder import MasonBuilder
 from url_converters.url_converter import CategoryConverter, MovieConverter
 from url_converters.url_converter import ReviewConverter, UserConverter
 
@@ -61,6 +62,23 @@ APP.url_map.converters["user"] = UserConverter
 API.add_resource(UserItem, "/api/users/<user:user>/")
 
 
-# pylint: disable=too-few-public-methods
 API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
 
+
+@APP.route("/")
+def index():
+    """
+        This is the view function of the api
+        It returns a http response containing a description of the api
+    """
+    body = MasonBuilder()
+
+    body.add_control_get_categories()
+    body.add_control_post_category()
+
+    body.add_control_get_movies()
+    body.add_control_post_movie()
+
+    body.add_control_get_users()
+    body.add_control_post_user()
+    return body

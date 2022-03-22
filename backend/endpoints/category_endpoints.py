@@ -9,6 +9,7 @@ import api
 from database.models import Category
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.category_json_schema import get_category_json_schema
+from mason.mason_builder import MasonBuilder
 
 
 class CategoryCollection(Resource):
@@ -25,8 +26,14 @@ class CategoryCollection(Resource):
                 or a http error with the corresponding error message
         """
         categories = Category.query.all()
-        categories = Category.serialize_list(categories)
-        return get_blueprint(categories)
+        body = []
+        for category in categories:
+            item = MasonBuilder(category.serialize())
+            item.add_control_get_category(category)
+            item.add_control_update_category(category)
+            item.add_control_delete_category(category)
+            body.append(item)
+        return get_blueprint(body)
 
     @classmethod
     def __create_category_object(cls, created_category):
@@ -65,7 +72,11 @@ class CategoryItem(Resource):
                 the http response object containing either the category with the given id
                 or a 404 http error if no movie with this id exists
         """
-        return get_blueprint(category.serialize())
+        body = MasonBuilder(category.serialize())
+        body.add_control_get_category(category)
+        body.add_control_update_category(category)
+        body.add_control_delete_category(category)
+        return get_blueprint(body)
 
     @classmethod
     def __update_category_object(cls, category, update_category):

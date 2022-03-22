@@ -9,6 +9,7 @@ import api
 from database.models import User
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.user_json_schema import get_user_json_schema
+from mason.mason_builder import MasonBuilder
 
 
 class UserCollection(Resource):
@@ -25,9 +26,14 @@ class UserCollection(Resource):
                 or a http error with the corresponding error message
         """
         users = User.query.all()
-        users = User.serialize_list(users)
-
-        return get_blueprint(users)
+        body = []
+        for user in users:
+            item = MasonBuilder(user.serialize())
+            item.add_control_get_user(user)
+            item.add_control_update_user(user)
+            item.add_control_delete_user(user)
+            body.append(item)
+        return get_blueprint(body)
 
     @classmethod
     def __create_user_object(cls, created_user):
@@ -66,7 +72,11 @@ class UserItem(Resource):
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
         """
-        return get_blueprint(user.serialize())
+        body = MasonBuilder(user.serialize())
+        body.add_control_get_user(user)
+        body.add_control_update_user(user)
+        body.add_control_delete_user(user)
+        return get_blueprint(body)
 
     @classmethod
     def __update_review_object(cls, user, update_user):

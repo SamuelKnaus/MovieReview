@@ -6,9 +6,10 @@ from flask import request
 from flask_restful import Resource
 
 import api
-from database.models import Review
+from database.models import Review, Movie
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.review_json_schema import get_review_json_schema
+from mason.mason_builder import MasonBuilder
 
 
 class UserReviewCollection(Resource):
@@ -30,8 +31,16 @@ class UserReviewCollection(Resource):
                 user or a http error with the corresponding error message
         """
         reviews = Review.query.filter_by(author_id=user.id).all()
-        reviews = Review.serialize_list(reviews)
-        return get_blueprint(reviews)
+        body = []
+        for review in reviews:
+            movie = Movie.query.filter_by(id=review.movie_id).first()
+
+            item = MasonBuilder(review.serialize())
+            item.add_control_get_review(movie, review)
+            item.add_control_update_review(movie, review)
+            item.add_control_delete_review(movie, review)
+            body.append(item)
+        return get_blueprint(body)
 
 
 class MovieReviewCollection(Resource):
@@ -52,8 +61,14 @@ class MovieReviewCollection(Resource):
                 or a http error with the corresponding error message
         """
         reviews = Review.query.filter_by(movie_id=movie.id).all()
-        reviews = Review.serialize_list(reviews)
-        return get_blueprint(reviews)
+        body = []
+        for review in reviews:
+            item = MasonBuilder(review.serialize())
+            item.add_control_get_review(movie, review)
+            item.add_control_update_review(movie, review)
+            item.add_control_delete_review(movie, review)
+            body.append(item)
+        return get_blueprint(body)
 
     @classmethod
     def __create_review_object(cls, movie, created_review):
@@ -97,7 +112,11 @@ class MovieReviewItem(Resource):
                 for the movie with the given id
                 or a 404 http error if no movie or no review with the given id exists
         """
-        return get_blueprint(review.serialize())
+        body = MasonBuilder(review.serialize())
+        body.add_control_get_review(_movie, review)
+        body.add_control_update_review(_movie, review)
+        body.add_control_delete_review(_movie, review)
+        return get_blueprint(body)
 
     @classmethod
     def __update_review_object(cls, review, update_review):
