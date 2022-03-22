@@ -23,7 +23,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the get all reviews of a user endpoint
         """
         self._add_control(
-            "reviews-get-of-user",
+            "reviews-of-user",
             title="Get a list of all reviews of this user",
             href=self.api.url_for(
                 self.user_review_collection,
@@ -31,12 +31,12 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             )
         )
 
-    def add_control_get_reviews_for_movie(self, movie):
+    def add_control_get_reviews_for_movie(self, movie, rel="reviews-for-movie"):
         """
             This method adds the mason documentation for the get all reviews for a movie endpoint
         """
         self._add_control(
-            "reviews-get-for-movie",
+            rel,
             title="Get a list of all reviews for this movie",
             href=self.api.url_for(
                 self.movie_review_collection,
@@ -49,7 +49,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new review endpoint
         """
         self._add_control_post(
-            "reviews-post",
+            "add-review",
             title="Create a new review",
             href=self.api.url_for(self.movie_review_collection),
             schema=get_review_json_schema()

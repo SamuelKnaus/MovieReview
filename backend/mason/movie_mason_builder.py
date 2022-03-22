@@ -16,12 +16,12 @@ class MovieMasonBuilder(GenericMasonBuilder):
         self.movie_item = api.MovieItem
         self.movie_collection = api.MovieCollection
 
-    def add_control_get_movies(self):
+    def add_control_get_movies(self, rel="movies-all"):
         """
             This method adds the mason documentation for the get all movies endpoint
         """
         self._add_control(
-            "movies-get",
+            rel,
             title="Get a list of all movies",
             href=self.api.url_for(self.movie_collection)
         )
@@ -31,7 +31,7 @@ class MovieMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new movie endpoint
         """
         self._add_control_post(
-            "movies-post",
+            "add-movie",
             title="Create a new movie",
             href=self.api.url_for(self.movie_collection),
             schema=get_movie_json_schema()

@@ -118,6 +118,7 @@ class MovieReviewItem(Resource):
             return ErrorResponse.get_not_found()
 
         body = MasonBuilder(review.serialize())
+        body.add_control_get_reviews_for_movie(movie, "up")
         body.add_control_get_review(movie, review)
         body.add_control_update_review(movie, review)
         body.add_control_delete_review(movie, review)

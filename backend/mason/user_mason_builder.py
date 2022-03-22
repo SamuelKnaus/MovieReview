@@ -18,12 +18,12 @@ class UserMasonBuilder(GenericMasonBuilder):
         self.user_item = api.UserItem
         self.user_collection = api.UserCollection
 
-    def add_control_get_users(self):
+    def add_control_get_users(self, rel="users-all"):
         """
             This method adds the mason documentation for the get all users endpoint
         """
         self._add_control(
-            "users-get",
+            rel,
             title="Get a list of all users",
             href=self.api.url_for(self.user_collection)
         )
@@ -33,7 +33,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new user endpoint
         """
         self._add_control_post(
-            "users-post",
+            "add-user",
             title="Create a new user",
             href=self.api.url_for(self.user_collection),
             schema=get_user_json_schema()

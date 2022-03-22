@@ -73,6 +73,7 @@ class CategoryItem(Resource):
                 or a 404 http error if no movie with this id exists
         """
         body = MasonBuilder(category.serialize())
+        body.add_control_get_categories("up")
         body.add_control_get_category(category)
         body.add_control_update_category(category)
         body.add_control_delete_category(category)

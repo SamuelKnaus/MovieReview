@@ -73,6 +73,7 @@ class UserItem(Resource):
                 or a 404 http error if no user with the given id exists
         """
         body = MasonBuilder(user.serialize())
+        body.add_control_get_users("up")
         body.add_control_get_user(user)
         body.add_control_update_user(user)
         body.add_control_delete_user(user)

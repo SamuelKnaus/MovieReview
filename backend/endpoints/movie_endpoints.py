@@ -73,6 +73,7 @@ class MovieItem(Resource):
                 or a 404 http error if no movie with this id exists
         """
         body = MasonBuilder(movie.serialize())
+        body.add_control_get_movies("up")
         body.add_control_get_movie(movie)
         body.add_control_update_movie(movie)
         body.add_control_delete_movie(movie)

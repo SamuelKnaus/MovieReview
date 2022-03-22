@@ -16,12 +16,12 @@ class CategoryMasonBuilder(GenericMasonBuilder):
         self.category_item = api.CategoryItem
         self.category_collection = api.CategoryCollection
 
-    def add_control_get_categories(self):
+    def add_control_get_categories(self, rel="categories-all"):
         """
             This method adds the mason documentation for the get all categories endpoint
         """
         self._add_control(
-            "categories-get",
+            rel,
             title="Get a list of all categories",
             href=self.api.url_for(self.category_collection)
         )
@@ -31,7 +31,7 @@ class CategoryMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new category endpoint
         """
         self._add_control_post(
-            "categories-post",
+            "add-category",
             title="Create a new category",
             href=self.api.url_for(self.category_collection),
             schema=get_category_json_schema()
