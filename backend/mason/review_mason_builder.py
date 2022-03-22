@@ -64,7 +64,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Get a single review",
             href=self.api.url_for(
                 self.review_item,
-                _movie=movie,
+                movie=movie,
                 review=review
             )
         )
@@ -78,7 +78,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Update a review",
             href=self.api.url_for(
                 self.review_item,
-                _movie=movie,
+                movie=movie,
                 review=review
             ),
             schema=get_review_json_schema()
@@ -93,7 +93,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Delete a review",
             href=self.api.url_for(
                 self.review_item,
-                _movie=movie,
+                movie=movie,
                 review=review
             )
         )

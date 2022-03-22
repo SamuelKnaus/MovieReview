@@ -3,8 +3,7 @@
 """
 import json
 
-from flask import Response
-
+from flask import Response, render_template
 
 DATA_TYPE_JSON = "application/json"
 
@@ -41,3 +40,12 @@ class ErrorResponse:
                 A http response with the http error code 415
         """
         return ErrorResponse("Unsupported media type", 415).get_http_response()
+
+    @staticmethod
+    def get_not_found():
+        """
+            static helper function to get consistent 404 http error responses
+            result:
+                A http response with the http error code 404
+        """
+        return Response(render_template('404.html'), 404, mimetype='text/html')

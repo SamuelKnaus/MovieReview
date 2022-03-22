@@ -7,6 +7,7 @@ from flask_restful import Resource
 
 import api
 from database.models import Review, Movie
+from helper.error_response import ErrorResponse
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.review_json_schema import get_review_json_schema
 from mason.mason_builder import MasonBuilder
@@ -95,27 +96,31 @@ class MovieReviewCollection(Resource):
             lambda: self.__create_review_object(movie, review)
         )
 
+
 class MovieReviewItem(Resource):
     """
         This class represents the movie review item endpoints
         It contains the definition of a get, a put and a delete endpoint
     """
     @classmethod
-    def get(cls, _movie, review):
+    def get(cls, movie, review):
         """
             This method represents the get endpoint of this resource
             input:
-                _movie: the movie, this review has been written for
+                movie: the movie, this review has been written for
                 review: the review, the url parameter refers to
             output:
                 the http response object containing either the review with the given id
                 for the movie with the given id
                 or a 404 http error if no movie or no review with the given id exists
         """
+        if movie.id != review.movie_id:
+            return ErrorResponse.get_not_found()
+
         body = MasonBuilder(review.serialize())
-        body.add_control_get_review(_movie, review)
-        body.add_control_update_review(_movie, review)
-        body.add_control_delete_review(_movie, review)
+        body.add_control_get_review(movie, review)
+        body.add_control_update_review(movie, review)
+        body.add_control_delete_review(movie, review)
         return get_blueprint(body)
 
     @classmethod
@@ -128,31 +133,37 @@ class MovieReviewItem(Resource):
         review.author_id = update_review.author_id
         review.movie_id = update_review.movie_id
 
-    def put(self, _movie, review):
+    def put(self, movie, review):
         """
             This method represents the put endpoint of this resource,
             which is used to update the review of a movie in the database
             It uses the blueprint function of the helper module
             input:
-                _movie: the movie, this review was written for
+                movie: the movie, this review was written for
                 review: the old review object which is to be updated
             output:
                 a http response object representing the result of this operation
         """
+        if movie.id != review.movie_id:
+            return ErrorResponse.get_not_found()
+
         update_review = Review()
         return put_blueprint(request, get_review_json_schema, api.DB,
                              lambda: self.__update_review_object(review, update_review))
 
     @classmethod
-    def delete(cls, _movie, review):
+    def delete(cls, movie, review):
         """
             This method represents the delete endpoint of this resource,
             which is used to remove a review of a certain movie from the database
             It uses the blueprint function of the helper module
             input:
-                _movie: the movie, this review was written for
+                movie: the movie, this review was written for
                 review: the review object which is to be deleted
             output:
                 a http response object representing the result of this operation
         """
+        if movie.id != review.movie_id:
+            return ErrorResponse.get_not_found()
+
         return delete_blueprint(api.DB, review)
