@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 paths:
-  /users/:
+  /api/users/:
     get:
       tags:
       - "Users"
@@ -54,7 +54,7 @@ paths:
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
 
-  /users/{user_id}/:
+  /api/users/{user_id}/:
     parameters:
     - $ref: '#/components/parameters/user_id'
     get:
@@ -78,21 +78,20 @@ paths:
     put:
       tags:
       - "Users"
-      description: Update a user by using his ID.
-      requestBody:
-        description: JSON document that contains either username, email, password, or all of them to update user data.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserWithPassword'
-            example:
-              user_id: 1
-              username: mario456
-              email_address: new.mario.lo@oulu.fi
-              role: Basic User
+      description: Update a user by using its ID. Needs a JSON document that contains username, email and password to update user data.
       responses:
         '204':
           description: The user was updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithPassword'
+              example:
+                user_id: 1
+                username: mario456
+                email_address: new.mario.lo@oulu.fi
+                password: e19h63
+                role: Basic User
         '404':
           description: The user/endpoint was not found.
         '415':
@@ -107,14 +106,14 @@ paths:
         '404':
           description: The user/endpoint was not found.
 
-  /movies/:
+  /api/movies/:
     get:
       tags:
       - "Movies"
-      description: Fetch the list of movies from the system.
+      description: Fetch a list of all movies from the database.
       responses:
         '200':
-          description: List of movies.
+          description: Successfully returned all movies from the database.
           content:
             application/json:
               schema:
@@ -156,21 +155,21 @@ paths:
           description: The movie was created successfully.
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
-        '409':
+        '404':
           description: Restrictions from the database e.g, foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be JSON.
 
-  /movies/{movie_id}/:
+  /api/movies/{movie_id}/:
     parameters:
     - $ref: '#/components/parameters/movie_id'
     get:
       tags:
       - "Movies"
-      description: Featch data from single movie by the ID.
+      description: Fetch data from single movie by the ID.
       responses:
         '200':
-          description: Data of a single movie.
+          description: Successfully returned details of one movie.
           content:
             application/json:
               schema:
@@ -190,25 +189,25 @@ paths:
     put:
       tags:
       - "Movies"
-      description: Update a movie by movie_id
-      requestBody:
-        description: JSON document that contains either title, directore, length, release date or category id, or all of them to update movie data.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Movie'
-            example:
-              movie_id: 1
-              title: Leon, the professional
-              director: Luc Besson
-              length: 8160
-              release_date: 1999-09-14
-              category_id: 2
+      description: Update a movie by using its ID. Needs a JSON document that contains title, director, length, release date and category ID to update movie data.
       responses:
         '204':
           description: The movie has been updated
-        '409':
-          description: The movie was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+              example:
+                movie_id: 1
+                title: Leon, the professional
+                director: Luc Besson
+                length: 8160
+                release_date: 1999-09-14
+                category_id: 2
+        '404':
+          description: The movie/endpoint was not found.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
 
     delete:
       tags:
@@ -217,10 +216,10 @@ paths:
       responses:
         '204':
           description: The movie has been deleted
-        '409':
+        '404':
           description: The movie was not found
 
-  /users/{user_id}/reviews/:
+  /api/users/{user_id}/reviews/:
     parameters:
     - $ref: '#/components/parameters/user_id'
     get:
@@ -229,7 +228,7 @@ paths:
       description: Fetch the list of all the reviews that were written by a user through his ID.
       responses:
         '200':
-          description: List of reviews
+          description: Successfully returned all reviews from the database written by one user.
           content:
             application/json:
               schema:
@@ -241,14 +240,18 @@ paths:
                 rating: 3
                 comment: The movie is ok
                 date: 2021-03-22
+                author_id: 2
+                movie_id: 1
               - review_id: 2
                 rating: 5
                 comment: The movie is great
                 date: 2021-03-23
+                author_id: 2
+                movie_id: 2
         '404':
           description: The user/endpoint was not found.
 
-  /movies/{movie_id}/reviews/:
+  /api/movies/{movie_id}/reviews/:
     parameters:
     - $ref: '#/components/parameters/movie_id'
     get:
@@ -257,7 +260,7 @@ paths:
       description: Fetch the list of a movie's reviews by movie_id
       responses:
         '200':
-          description: List of reviews by movie_id
+          description: Successfully returned all reviews from the database.
           content:
             application/json:
               schema:
@@ -269,10 +272,14 @@ paths:
                 rating:
                 comment: I didn't like the movie at all
                 date: 2021-03-25
+                author_id: 3
+                movie_id: 1
               - review_id: 4
                 rating: 5
                 comment: A masterpiece !
                 date: 2021-03-13
+                author_id: 1
+                movie_id: 1
     post:
       tags:
       - "Reviews"
@@ -288,6 +295,8 @@ paths:
               rating: 1
               comment: A real disaster
               date: 2022-01-17
+              author_id: 3
+              movie_id: 3
       responses:
         '201':
           description: The review was created successfully.
@@ -297,7 +306,7 @@ paths:
           description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
-  /movies/{movie_id}/reviews/{review_id}:
+  /api/movies/{movie_id}/reviews/{review_id}:
     parameters:
     - $ref: '#/components/parameters/movie_id'
     - $ref: '#/components/parameters/review_id'
@@ -307,7 +316,7 @@ paths:
       description: Fetch details of one review by movie_id and review_id
       responses:
         '200':
-          description: Data of single review
+          description: Successfully returned details of one review.
           content:
             application/json:
               schema:
@@ -320,29 +329,33 @@ paths:
                     rating: 3
                     comment: The movie is ok
                     date: 2021-03-22
+                    author_id: 2
+                    movie_id: 1
 
         '404':
           description: The review was not found
     put:
       tags:
       - "Reviews"
-      description: Update a review by review_id
-      requestBody:
-        description: JSON document that contains either rating score, comment, comment date, or all of them to update movie data.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
-            example:
-              review_id: 1
-              rating: 4
-              comment: The movie is ok, but I changed my mind, it's pretty good
-              date: 2021-03-23
+      description: Update a review by its ID. Needs a JSON document that contains rating score, comment, comment date, author ID and movie ID to update review data.
       responses:
         '204':
           description: The review has been updated
-        '409':
-          description: The review was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+              example:
+                review_id: 1
+                rating: 4
+                comment: The movie is ok, but I changed my mind, it's pretty good
+                date: 2021-03-23
+                author_id: 2
+                movie_id: 1
+        '404':
+          description: The review/endpoint was not found.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
 
     delete:
       tags:
@@ -354,14 +367,14 @@ paths:
         '409':
           description: The review was not found
 
-  /categories/:
+  /api/categories/:
     get:
       tags:
       - "Categories"
-      description: Fetch the list of manage categories
+      description: Fetch a list of all categories from the database.
       responses:
         '200':
-          description: List of categories
+          description: Successfully returned all categories from the database.
           content:
             application/json:
               schema:
@@ -377,6 +390,15 @@ paths:
       tags:
       - "Categories"
       description: Create a new category
+      requestBody:
+        description: JSON document that contains basic data for a new category
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+            example:
+              category_id: 3
+              title: War
       responses:
         '201':
           description: The category was created successfully
@@ -391,17 +413,8 @@ paths:
           description: Category already exists
         '415':
           description: Request content type must be JSON
-      requestBody:
-        description: JSON document that contains basic data for a new category
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Category'
-            example:
-              category_id: 3
-              title: War
 
-  /categories/{category_id}/:
+  /api/categories/{category_id}/:
     parameters:
     - $ref: '#/components/parameters/category_id'
     get:
@@ -410,7 +423,7 @@ paths:
       description: Fetch details of one category by category_id
       responses:
         '200':
-          description: Data of single category
+          description: Successfully returned details of one category.
           content:
             application/json:
               schema:
@@ -426,23 +439,21 @@ paths:
     put:
       tags:
       - "Categories"
-      description: Update a category by category_id
-      requestBody:
-        description: JSON document that contains either rating score, comment, comment date, or all of them to update movie data.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Category'
-            example:
-              review_id: 1
-              rating: 4
-              comment: The movie is ok, but I changed my mind, it's pretty good
-              date: 2021-03-23
+      description: Update a category by its ID. Needs a JSON document that contains title to update movie data.
       responses:
         '204':
           description: The category has been updated
-        '409':
-          description: The category was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example:
+                category_id: 1
+                title: SF
+        '404':
+          description: The category/endpoint was not found.
+        '415':
+          description: Unsupported media type. The request content type must be of type JSON.
 
     delete:
       tags:
@@ -451,7 +462,7 @@ paths:
       responses:
         '204':
           description: The category has been deleted
-        '409':
+        '404':
           description: The category was not found
 
 components:
@@ -477,17 +488,17 @@ components:
         - $ref: '#/components/schemas/User'
         - type: object
         - properties:
-              password:
-                type: string
-                minLength: 6
+            password:
+              type: string
+              minLength: 6
       required:
         - password
 
     UserWithId:
       allOf:
         - properties:
-              id:
-                type: integer
+            id:
+              type: integer
         - $ref: '#/components/schemas/User'
         - type: object
       required:
@@ -519,8 +530,8 @@ components:
     ReviewWithId:
       allOf:
         - properties:
-              id:
-                type: integer
+            id:
+              type: integer
         - $ref: '#/components/schemas/Review'
         - type: object
       required:
@@ -553,8 +564,8 @@ components:
     MovieWithId:
       allOf:
         - properties:
-              id:
-                type: integer
+            id:
+              type: integer
         - $ref: '#/components/schemas/Movie'
         - type: object
       required:
@@ -571,8 +582,8 @@ components:
     CategoryWithId:
       allOf:
         - properties:
-              id:
-                type: integer
+            id:
+              type: integer
         - $ref: '#/components/schemas/Category'
         - type: object
       required:
