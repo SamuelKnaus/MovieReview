@@ -1,7 +1,7 @@
 """
     The mason builder class
 """
-
+from constants import NAMESPACE, NAMESPACE_LINK
 from mason.user_mason_builder import UserMasonBuilder
 from mason.movie_mason_builder import MovieMasonBuilder
 from mason.category_mason_builder import CategoryMasonBuilder
@@ -23,3 +23,11 @@ class MasonBuilder(
         MovieMasonBuilder.__init__(self)
         CategoryMasonBuilder.__init__(self)
         ReviewMasonBuilder.__init__(self)
+
+        self.add_api_namespace()
+
+    def add_api_namespace(self):
+        """
+            adds the namespace to the mason object
+        """
+        self._add_namespace(NAMESPACE, NAMESPACE_LINK)

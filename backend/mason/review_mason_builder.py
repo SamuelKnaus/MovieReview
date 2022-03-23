@@ -4,6 +4,7 @@
 import api
 from json_schemas.review_json_schema import get_review_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
+from constants import NAMESPACE
 
 
 class ReviewMasonBuilder(GenericMasonBuilder):
@@ -23,7 +24,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the get all reviews of a user endpoint
         """
         self._add_control(
-            "reviews-of-user",
+            NAMESPACE + ":reviews-of-user",
             title="Get a list of all reviews of this user",
             href=self.api.url_for(
                 self.user_review_collection,
@@ -31,7 +32,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             )
         )
 
-    def add_control_get_reviews_for_movie(self, movie, rel="reviews-for-movie"):
+    def add_control_get_reviews_for_movie(self, movie, rel=NAMESPACE + ":reviews-for-movie"):
         """
             This method adds the mason documentation for the get all reviews for a movie endpoint
         """
@@ -49,7 +50,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new review endpoint
         """
         self._add_control_post(
-            "add-review",
+            NAMESPACE + ":add-review",
             title="Create a new review",
             href=self.api.url_for(self.movie_review_collection),
             schema=get_review_json_schema()
@@ -89,7 +90,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the delete a review endpoint
         """
         self._add_control_delete(
-            "delete",
+            NAMESPACE + ":delete",
             title="Delete a review",
             href=self.api.url_for(
                 self.review_item,

@@ -5,6 +5,7 @@
 import api
 from json_schemas.user_json_schema import get_user_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
+from constants import NAMESPACE
 
 
 class UserMasonBuilder(GenericMasonBuilder):
@@ -18,7 +19,7 @@ class UserMasonBuilder(GenericMasonBuilder):
         self.user_item = api.UserItem
         self.user_collection = api.UserCollection
 
-    def add_control_get_users(self, rel="users-all"):
+    def add_control_get_users(self, rel=NAMESPACE+":users-all"):
         """
             This method adds the mason documentation for the get all users endpoint
         """
@@ -33,7 +34,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new user endpoint
         """
         self._add_control_post(
-            "add-user",
+            NAMESPACE + ":add-user",
             title="Create a new user",
             href=self.api.url_for(self.user_collection),
             schema=get_user_json_schema()
@@ -71,7 +72,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the delete a user endpoint
         """
         self._add_control_delete(
-            "delete",
+            NAMESPACE + ":delete",
             title="Delete a user",
             href=self.api.url_for(
                 self.user_item,

@@ -4,6 +4,7 @@ The category mason builder class
 import api
 from json_schemas.category_json_schema import get_category_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
+from constants import NAMESPACE
 
 
 class CategoryMasonBuilder(GenericMasonBuilder):
@@ -16,7 +17,7 @@ class CategoryMasonBuilder(GenericMasonBuilder):
         self.category_item = api.CategoryItem
         self.category_collection = api.CategoryCollection
 
-    def add_control_get_categories(self, rel="categories-all"):
+    def add_control_get_categories(self, rel=NAMESPACE + ":categories-all"):
         """
             This method adds the mason documentation for the get all categories endpoint
         """
@@ -31,7 +32,7 @@ class CategoryMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new category endpoint
         """
         self._add_control_post(
-            "add-category",
+            NAMESPACE + ":add-category",
             title="Create a new category",
             href=self.api.url_for(self.category_collection),
             schema=get_category_json_schema()
@@ -69,7 +70,7 @@ class CategoryMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the delete a category endpoint
         """
         self._add_control_delete(
-            "delete",
+            NAMESPACE + ":delete",
             title="Delete a category",
             href=self.api.url_for(
                 self.category_item,

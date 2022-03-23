@@ -4,6 +4,7 @@
 import api
 from json_schemas.movie_json_schema import get_movie_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
+from constants import NAMESPACE
 
 
 class MovieMasonBuilder(GenericMasonBuilder):
@@ -16,7 +17,7 @@ class MovieMasonBuilder(GenericMasonBuilder):
         self.movie_item = api.MovieItem
         self.movie_collection = api.MovieCollection
 
-    def add_control_get_movies(self, rel="movies-all"):
+    def add_control_get_movies(self, rel=NAMESPACE + ":movies-all"):
         """
             This method adds the mason documentation for the get all movies endpoint
         """
@@ -31,7 +32,7 @@ class MovieMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the post a new movie endpoint
         """
         self._add_control_post(
-            "add-movie",
+            NAMESPACE + ":add-movie",
             title="Create a new movie",
             href=self.api.url_for(self.movie_collection),
             schema=get_movie_json_schema()
@@ -69,7 +70,7 @@ class MovieMasonBuilder(GenericMasonBuilder):
             This method adds the mason documentation for the delete a movie endpoint
         """
         self._add_control_delete(
-            "delete",
+            NAMESPACE + ":delete",
             title="Delete a movie",
             href=self.api.url_for(
                 self.movie_item,

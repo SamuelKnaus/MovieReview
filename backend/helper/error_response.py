@@ -2,10 +2,9 @@
     Contains the error response helper class
 """
 import json
-
 from flask import Response, render_template
 
-DATA_TYPE_JSON = "application/json"
+from constants import DATA_TYPE_JSON, DATA_TYPE_HTML
 
 
 class ErrorResponse:
@@ -48,4 +47,4 @@ class ErrorResponse:
             result:
                 A http response with the http error code 404
         """
-        return Response(render_template('404.html'), 404, mimetype='text/html')
+        return Response(render_template('404.html'), 404, mimetype=DATA_TYPE_HTML)

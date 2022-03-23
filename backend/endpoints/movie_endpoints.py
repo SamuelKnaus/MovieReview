@@ -32,6 +32,7 @@ class MovieCollection(Resource):
             item.add_control_get_movie(movie)
             item.add_control_update_movie(movie)
             item.add_control_delete_movie(movie)
+            item.add_control_get_reviews_for_movie(movie)
             body.append(item)
         return get_blueprint(body)
 
@@ -77,6 +78,7 @@ class MovieItem(Resource):
         body.add_control_get_movie(movie)
         body.add_control_update_movie(movie)
         body.add_control_delete_movie(movie)
+        body.add_control_get_reviews_for_movie(movie)
         return get_blueprint(body)
 
     @classmethod

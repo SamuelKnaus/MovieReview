@@ -32,6 +32,7 @@ class UserCollection(Resource):
             item.add_control_get_user(user)
             item.add_control_update_user(user)
             item.add_control_delete_user(user)
+            item.add_control_get_reviews_of_user(user)
             body.append(item)
         return get_blueprint(body)
 
@@ -77,6 +78,7 @@ class UserItem(Resource):
         body.add_control_get_user(user)
         body.add_control_update_user(user)
         body.add_control_delete_user(user)
+        body.add_control_get_reviews_of_user(user)
         return get_blueprint(body)
 
     @classmethod

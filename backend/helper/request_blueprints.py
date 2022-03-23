@@ -8,9 +8,8 @@ from flask import Response
 from jsonschema import validate, ValidationError, draft7_format_checker
 from sqlalchemy import exc
 
+from constants import DATA_TYPE_MASON
 from helper.error_response import ErrorResponse
-
-DATA_TYPE_JSON = "application/json"
 
 
 def get_blueprint(response_object):
@@ -22,7 +21,7 @@ def get_blueprint(response_object):
         output:
             a http response object
     """
-    return Response(json.dumps(response_object), 200, mimetype=DATA_TYPE_JSON)
+    return Response(json.dumps(response_object), 200, mimetype=DATA_TYPE_MASON)
 
 
 def post_blueprint(request, json_schema, db, create_object):
