@@ -20,11 +20,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserWithId"
               example:
-              - user_id: 1
+              - id: 1
                 username: mario456
                 email_address: mario.lo@oulu.fi
                 role: Basic User
-              - user_id: 2
+              - id: 2
                 username: jules
                 email_address: jules.fte@hotmail.com
                 role: Admin
@@ -39,7 +39,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UserWithPassword'
             example:
-              user_id: 3
               username: eric16
               email_address: ericloco@gmail.com
               password: e19h63
@@ -69,7 +68,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserWithId'
               example:
-                user_id: 1
+                id: 1
                 username: mario456
                 email_address: mario.lo@oulu.fi
                 role: Basic User
@@ -87,7 +86,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserWithPassword'
               example:
-                user_id: 1
                 username: mario456
                 email_address: new.mario.lo@oulu.fi
                 password: e19h63
@@ -121,13 +119,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/MovieWithId'
               example:
-              - movie_id: 1
+              - id: 1
                 title: Leon, the professional
                 director: Luc Besson
                 length: 6600
                 release_date: 1999-09-14
                 category_id: 2
-              - movie_id: 2
+              - id: 2
                 title: Apocalypse now
                 director: Francis Copola
                 length: 8820
@@ -144,7 +142,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Movie'
             example:
-              movie_id: 3
               title: Dune
               director: Denis Villeneuve
               length: 9360
@@ -175,15 +172,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/MovieWithId'
               example:
-                description: A movie that has been created
-                value:
-                  movie_id: 1
-                  title: Leon, the professional
-                  director: Luc Besson
-                  length: 6600
-                  release_date: 1999-09-14
-                  category_id: 2
-
+                id: 1
+                title: Leon, the professional
+                director: Luc Besson
+                length: 6600
+                release_date: 1999-09-14
+                category_id: 2
         '404':
           description: The movie was not found.
     put:
@@ -198,7 +192,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Movie'
               example:
-                movie_id: 1
                 title: Leon, the professional
                 director: Luc Besson
                 length: 8160
@@ -236,13 +229,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/ReviewWithId'
               example:
-              - review_id: 1
+              - id: 1
                 rating: 3
                 comment: The movie is ok
                 date: 2021-03-22
                 author_id: 2
                 movie_id: 1
-              - review_id: 2
+              - id: 2
                 rating: 5
                 comment: The movie is great
                 date: 2021-03-23
@@ -268,13 +261,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/ReviewWithId'
               example:
-              - review_id: 3
+              - id: 3
                 rating:
                 comment: I didn't like the movie at all
                 date: 2021-03-25
                 author_id: 3
                 movie_id: 1
-              - review_id: 4
+              - id: 4
                 rating: 5
                 comment: A masterpiece !
                 date: 2021-03-13
@@ -291,7 +284,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Review'
             example:
-              review_id: 5
               rating: 1
               comment: A real disaster
               date: 2022-01-17
@@ -321,17 +313,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReviewWithId'
-              examples:
-                user-example:
-                  description: A review that has been created
-                  value:
-                    review_id: 1
-                    rating: 3
-                    comment: The movie is ok
-                    date: 2021-03-22
-                    author_id: 2
-                    movie_id: 1
-
+              example:
+                value:
+                  id: 1
+                  rating: 3
+                  comment: The movie is ok
+                  date: 2021-03-22
+                  author_id: 2
+                  movie_id: 1
         '404':
           description: The review was not found
     put:
@@ -346,7 +335,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Review'
               example:
-                review_id: 1
                 rating: 4
                 comment: The movie is ok, but I changed my mind, it's pretty good
                 date: 2021-03-23
@@ -382,9 +370,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/CategoryWithId'
               example:
-              - category_id: 1
+              - id: 1
                 title: Science-Fiction
-              - category_id: 2
+              - id: 2
                 title: Thriller
     post:
       tags:
@@ -397,7 +385,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Category'
             example:
-              category_id: 3
               title: War
       responses:
         '201':
@@ -428,12 +415,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryWithId'
-              examples:
-                category-example:
-                  description: A category that has been created
-                  value:
-                    category_id: 1
-                    title: Science-Fiction
+              example:
+                id: 1
+                title: Science-Fiction
         '404':
           description: The category was not found
     put:
@@ -448,7 +432,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Category'
               example:
-                category_id: 1
                 title: SF
         '404':
           description: The category/endpoint was not found.
