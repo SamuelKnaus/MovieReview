@@ -24,8 +24,6 @@ class MasonBuilder(
         CategoryMasonBuilder.__init__(self)
         ReviewMasonBuilder.__init__(self)
 
-        self.add_api_namespace()
-
     def add_api_namespace(self):
         """
             adds the namespace to the mason object

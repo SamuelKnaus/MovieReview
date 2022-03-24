@@ -37,9 +37,7 @@ class UserReviewCollection(Resource):
             movie = Movie.query.filter_by(id=review.movie_id).first()
 
             item = MasonBuilder(review.serialize())
-            item.add_control_get_review(movie, review)
-            item.add_control_update_review(movie, review)
-            item.add_control_delete_review(movie, review)
+            item.add_control_get_review(movie, review, "item")
             body.append(item)
         return get_blueprint(body)
 
@@ -65,9 +63,7 @@ class MovieReviewCollection(Resource):
         body = []
         for review in reviews:
             item = MasonBuilder(review.serialize())
-            item.add_control_get_review(movie, review)
-            item.add_control_update_review(movie, review)
-            item.add_control_delete_review(movie, review)
+            item.add_control_get_review(movie, review, "item")
             body.append(item)
         return get_blueprint(body)
 
@@ -123,6 +119,7 @@ class MovieReviewItem(Resource):
             return ErrorResponse.get_not_found()
 
         body = MasonBuilder(review.serialize())
+        body.add_api_namespace()
         body.add_control_get_reviews_for_movie(movie, "up")
         body.add_control_get_review(movie, review)
         body.add_control_update_review(movie, review)

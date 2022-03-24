@@ -56,12 +56,12 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             schema=get_review_json_schema()
         )
 
-    def add_control_get_review(self, movie, review):
+    def add_control_get_review(self, movie, review, rel="self"):
         """
             This method adds the mason documentation for the get a single review of a movie endpoint
         """
         self._add_control(
-            "self",
+            rel,
             title="Get a single review",
             href=self.api.url_for(
                 self.review_item,

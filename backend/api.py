@@ -81,6 +81,7 @@ def index():
         It returns a http response containing a description of the api
     """
     body = MasonBuilder()
+    body.add_api_namespace()
 
     body.add_control_get_categories()
     body.add_control_post_category()

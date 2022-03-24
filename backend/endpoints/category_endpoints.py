@@ -29,9 +29,7 @@ class CategoryCollection(Resource):
         body = []
         for category in categories:
             item = MasonBuilder(category.serialize())
-            item.add_control_get_category(category)
-            item.add_control_update_category(category)
-            item.add_control_delete_category(category)
+            item.add_control_get_category(category, rel="item")
             body.append(item)
         return get_blueprint(body)
 
@@ -78,6 +76,7 @@ class CategoryItem(Resource):
                 or a 404 http error if no movie with this id exists
         """
         body = MasonBuilder(category.serialize())
+        body.add_api_namespace()
         body.add_control_get_categories("up")
         body.add_control_get_category(category)
         body.add_control_update_category(category)

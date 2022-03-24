@@ -29,10 +29,7 @@ class MovieCollection(Resource):
         body = []
         for movie in movies:
             item = MasonBuilder(movie.serialize())
-            item.add_control_get_movie(movie)
-            item.add_control_update_movie(movie)
-            item.add_control_delete_movie(movie)
-            item.add_control_get_reviews_for_movie(movie)
+            item.add_control_get_movie(movie, "item")
             body.append(item)
         return get_blueprint(body)
 
@@ -79,6 +76,7 @@ class MovieItem(Resource):
                 or a 404 http error if no movie with this id exists
         """
         body = MasonBuilder(movie.serialize())
+        body.add_api_namespace()
         body.add_control_get_movies("up")
         body.add_control_get_movie(movie)
         body.add_control_update_movie(movie)

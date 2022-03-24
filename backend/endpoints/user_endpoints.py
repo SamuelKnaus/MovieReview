@@ -29,10 +29,7 @@ class UserCollection(Resource):
         body = []
         for user in users:
             item = MasonBuilder(user.serialize())
-            item.add_control_get_user(user)
-            item.add_control_update_user(user)
-            item.add_control_delete_user(user)
-            item.add_control_get_reviews_of_user(user)
+            item.add_control_get_user(user, "item")
             body.append(item)
         return get_blueprint(body)
 
@@ -79,6 +76,7 @@ class UserItem(Resource):
                 or a 404 http error if no user with the given id exists
         """
         body = MasonBuilder(user.serialize())
+        body.add_api_namespace()
         body.add_control_get_users("up")
         body.add_control_get_user(user)
         body.add_control_update_user(user)
