@@ -3,17 +3,18 @@ This module represents the whole api definition of the backend
 All endpoints, the database models and the url converters are defined in here
 """
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
+from constants import NAMESPACE_LINK
 from mason.mason_builder import MasonBuilder
 from url_converters.url_converter import CategoryConverter, MovieConverter
 from url_converters.url_converter import ReviewConverter, UserConverter
 
-APP = Flask(__name__)
+APP = Flask(__name__, static_folder="static")
 APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///movie-review.db"
 APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 APP.url_map.strict_slashes = False
@@ -63,6 +64,14 @@ API.add_resource(UserItem, "/api/users/<user:user>/")
 
 
 API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
+
+
+@APP.route(NAMESPACE_LINK)
+def send_link_relations_html():
+    """
+        returns the static html file containing the link relations
+    """
+    return send_from_directory(APP.static_folder, "link-relations.html")
 
 
 @APP.route("/")
