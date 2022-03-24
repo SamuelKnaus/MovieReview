@@ -40,6 +40,10 @@ class CategoryCollection(Resource):
         created_category.deserialize(request.json)
         return created_category
 
+    @classmethod
+    def __get_url_for_created_item(cls, category):
+        return api.API.url_for(CategoryItem, category=category)
+
     def post(self):
         """
             This method represents the post endpoint of this resource,
@@ -53,7 +57,8 @@ class CategoryCollection(Resource):
             request,
             get_category_json_schema,
             api.DB,
-            lambda: self.__create_category_object(category)
+            lambda: self.__create_category_object(category),
+            lambda: self.__get_url_for_created_item(category)
         )
 
 

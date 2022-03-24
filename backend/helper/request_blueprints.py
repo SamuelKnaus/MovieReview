@@ -24,7 +24,7 @@ def get_blueprint(response_object):
     return Response(json.dumps(response_object), 200, mimetype=DATA_TYPE_MASON)
 
 
-def post_blueprint(request, json_schema, db, create_object):
+def post_blueprint(request, json_schema, db, create_object, get_new_resource_url):
     """
     This method is used to make post http requests, which add objects to the database.
     It acts as a blueprint to enable a similar behaviour for all post endpoints
@@ -50,7 +50,8 @@ def post_blueprint(request, json_schema, db, create_object):
     try:
         db.session.add(created_object)
         db.session.commit()
-        return Response(status=201)
+        headers = {"Location": get_new_resource_url()}
+        return Response(headers=headers, status=201)
     except exc.IntegrityError as e:
         return ErrorResponse(str(e.orig), 409).get_http_response()
 

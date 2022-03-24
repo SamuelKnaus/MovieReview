@@ -78,6 +78,10 @@ class MovieReviewCollection(Resource):
         created_review.movie_id = movie.id
         return created_review
 
+    @classmethod
+    def __get_url_for_created_item(cls, movie, review):
+        return api.API.url_for(MovieReviewItem, movie=movie, review=review)
+
     def post(self, movie):
         """
             This method represents the post endpoint of this resource,
@@ -93,7 +97,8 @@ class MovieReviewCollection(Resource):
             request,
             get_review_json_schema,
             api.DB,
-            lambda: self.__create_review_object(movie, review)
+            lambda: self.__create_review_object(movie, review),
+            lambda: self.__get_url_for_created_item(movie, review)
         )
 
 

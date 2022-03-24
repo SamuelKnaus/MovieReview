@@ -41,6 +41,10 @@ class MovieCollection(Resource):
         created_movie.deserialize(request.json)
         return created_movie
 
+    @classmethod
+    def __get_url_for_created_item(cls, movie):
+        return api.API.url_for(MovieItem, movie=movie)
+
     def post(self):
         """
             This method represents the post endpoint of this resource,
@@ -54,7 +58,8 @@ class MovieCollection(Resource):
             request,
             get_movie_json_schema,
             api.DB,
-            lambda: self.__create_movie_object(movie)
+            lambda: self.__create_movie_object(movie),
+            lambda: self.__get_url_for_created_item(movie)
         )
 
 

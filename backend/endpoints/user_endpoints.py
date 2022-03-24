@@ -41,6 +41,10 @@ class UserCollection(Resource):
         created_user.deserialize(request.json)
         return created_user
 
+    @classmethod
+    def __get_url_for_created_item(cls, user):
+        return api.API.url_for(UserItem, user=user)
+
     def post(self):
         """
             This method represents the post endpoint of this resource,
@@ -54,7 +58,8 @@ class UserCollection(Resource):
             request,
             get_user_json_schema,
             api.DB,
-            lambda: self.__create_user_object(user)
+            lambda: self.__create_user_object(user),
+            lambda: self.__get_url_for_created_item(user)
         )
 
 
