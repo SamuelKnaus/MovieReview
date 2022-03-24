@@ -30,4 +30,4 @@ class MasonBuilder(
         """
             adds the namespace to the mason object
         """
-        self._add_namespace(NAMESPACE, NAMESPACE_LINK + "#")
+        self._add_namespace(NAMESPACE, NAMESPACE_LINK)
