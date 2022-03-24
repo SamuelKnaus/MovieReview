@@ -46,6 +46,11 @@ paths:
       responses:
         '201':
           description: The user was created successfully.
+          headers:
+            Location:
+              description: URI of the new category
+              schema:
+                type: string
         '400':
           description: Request doesn't match the JSON schema. The username, email_address, password must be string and the role must be an enum of UserType ('Basic User' or 'Admin').
         '409':
@@ -90,8 +95,12 @@ paths:
                 email_address: new.mario.lo@oulu.fi
                 password: e19h63
                 role: Basic User
+        '400':
+          description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
           description: The user/endpoint was not found.
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
     delete:
@@ -150,10 +159,13 @@ paths:
       responses:
         '201':
           description: The movie was created successfully.
+          headers:
+            Location:
+              description: URI of the new category
+              schema:
+                type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
-        '404':
-          description: Restrictions from the database e.g, foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be JSON.
 
@@ -197,11 +209,12 @@ paths:
                 length: 8160
                 release_date: 1999-09-14
                 category_id: 2
+        '400':
+          description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
           description: The movie/endpoint was not found.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
-
     delete:
       tags:
       - "Movies"
@@ -211,6 +224,8 @@ paths:
           description: The movie has been deleted
         '404':
           description: The movie was not found
+        '409':
+          description: Restrictions from the database e.g, foreign key constraints.
 
   /api/users/{user_id}/reviews/:
     parameters:
@@ -292,6 +307,11 @@ paths:
       responses:
         '201':
           description: The review was created successfully.
+          headers:
+            Location:
+              description: URI of the new category
+              schema:
+                type: string
         '400':
           description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
         '409':
@@ -340,8 +360,12 @@ paths:
                 date: 2021-03-23
                 author_id: 2
                 movie_id: 1
+        '400':
+          description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
         '404':
           description: The review/endpoint was not found.
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
 
@@ -433,11 +457,12 @@ paths:
                 $ref: '#/components/schemas/Category'
               example:
                 title: SF
+        '400':
+          description: Request doesn't match the JSON schema. Title must be a string
         '404':
           description: The category/endpoint was not found.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
-
     delete:
       tags:
       - "Categories"
@@ -447,6 +472,8 @@ paths:
           description: The category has been deleted
         '404':
           description: The category was not found
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
 
 components:
   schemas:
@@ -465,7 +492,6 @@ components:
       - username
       - email_address
       - role
-
     UserWithPassword:
       allOf:
         - $ref: '#/components/schemas/User'
@@ -476,7 +502,6 @@ components:
               minLength: 6
       required:
         - password
-
     UserWithId:
       allOf:
         - properties:
@@ -509,7 +534,6 @@ components:
       - date
       - author_id
       - movie_id
-
     ReviewWithId:
       allOf:
         - properties:
@@ -543,7 +567,6 @@ components:
       - length
       - release_date
       - category_id
-
     MovieWithId:
       allOf:
         - properties:
@@ -561,7 +584,6 @@ components:
           type: string
       required:
       - title
-
     CategoryWithId:
       allOf:
         - properties:
