@@ -41,8 +41,9 @@ class UserReviewCollection(Resource):
             items.append(item)
 
         body = MasonBuilder()
-        body["items"] = items
         body.add_control_get_user(user, "up")
+        body.add_control_get_reviews_of_user(user=user, rel="self")
+        body["items"] = items
         return get_blueprint(body)
 
 
@@ -71,9 +72,11 @@ class MovieReviewCollection(Resource):
             review_items.append(item)
 
         body = MasonBuilder()
-        body["items"] = review_items
+        body.add_api_namespace()
         body.add_control_get_movie(movie, "up")
+        body.add_control_get_reviews_for_movie(movie=movie, rel="self")
         body.add_control_post_review(movie=movie)
+        body["items"] = review_items
         return get_blueprint(body)
 
     @classmethod

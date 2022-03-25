@@ -33,8 +33,10 @@ class MovieCollection(Resource):
             movie_items.append(item)
 
         body = MasonBuilder()
-        body["items"] = movie_items
+        body.add_api_namespace()
+        body.add_control_get_movies("self")
         body.add_control_post_movie()
+        body["items"] = movie_items
         return get_blueprint(body)
 
     @classmethod

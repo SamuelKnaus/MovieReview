@@ -33,8 +33,10 @@ class CategoryCollection(Resource):
             category_items.append(item)
 
         body = MasonBuilder()
-        body["items"] = category_items
+        body.add_api_namespace()
+        body.add_control_get_categories("self")
         body.add_control_post_category()
+        body["items"] = category_items
         return get_blueprint(body)
 
     @classmethod
