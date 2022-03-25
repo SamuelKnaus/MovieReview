@@ -15,10 +15,6 @@ paths:
           description: Successfully returned all users from the database.
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserWithId"
               example:
               - id: 1
                 username: mario456
@@ -37,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserWithPassword'
+              $ref: '#/components/schemas/User'
             example:
               username: eric16
               email_address: ericloco@gmail.com
@@ -70,8 +66,6 @@ paths:
           description: Successfully fetched data for the requested user.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/UserWithId'
               example:
                 id: 1
                 username: mario456
@@ -89,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserWithPassword'
+                $ref: '#/components/schemas/User'
               example:
                 username: mario456
                 email_address: new.mario.lo@oulu.fi
@@ -123,10 +117,6 @@ paths:
           description: Successfully returned all movies from the database.
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MovieWithId'
               example:
               - id: 1
                 title: Leon, the professional
@@ -181,8 +171,6 @@ paths:
           description: Successfully returned details of one movie.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/MovieWithId'
               example:
                 id: 1
                 title: Leon, the professional
@@ -239,10 +227,6 @@ paths:
           description: Successfully returned all reviews from the database written by one user.
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReviewWithId'
               example:
               - id: 1
                 rating: 3
@@ -271,10 +255,6 @@ paths:
           description: Successfully returned all reviews from the database.
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReviewWithId'
               example:
               - id: 3
                 rating:
@@ -331,8 +311,6 @@ paths:
           description: Successfully returned details of one review.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ReviewWithId'
               example:
                 value:
                   id: 1
@@ -390,9 +368,6 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CategoryWithId'
               example:
               - id: 1
                 title: Science-Fiction
@@ -437,8 +412,6 @@ paths:
           description: Successfully returned details of one category.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/CategoryWithId'
               example:
                 id: 1
                 title: Science-Fiction
@@ -485,32 +458,17 @@ components:
         email_address:
           type: string
           format: email
+        password:
+            type: string
+            minLength: 6
         role:
           type: string
           enum: [Admin, Basic User]
       required:
       - username
       - email_address
+      - password
       - role
-    UserWithPassword:
-      allOf:
-        - $ref: '#/components/schemas/User'
-        - type: object
-        - properties:
-            password:
-              type: string
-              minLength: 6
-      required:
-        - password
-    UserWithId:
-      allOf:
-        - properties:
-            id:
-              type: integer
-        - $ref: '#/components/schemas/User'
-        - type: object
-      required:
-        - id
 
     Review:
       type: object
@@ -534,15 +492,6 @@ components:
       - date
       - author_id
       - movie_id
-    ReviewWithId:
-      allOf:
-        - properties:
-            id:
-              type: integer
-        - $ref: '#/components/schemas/Review'
-        - type: object
-      required:
-        - id
 
     Movie:
       type: object
@@ -567,15 +516,6 @@ components:
       - length
       - release_date
       - category_id
-    MovieWithId:
-      allOf:
-        - properties:
-            id:
-              type: integer
-        - $ref: '#/components/schemas/Movie'
-        - type: object
-      required:
-        - id
 
     Category:
       type: object
@@ -584,15 +524,6 @@ components:
           type: string
       required:
       - title
-    CategoryWithId:
-      allOf:
-        - properties:
-            id:
-              type: integer
-        - $ref: '#/components/schemas/Category'
-        - type: object
-      required:
-        - id
 
   parameters:
     user_id:
