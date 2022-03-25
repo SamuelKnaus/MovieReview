@@ -42,6 +42,7 @@ class UserReviewCollection(Resource):
 
         body = MasonBuilder()
         body["items"] = items
+        body.add_control_get_user(user, "up")
         return get_blueprint(body)
 
 
@@ -71,6 +72,8 @@ class MovieReviewCollection(Resource):
 
         body = MasonBuilder()
         body["items"] = review_items
+        body.add_control_get_movie(movie, "up")
+        body.add_control_post_review(movie=movie)
         return get_blueprint(body)
 
     @classmethod

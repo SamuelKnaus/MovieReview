@@ -34,6 +34,7 @@ class CategoryCollection(Resource):
 
         body = MasonBuilder()
         body["items"] = category_items
+        body.add_control_post_category()
         return get_blueprint(body)
 
     @classmethod

@@ -45,14 +45,17 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             )
         )
 
-    def add_control_post_review(self):
+    def add_control_post_review(self, movie):
         """
             This method adds the mason documentation for the post a new review endpoint
         """
         self._add_control_post(
             NAMESPACE + ":add-review",
             title="Create a new review",
-            href=self.api.url_for(self.movie_review_collection),
+            href=self.api.url_for(
+                self.movie_review_collection,
+                movie=movie
+            ),
             schema=get_review_json_schema()
         )
 

@@ -34,6 +34,7 @@ class UserCollection(Resource):
 
         body = MasonBuilder()
         body["items"] = user_items
+        body.add_control_post_user()
         return get_blueprint(body)
 
     @classmethod
