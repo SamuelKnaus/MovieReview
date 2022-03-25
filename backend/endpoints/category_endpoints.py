@@ -26,11 +26,14 @@ class CategoryCollection(Resource):
                 or a http error with the corresponding error message
         """
         categories = Category.query.all()
-        body = []
+        category_items = []
         for category in categories:
             item = MasonBuilder(category.serialize())
             item.add_control_get_category(category, rel="item")
-            body.append(item)
+            category_items.append(item)
+
+        body = MasonBuilder()
+        body["items"] = category_items
         return get_blueprint(body)
 
     @classmethod

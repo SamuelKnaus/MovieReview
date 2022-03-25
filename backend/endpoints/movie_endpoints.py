@@ -26,11 +26,14 @@ class MovieCollection(Resource):
                 or a http error with the corresponding error message
         """
         movies = Movie.query.all()
-        body = []
+        movie_items = []
         for movie in movies:
             item = MasonBuilder(movie.serialize())
             item.add_control_get_movie(movie, "item")
-            body.append(item)
+            movie_items.append(item)
+
+        body = MasonBuilder()
+        body["items"] = movie_items
         return get_blueprint(body)
 
     @classmethod

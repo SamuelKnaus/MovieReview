@@ -32,13 +32,16 @@ class UserReviewCollection(Resource):
                 user or a http error with the corresponding error message
         """
         reviews = Review.query.filter_by(author_id=user.id).all()
-        body = []
+        items = []
         for review in reviews:
             movie = Movie.query.filter_by(id=review.movie_id).first()
 
             item = MasonBuilder(review.serialize())
             item.add_control_get_review(movie, review, "item")
-            body.append(item)
+            items.append(item)
+
+        body = MasonBuilder()
+        body["items"] = items
         return get_blueprint(body)
 
 
@@ -60,11 +63,14 @@ class MovieReviewCollection(Resource):
                 or a http error with the corresponding error message
         """
         reviews = Review.query.filter_by(movie_id=movie.id).all()
-        body = []
+        review_items = []
         for review in reviews:
             item = MasonBuilder(review.serialize())
             item.add_control_get_review(movie, review, "item")
-            body.append(item)
+            review_items.append(item)
+
+        body = MasonBuilder()
+        body["items"] = review_items
         return get_blueprint(body)
 
     @classmethod
@@ -72,7 +78,9 @@ class MovieReviewCollection(Resource):
         created_review.deserialize(request.json)
 
         if created_review.movie_id != movie.id:
-            raise werkzeug.exceptions.BadRequest("The movie_id does not match the given url parameter")
+            raise werkzeug.exceptions.BadRequest(
+                "The movie_id does not match the given url parameter"
+            )
         return created_review
 
     @classmethod

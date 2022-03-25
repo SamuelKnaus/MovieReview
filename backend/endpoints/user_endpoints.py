@@ -26,11 +26,14 @@ class UserCollection(Resource):
                 or a http error with the corresponding error message
         """
         users = User.query.all()
-        body = []
+        user_items = []
         for user in users:
             item = MasonBuilder(user.serialize())
             item.add_control_get_user(user, "item")
-            body.append(item)
+            user_items.append(item)
+
+        body = MasonBuilder()
+        body["items"] = user_items
         return get_blueprint(body)
 
     @classmethod
