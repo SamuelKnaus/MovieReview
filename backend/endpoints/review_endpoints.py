@@ -1,7 +1,7 @@
 """
     All the endpoints for the review resources
 """
-
+import werkzeug
 from flask import request
 from flask_restful import Resource
 
@@ -70,8 +70,9 @@ class MovieReviewCollection(Resource):
     @classmethod
     def __create_review_object(cls, movie, created_review):
         created_review.deserialize(request.json)
-        # ignore the foreign key and set it to the parameter given in the url
-        created_review.movie_id = movie.id
+
+        if created_review.movie_id != movie.id:
+            raise werkzeug.exceptions.BadRequest("The movie_id does not match the given url parameter")
         return created_review
 
     @classmethod
@@ -129,6 +130,11 @@ class MovieReviewItem(Resource):
     @classmethod
     def __update_review_object(cls, review, update_review):
         update_review.deserialize(request.json)
+
+        if review.author_id != update_review.author_id:
+            raise werkzeug.exceptions.BadRequest("The author_id cannot be changed")
+        if review.movie_id != update_review.movie_id:
+            raise werkzeug.exceptions.BadRequest("The movie_id cannot be changed")
 
         review.rating = update_review.rating
         review.comment = update_review.comment
