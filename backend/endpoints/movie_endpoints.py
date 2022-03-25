@@ -80,7 +80,7 @@ class MovieItem(Resource):
         """
         body = MasonBuilder(movie.serialize())
         body.add_api_namespace()
-        body.add_control_get_movies("up")
+        body.add_control_get_movies("collection")
         body.add_control_get_movie(movie)
         body.add_control_update_movie(movie)
         body.add_control_delete_movie(movie)

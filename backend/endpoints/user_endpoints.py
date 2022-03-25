@@ -80,7 +80,7 @@ class UserItem(Resource):
         """
         body = MasonBuilder(user.serialize())
         body.add_api_namespace()
-        body.add_control_get_users("up")
+        body.add_control_get_users("collection")
         body.add_control_get_user(user)
         body.add_control_update_user(user)
         body.add_control_delete_user(user)

@@ -80,7 +80,7 @@ class CategoryItem(Resource):
         """
         body = MasonBuilder(category.serialize())
         body.add_api_namespace()
-        body.add_control_get_categories("up")
+        body.add_control_get_categories("collection")
         body.add_control_get_category(category)
         body.add_control_update_category(category)
         body.add_control_delete_category(category)

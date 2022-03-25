@@ -129,7 +129,7 @@ class MovieReviewItem(Resource):
 
         body = MasonBuilder(review.serialize())
         body.add_api_namespace()
-        body.add_control_get_reviews_for_movie(movie, "up")
+        body.add_control_get_reviews_for_movie(movie, "collection")
         body.add_control_get_review(movie, review)
         body.add_control_update_review(movie, review)
         body.add_control_delete_review(movie, review)
