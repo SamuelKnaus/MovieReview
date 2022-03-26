@@ -17,8 +17,8 @@ paths:
             application/json:
               example:
                 '@namespaces':
-                    moviereviewmeta:
-                      name: /moviereviewmeta/link-relations/
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
                 '@controls':
                   self:
                     title: Get a list of all users
@@ -161,22 +161,39 @@ paths:
           content:
             application/json:
               example:
-              - id: 1
-                title: Leon, the professional
-                director: Luc Besson
-                length: 6600
-                release_date: 1999-09-14
-                category_id: 2
+                '@namespaces':
+                    moviereviewmeta:
+                      name: /moviereviewmeta/link-relations/
                 '@controls':
-                  item:
-                    title: Get a single movie
-                    href: /api/users/1/
-              - id: 2
-                title: Apocalypse now
-                director: Francis Copola
-                length: 8820
-                release_date: 1979-05-19
-                category_id: 3
+                  self:
+                    title: Get a list of all movies
+                    href: api/movies/
+                  moviereviewmeta:add-movie:
+                    method": POST
+                    encoding": json
+                    title": Create a new movie
+                    href: /api/movies/
+                items:
+                - id: 1
+                  title: Leon, the professional
+                  director: Luc Besson
+                  length: 6600
+                  release_date: 1999-09-14
+                  category_id: 2
+                  '@controls':
+                    item:
+                      title: Get a single movie
+                      href: /api/movies/1/
+                - id: 2
+                  title: Apocalypse now
+                  director: Francis Copola
+                  length: 8820
+                  release_date: 1979-05-19
+                  category_id: 3
+                  '@controls':
+                    item:
+                      title: Get a single movie
+                      href: /api/movies/2/
     post:
       tags:
       - "Movies"
@@ -225,6 +242,28 @@ paths:
                 length: 6600
                 release_date: 1999-09-14
                 category_id: 2
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  collection:
+                    title: Get a list of all movies
+                    href: /api/movies/
+                  self:
+                    title: Get a single user
+                    href: /api/movies/1/
+                  edit:
+                    method: PUT
+                    encoding: json
+                    title: Update a movie
+                    href: /api/movies/1/
+                  moviereviewmeta:delete:
+                    method: DELETE
+                    title: Delete a movie
+                    href: /api/movies/1/
+                  moviereviewmeta:reviews-of-movie:
+                    title: Get a list of all reviews of this movie
+                    href: /api/movies/1/reviews/
         '404':
           description: The movie was not found.
     put:
@@ -275,18 +314,34 @@ paths:
           content:
             application/json:
               example:
-              - id: 1
-                rating: 3
-                comment: The movie is ok
-                date: 2021-03-22
-                author_id: 2
-                movie_id: 1
-              - id: 2
-                rating: 5
-                comment: The movie is great
-                date: 2021-03-23
-                author_id: 2
-                movie_id: 2
+                '@controls':
+                  up:
+                    title: Get a single user
+                    href: /api/users/1/
+                  self:
+                    title: Get a list of all reviews of this user
+                    href: /api/users/1/reviews/
+                items:
+                - id: 1
+                  rating: 3
+                  comment: The movie is ok
+                  date: 2021-03-22
+                  author_id: 2
+                  movie_id: 1
+                  '@controls':
+                    item:
+                      title: Get a single review
+                      href: /api/movies/1/reviews/1
+                - id: 2
+                  rating: 5
+                  comment: The movie is great
+                  date: 2021-03-23
+                  author_id: 2
+                  movie_id: 2
+                  '@controls':
+                    item:
+                      title: Get a single review
+                      href: /api/movies/2/reviews/2
         '404':
           description: The user/endpoint was not found.
 
@@ -303,18 +358,42 @@ paths:
           content:
             application/json:
               example:
-              - id: 3
-                rating:
-                comment: I didn't like the movie at all
-                date: 2021-03-25
-                author_id: 3
-                movie_id: 1
-              - id: 4
-                rating: 5
-                comment: A masterpiece !
-                date: 2021-03-13
-                author_id: 1
-                movie_id: 1
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  up:
+                    title: Get a single movie
+                    href: /api/movies/1/
+                  self:
+                    title: Get a list of all reviews of this movie
+                    href: /api/movies/1/reviews/
+                  moviereviewmeta:add-review:
+                    method: POST
+                    encoding: json
+                    title: Create a new review
+                    href: /api/movies/1/reviews/
+                  items:
+                  - id: 3
+                    rating:
+                    comment: I didn't like the movie at all
+                    date: 2021-03-25
+                    author_id: 3
+                    movie_id: 1
+                    '@controls':
+                      item:
+                        title: Get a single review
+                        href: /api/movies/1/reviews/3
+                  - id: 4
+                    rating: 5
+                    comment: A masterpiece !
+                    date: 2021-03-13
+                    author_id: 1
+                    movie_id: 1
+                    '@controls':
+                      item:
+                        title: Get a single review
+                        href: /api/movies/1/reviews/4
     post:
       tags:
       - "Reviews"
@@ -359,13 +438,31 @@ paths:
           content:
             application/json:
               example:
-                value:
-                  id: 1
-                  rating: 3
-                  comment: The movie is ok
-                  date: 2021-03-22
-                  author_id: 2
-                  movie_id: 1
+                id: 1
+                rating: 3
+                comment: The movie is ok
+                date: 2021-03-22
+                author_id: 2
+                movie_id: 1
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  collection:
+                    title: Get a list of all reviews for this movie
+                    href: /api/movies/1/reviews/
+                  self:
+                    title: Get a single review
+                    href: /api/movies/1/reviews/1
+                  edit:
+                    method: PUT
+                    encoding: json
+                    title: Update a review
+                    href: /api/movies/1/reviews/1
+                  moviereviewmeta:delete:
+                    method: DELETE
+                    title: Delete a user
+                    href: /api/movies/1/reviews/1
         '404':
           description: The review was not found
     put:
@@ -414,12 +511,30 @@ paths:
           description: Successfully returned all categories from the database.
           content:
             application/json:
-              schema:
               example:
-              - id: 1
-                title: Science-Fiction
-              - id: 2
-                title: Thriller
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  self:
+                    title: Get a list of all categories
+                    href: api/categories/
+                  moviereviewmeta:add-category:
+                    method": POST
+                    encoding": json
+                    title": Create a new category
+                    href: /api/categories/
+                items:
+                - id: 1
+                  title: Science-Fiction
+                  '@controls':
+                    title: Get a single category
+                    href: /apu/categories/1/
+                - id: 2
+                  title: Thriller
+                  '@controls':
+                    title: Get a single category
+                    href: /apu/categories/2/
     post:
       tags:
       - "Categories"
@@ -462,6 +577,25 @@ paths:
               example:
                 id: 1
                 title: Science-Fiction
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  collection:
+                    title: Get a list of all categories
+                    href: /api/categories/
+                  self:
+                    title: Get a single category
+                    href: /api/categories/1/
+                  edit:
+                    method: PUT
+                    encoding: json
+                    title: Update a category
+                    href: /api/users/1/
+                  moviereviewmeta:delete:
+                    method: DELETE
+                    title: Delete a user
+                    href: /api/users/1/
         '404':
           description: The category was not found
     put:
