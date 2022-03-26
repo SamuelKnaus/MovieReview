@@ -16,22 +16,35 @@ paths:
           content:
             application/json:
               example:
-              - id: 1
-                username: mario456
-                email_address: mario.lo@oulu.fi
-                role: Basic User
+                '@namespaces':
+                    moviereviewmeta:
+                      name: /moviereviewmeta/link-relations/
                 '@controls':
-                  item:
-                    title: Get a single user
-                    href: /api/users/1/
-              - id: 2
-                username: jules
-                email_address: jules.fte@hotmail.com
-                role: Admin
-                '@controls':
-                  item:
-                    title: Get a single user
-                    href: /api/users/2/
+                  self:
+                    title: Get a list of all users
+                    href: api/users/
+                  moviereviewmeta:add-user:
+                    method": POST
+                    encoding": json
+                    title": Create a new user
+                    href: /api/users/
+                items:
+                  - id: 1
+                    username: mario456
+                    email_address: mario.lo@oulu.fi
+                    role: Basic User
+                    '@controls':
+                      item:
+                        title: Get a single user
+                        href: /api/users/1/
+                  - id: 2
+                    username: jules
+                    email_address: jules.fte@hotmail.com
+                    role: Admin
+                    '@controls':
+                      item:
+                        title: Get a single user
+                        href: /api/users/2/
     post:
       tags:
       - "Users"
@@ -148,35 +161,22 @@ paths:
           content:
             application/json:
               example:
-                '@namespaces':
-                  moviereviewmeta:
-                    name: /moviereviewmeta/link-relations/
+              - id: 1
+                title: Leon, the professional
+                director: Luc Besson
+                length: 6600
+                release_date: 1999-09-14
+                category_id: 2
                 '@controls':
-                  self:
-                    title: Get a list of all users
-                    href: api/users/
-                  moviereviewmeta:add-user:
-                    method": POST
-                    encoding": json
-                    title": Create a new user
-                    href: /api/users/
-                items:
-                  - id: 1
-                    username: mario456
-                    email_address: mario.lo@oulu.fi
-                    role: Basic User
-                    '@controls':
-                      item:
-                        title: Get a single user
-                        href: /api/users/1/
-                  - id: 2
-                    username: jules
-                    email_address: jules.fte@hotmail.com
-                    role: Admin
-                    '@controls':
-                      item:
-                        title: Get a single user
-                        href: /api/users/2/
+                  item:
+                    title: Get a single movie
+                    href: /api/users/1/
+              - id: 2
+                title: Apocalypse now
+                director: Francis Copola
+                length: 8820
+                release_date: 1979-05-19
+                category_id: 3
     post:
       tags:
       - "Movies"
@@ -414,6 +414,7 @@ paths:
           description: Successfully returned all categories from the database.
           content:
             application/json:
+              schema:
               example:
               - id: 1
                 title: Science-Fiction
