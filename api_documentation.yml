@@ -20,10 +20,19 @@ paths:
                 username: mario456
                 email_address: mario.lo@oulu.fi
                 role: Basic User
+                '@controls':
+                  item:
+                    title: Get a single user
+                    href: /api/users/1/
+
               - id: 2
                 username: jules
                 email_address: jules.fte@hotmail.com
                 role: Admin
+                '@controls':
+                  item:
+                    title: Get a single user
+                    href: /api/users/2/
     post:
       tags:
       - "Users"
@@ -71,6 +80,28 @@ paths:
                 username: mario456
                 email_address: mario.lo@oulu.fi
                 role: Basic User
+                '@namespaces':
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
+                '@controls':
+                  collection:
+                    title: Get a list of all users
+                    href: /api/users/
+                  self:
+                    title: Get a single user
+                    href: /api/users/1/
+                  edit:
+                    method: PUT
+                    encoding: json
+                    title: Update a user
+                    href: /api/users/1/
+                  moviereviewmeta:delete:
+                    method: DELETE
+                    title: Delete a user
+                    href: /api/users/1/
+                  moviereviewmeta:reviews-of-user:
+                    title: Get a list of all reviews of this user
+                    href: /api/users/1/reviews/
         '404':
           description: The user/endpoint was not found.
     put:
