@@ -490,7 +490,7 @@ paths:
                           description: A textual comment
                           type: string
                         date:
-                          description: The date on which the comment was written
+                          description: The date and time when the review was written
                           type: string
                           format: date-time
                         author_id:
@@ -839,7 +839,7 @@ components:
           description: A textual comment
           type: string
         date:
-          description: The date on which the comment was written
+          description: The date and time when the review was written
           type: string
           format: date-time
         author_id:
