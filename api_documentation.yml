@@ -524,11 +524,11 @@ paths:
                 '@controls':
                   self:
                     title: Get a list of all categories
-                    href: api/categories/
+                    href: /api/categories/
                   moviereviewmeta:add-category:
-                    method": POST
-                    encoding": json
-                    title": Create a new category
+                    method: POST
+                    encoding: json
+                    title: Create a new category
                     href: /api/categories/
                 items:
                 - id: 1
@@ -562,9 +562,7 @@ paths:
               schema:
                 type: string
         '400':
-          description: category_id must be integer and title must be string
-        '409':
-          description: Category already exists
+          description: Bad Request (Request does not match the JSON schema).
         '415':
           description: Request content type must be JSON
 
