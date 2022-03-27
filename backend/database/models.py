@@ -4,8 +4,10 @@
 
 import enum
 from datetime import date
+from dateutil import parser
 
 import api
+from constants import DATETIME_FORMAT
 from helper.serializer import Serializer
 
 
@@ -96,7 +98,7 @@ class Review(api.DB.Model, Serializer):
     id = api.DB.Column(api.DB.Integer, primary_key=True, autoincrement=True)
     rating = api.DB.Column(api.DB.Integer, nullable=False)
     comment = api.DB.Column(api.DB.Text, nullable=False)
-    date = api.DB.Column(api.DB.Date, nullable=False)
+    date = api.DB.Column(api.DB.DateTime, nullable=False)
     author_id = api.DB.Column(
         api.DB.Integer,
         api.DB.ForeignKey("user.id", ondelete="SET NULL"),
@@ -120,7 +122,7 @@ class Review(api.DB.Model, Serializer):
             "id": self.id,
             "rating": self.rating,
             "comment": self.comment,
-            "date": self.date.isoformat(),
+            "date": self.date.strftime(DATETIME_FORMAT),
             "author_id": self.author_id,
             "movie_id": self.movie_id
         }
@@ -132,7 +134,7 @@ class Review(api.DB.Model, Serializer):
         """
         self.rating = doc["rating"]
         self.comment = doc.get("comment")
-        self.date = date.fromisoformat(doc["date"])
+        self.date = parser.isoparse(doc["date"])
         self.author_id = doc.get("author_id")
         self.movie_id = doc.get("movie_id")
 
