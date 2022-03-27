@@ -329,7 +329,7 @@ paths:
                 - id: 1
                   rating: 3
                   comment: The movie is ok
-                  date: 2021-03-22
+                  date: "2021-03-22"
                   author_id: 2
                   movie_id: 1
                   '@controls':
@@ -339,7 +339,7 @@ paths:
                 - id: 2
                   rating: 5
                   comment: The movie is great
-                  date: 2021-03-23
+                  date: "2021-03-23"
                   author_id: 2
                   movie_id: 2
                   '@controls':
@@ -381,7 +381,7 @@ paths:
                   - id: 3
                     rating:
                     comment: I didn't like the movie at all
-                    date: 2021-03-25
+                    date: "2021-03-25"
                     author_id: 3
                     movie_id: 1
                     '@controls':
@@ -391,17 +391,19 @@ paths:
                   - id: 4
                     rating: 5
                     comment: A masterpiece !
-                    date: 2021-03-13
+                    date: "2021-03-13"
                     author_id: 1
                     movie_id: 1
                     '@controls':
                       item:
                         title: Get a single review
                         href: /api/movies/1/reviews/4
+        '404':
+          description: The movie/endpoint was not found.
     post:
       tags:
       - "Reviews"
-      description: Create a new review in the database.
+      description: Create a new review for a movie.
       requestBody:
         description: JSON document that contains the rating score, the comment and the comment date to create a new review.
         content:
@@ -411,7 +413,7 @@ paths:
             example:
               rating: 1
               comment: A real disaster
-              date: 2022-01-17
+              date: "2022-01-17"
               author_id: 3
               movie_id: 3
       responses:
@@ -445,7 +447,7 @@ paths:
                 id: 1
                 rating: 3
                 comment: The movie is ok
-                date: 2021-03-22
+                date: "2021-03-22"
                 author_id: 2
                 movie_id: 1
                 '@namespaces':
@@ -457,25 +459,25 @@ paths:
                     href: /api/movies/1/reviews/
                   self:
                     title: Get a single review
-                    href: /api/movies/1/reviews/1
+                    href: /api/movies/1/reviews/1/
                   edit:
                     method: PUT
                     encoding: json
                     title: Update a review
-                    href: /api/movies/1/reviews/1
+                    href: /api/movies/1/reviews/1/
                   moviereviewmeta:delete:
                     method: DELETE
                     title: Delete a user
-                    href: /api/movies/1/reviews/1
+                    href: /api/movies/1/reviews/1/
         '404':
-          description: The review was not found
+          description: The review/endpoint was not found
     put:
       tags:
       - "Reviews"
       description: Update a review by its ID. Needs a JSON document that contains rating score, comment, comment date, author ID and movie ID to update review data.
       responses:
         '204':
-          description: The review has been updated
+          description: The review has been updated.
           content:
             application/json:
               schema:
@@ -483,7 +485,7 @@ paths:
               example:
                 rating: 4
                 comment: The movie is ok, but I changed my mind, it's pretty good
-                date: 2021-03-23
+                date: "2021-03-23"
                 author_id: 2
                 movie_id: 1
         '400':
@@ -498,12 +500,12 @@ paths:
     delete:
       tags:
       - "Reviews"
-      description: Delete a review by review_id
+      description: Delete a review by its ID.
       responses:
         '204':
-          description: The review has been deleted
+          description: The review has been deleted.
         '409':
-          description: The review was not found
+          description: The movie/review was not found.
 
   /api/categories/:
     get:
