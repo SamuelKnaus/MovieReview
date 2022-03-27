@@ -111,7 +111,7 @@ class TestCategoryCollection(object):
         body = json.loads(resp.data)
         print(body)
         assert len(body) == 3
-        for item in body:
+        for item in body["items"]:
             assert "title" in item
             assert "id" in item
 
@@ -254,7 +254,7 @@ class TestUserCollection(object):
         body = json.loads(resp.data)
         print(body)
         assert len(body) == 3
-        for item in body:
+        for item in body["items"]:
             assert "id" in item
             assert "username" in item
             assert "email_address" in item
@@ -404,8 +404,8 @@ class TestUserReviewCollection(object):
         assert resp.status_code == 200
         body = json.loads(resp.data)
         print(body)
-        assert len(body) == 1  # Each user has only 1 Review
-        for item in body:
+        assert len(body["items"]) == 1  # Each user has only 1 Review
+        for item in body["items"]:
             assert "id" in item
             assert "rating" in item
             assert "comment" in item
@@ -445,8 +445,8 @@ class TestMovieCollection(object):
         assert resp.status_code == 200
         body = json.loads(resp.data)
         print(body)
-        assert len(body) == 3
-        for item in body:
+        assert len(body["items"]) == 3
+        for item in body["items"]:
             assert "id" in item
             assert "title" in item
             assert "director" in item
@@ -588,7 +588,7 @@ def _get_review_json(number=1):
     return {"id": number,
             "rating": 1,
             "comment": "extra-comment-{}".format(number),
-            "date": "2020-09-10",
+            "date": "2020-01-01T00:00:00.000000Z",
             "author_id": 1,
             "movie_id": 1}
 
@@ -609,8 +609,8 @@ class TestMovieReviewCollection(object):
         assert resp.status_code == 200
         body = json.loads(resp.data)
         print(body)
-        assert len(body) == 1
-        for item in body:
+        assert len(body["items"]) == 1
+        for item in body["items"]:
             assert "id" in item
             assert "rating" in item
             assert "comment" in item
@@ -687,7 +687,7 @@ class TestMovieReviewItem(object):
         assert body["id"] == 1
         assert body["rating"] == 1
         assert body["comment"] == "JamesCrow REVIEW"
-        assert body["date"] == "2020-01-01"
+        assert body["date"] == "2020-01-01T00:00:00.000000Z"
         resp = client.get(self.INVALID_URL)
         assert resp.status_code == 404
 
