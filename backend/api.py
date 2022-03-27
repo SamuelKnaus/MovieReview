@@ -54,7 +54,7 @@ API.add_resource(MovieItem, "/api/movies/<movie:movie>/")
 # REVIEW LOGIC
 API.add_resource(MovieReviewCollection, "/api/movies/<movie:movie>/reviews/")
 APP.url_map.converters["review"] = ReviewConverter
-API.add_resource(MovieReviewItem, "/api/movies/<movie:movie>/reviews/<review:review>")
+API.add_resource(MovieReviewItem, "/api/movies/<movie:movie>/reviews/<review:review>/")
 
 
 # USERS LOGIC
