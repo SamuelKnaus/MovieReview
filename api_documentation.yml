@@ -22,7 +22,7 @@ paths:
                 '@controls':
                   self:
                     title: Get a list of all users
-                    href: api/users/
+                    href: /api/users/
                   moviereviewmeta:add-user:
                     method: POST
                     encoding: json
@@ -47,7 +47,7 @@ paths:
                           type: string
                           minLength: 6
                         role:
-                          description: The role of the user which can either be "basic user" or "admin"
+                          description: The role of the user
                           type: string
                           enum: [ Admin, Basic User ]
                     href: /api/users/
@@ -149,7 +149,7 @@ paths:
                           type: string
                           minLength: 6
                         role:
-                          description: The role of the user which can either be "basic user" or "admin"
+                          description: The role of the user
                           type: string
                           enum: [ Admin, Basic User ]
                     href: /api/users/1/
@@ -510,7 +510,7 @@ paths:
                     '@controls':
                       item:
                         title: Get a single review
-                        href: /api/movies/1/reviews/3
+                        href: /api/movies/1/reviews/3/
                   - id: 4
                     rating: 5
                     comment: A masterpiece !
@@ -520,7 +520,7 @@ paths:
                     '@controls':
                       item:
                         title: Get a single review
-                        href: /api/movies/1/reviews/4
+                        href: /api/movies/1/reviews/4/
         '404':
           description: The movie/endpoint was not found.
     post:
@@ -685,20 +685,22 @@ paths:
                       - title
                       properties:
                         title:
-                        description: The name of the category
-                        type: string
+                          description: The name of the category
+                          type: string
                     href: /api/categories/
                 items:
                 - id: 1
                   title: Science-Fiction
                   '@controls':
-                    title: Get a single category
-                    href: /apu/categories/1/
+                    item:
+                      title: Get a single category
+                      href: /api/categories/1/
                 - id: 2
                   title: Thriller
                   '@controls':
-                    title: Get a single category
-                    href: /apu/categories/2/
+                    item:
+                      title: Get a single category
+                      href: /api/categories/2/
     post:
       tags:
       - "Categories"
@@ -759,13 +761,13 @@ paths:
                       - title
                       properties:
                         title:
-                        description: The name of the category
-                        type: string
-                    href: /api/users/1/
+                          description: The name of the category
+                          type: string
+                    href: /api/categories/1/
                   moviereviewmeta:delete:
                     method: DELETE
-                    title: Delete a user
-                    href: /api/users/1/
+                    title: Delete a category
+                    href: /api/categories/1/
         '404':
           description: The category was not found
     put:
