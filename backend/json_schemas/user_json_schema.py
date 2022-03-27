@@ -28,7 +28,7 @@ def get_user_json_schema():
         "minLength": 6
     }
     props["role"] = {
-        "description": "The role of the user which can either be 'basic user' or admin",
+        "description": "The role of the user",
         "type": "string",
         "enum": ["Admin", "Basic User"]
     }
