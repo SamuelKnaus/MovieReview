@@ -14,7 +14,7 @@ paths:
         '200':
           description: Successfully returned all users from the database.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 '@namespaces':
                   moviereviewmeta:
@@ -109,7 +109,7 @@ paths:
         '200':
           description: Successfully fetched data for the requested user.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 id: 1
                 username: mario456
@@ -205,7 +205,7 @@ paths:
         '200':
           description: Successfully returned all movies from the database.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 '@namespaces':
                     moviereviewmeta:
@@ -308,7 +308,7 @@ paths:
         '200':
           description: Successfully returned details of one movie.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 id: 1
                 title: Leon, the professional
@@ -412,7 +412,7 @@ paths:
         '200':
           description: Successfully returned all reviews from the database written by one user.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 '@controls':
                   up:
@@ -456,7 +456,7 @@ paths:
         '200':
           description: Successfully returned all reviews from the database.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 '@namespaces':
                   moviereviewmeta:
@@ -565,7 +565,7 @@ paths:
         '200':
           description: Successfully returned details of one review.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 id: 1
                 rating: 3
@@ -666,7 +666,7 @@ paths:
         '200':
           description: Successfully returned all categories from the database.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 '@namespaces':
                   moviereviewmeta:
@@ -737,7 +737,7 @@ paths:
         '200':
           description: Successfully returned details of one category.
           content:
-            application/json:
+            application/vnd.mason+json:
               example:
                 id: 1
                 title: Science-Fiction
