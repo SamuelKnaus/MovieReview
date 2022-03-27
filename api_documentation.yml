@@ -24,9 +24,9 @@ paths:
                     title: Get a list of all users
                     href: api/users/
                   moviereviewmeta:add-user:
-                    method": POST
-                    encoding": json
-                    title": Create a new user
+                    method: POST
+                    encoding: json
+                    title: Create a new user
                     href: /api/users/
                 items:
                   - id: 1
