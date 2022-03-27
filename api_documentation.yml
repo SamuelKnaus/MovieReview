@@ -27,6 +27,29 @@ paths:
                     method: POST
                     encoding: json
                     title: Create a new user
+                    schema:
+                      type: object
+                      required:
+                        - username
+                        - email_address
+                        - password
+                        - role
+                      properties:
+                        username:
+                          description: The username of the user
+                          type: string
+                        email_address:
+                          description: The email address of the user
+                          type: string
+                          format: email
+                        password:
+                          description: The password of the user
+                          type: string
+                          minLength: 6
+                        role:
+                          description: The role of the user which can either be "basic user" or "admin"
+                          type: string
+                          enum: [ Admin, Basic User ]
                     href: /api/users/
                 items:
                   - id: 1
@@ -106,6 +129,29 @@ paths:
                     method: PUT
                     encoding: json
                     title: Update a user
+                    schema:
+                      type: object
+                      required:
+                        - username
+                        - email_address
+                        - password
+                        - role
+                      properties:
+                        username:
+                          description: The username of the user
+                          type: string
+                        email_address:
+                          description: The email address of the user
+                          type: string
+                          format: email
+                        password:
+                          description: The password of the user
+                          type: string
+                          minLength: 6
+                        role:
+                          description: The role of the user which can either be "basic user" or "admin"
+                          type: string
+                          enum: [ Admin, Basic User ]
                     href: /api/users/1/
                   moviereviewmeta:delete:
                     method: DELETE
@@ -170,6 +216,32 @@ paths:
                     method: POST
                     encoding: json
                     title: Create a new movie
+                    schema:
+                      type: object
+                      required:
+                        - title
+                        - director
+                        - length
+                        - release_date
+                        - category_id
+                      properties:
+                        title:
+                          description: The title of the movie
+                          type: string
+                        director:
+                          description: The director of the movie
+                          type: string
+                        length:
+                          description: The length of the movie in seconds
+                          type: integer
+                          minimum: 1
+                        release_date:
+                          description: The release date of the movie
+                          type: string
+                          format: date
+                        category_id:
+                          description: The id of the movie's category which acts as foreign key
+                          type: integer
                     href: /api/movies/
                 items:
                 - id: 1
@@ -256,6 +328,32 @@ paths:
                     method: PUT
                     encoding: json
                     title: Update a movie
+                    schema:
+                      type: object
+                      required:
+                        - title
+                        - director
+                        - length
+                        - release_date
+                        - category_id
+                      properties:
+                        title:
+                          description: The title of the movie
+                          type: string
+                        director:
+                          description: The director of the movie
+                          type: string
+                        length:
+                          description: The length of the movie in seconds
+                          type: integer
+                          minimum: 1
+                        release_date:
+                          description: The release date of the movie
+                          type: string
+                          format: date
+                        category_id:
+                          description: The id of the movie's category which acts as foreign key
+                          type: integer
                     href: /api/movies/1/
                   moviereviewmeta:delete:
                     method: DELETE
@@ -374,6 +472,33 @@ paths:
                     method: POST
                     encoding: json
                     title: Create a new review
+                    schema:
+                      type: object
+                      required:
+                      - rating
+                      - comment
+                      - date
+                      - author_id
+                      - movie_id
+                      properties:
+                        rating:
+                          description: The rating of the movie (from 1 to 5)
+                          type: integer
+                          minimum: 1
+                          maximum: 5
+                        comment:
+                          description: A textual comment
+                          type: string
+                        date:
+                          description: The date on which the comment was written
+                          type: string
+                          format: date
+                        author_id:
+                          description: The id of the user which created the review which acts as foreign key
+                          type: integer
+                        movie_id:
+                          description: The id of the movie this review was created for which acts as foreign key
+                          type: integer
                     href: /api/movies/1/reviews/
                   items:
                   - id: 3
@@ -462,6 +587,33 @@ paths:
                     method: PUT
                     encoding: json
                     title: Update a review
+                    schema:
+                      type: object
+                      required:
+                      - rating
+                      - comment
+                      - date
+                      - author_id
+                      - movie_id
+                      properties:
+                        rating:
+                          description: The rating of the movie (from 1 to 5)
+                          type: integer
+                          minimum: 1
+                          maximum: 5
+                        comment:
+                          description: A textual comment
+                          type: string
+                        date:
+                          description: The date on which the comment was written
+                          type: string
+                          format: date
+                        author_id:
+                          description: The id of the user which created the review which acts as foreign key
+                          type: integer
+                        movie_id:
+                          description: The id of the movie this review was created for which acts as foreign key
+                          type: integer
                     href: /api/movies/1/reviews/1/
                   moviereviewmeta:delete:
                     method: DELETE
@@ -527,6 +679,14 @@ paths:
                     method: POST
                     encoding: json
                     title: Create a new category
+                    schema:
+                      type: object
+                      required:
+                      - title
+                      properties:
+                        title:
+                        description: The name of the category
+                        type: string
                     href: /api/categories/
                 items:
                 - id: 1
@@ -593,6 +753,14 @@ paths:
                     method: PUT
                     encoding: json
                     title: Update a category
+                    schema:
+                      type: object
+                      required:
+                      - title
+                      properties:
+                        title:
+                        description: The name of the category
+                        type: string
                     href: /api/users/1/
                   moviereviewmeta:delete:
                     method: DELETE
@@ -637,16 +805,20 @@ components:
       type: object
       properties:
         username:
+          description: The username of the user
           type: string
         email_address:
+          description: The email address of the user
           type: string
           format: email
         password:
-            type: string
-            minLength: 6
-        role:
+          description: The password of the user
           type: string
-          enum: [Admin, Basic User]
+          minLength: 6
+        role:
+          description: The role of the user which can either be "basic user" or "admin"
+          type: string
+          enum: [ Admin, Basic User ]
       required:
       - username
       - email_address
@@ -657,17 +829,22 @@ components:
       type: object
       properties:
         rating:
+          description: The rating of the movie (from 1 to 5)
           type: integer
           minimum: 1
           maximum: 5
         comment:
+          description: A textual comment
           type: string
         date:
+          description: The date on which the comment was written
           type: string
-          format: date-time
+          format: date
         author_id:
+          description: The id of the user which created the review which acts as foreign key
           type: integer
         movie_id:
+          description: The id of the movie this review was created for which acts as foreign key
           type: integer
       required:
       - rating
@@ -680,18 +857,21 @@ components:
       type: object
       properties:
         title:
+          description: The title of the movie
           type: string
         director:
+          description: The director of the movie
           type: string
         length:
+          description: The length of the movie in seconds
           type: integer
           minimum: 1
-          description: Movie's length in seconds
         release_date:
+          description: The release date of the movie
           type: string
           format: date
-          description: Movie's release date in YYYY-MM-DD format
         category_id:
+          description: The id of the movie's category which acts as foreign key
           type: integer
       required:
       - title
