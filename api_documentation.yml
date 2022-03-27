@@ -136,8 +136,6 @@ paths:
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
           description: The user/endpoint was not found.
-        '409':
-          description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
     delete:
