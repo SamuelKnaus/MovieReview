@@ -167,18 +167,18 @@ paths:
                 '@controls':
                   self:
                     title: Get a list of all movies
-                    href: api/movies/
+                    href: /api/movies/
                   moviereviewmeta:add-movie:
-                    method": POST
-                    encoding": json
-                    title": Create a new movie
+                    method: POST
+                    encoding: json
+                    title: Create a new movie
                     href: /api/movies/
                 items:
                 - id: 1
                   title: Leon, the professional
                   director: Luc Besson
                   length: 6600
-                  release_date: 1999-09-14
+                  release_date: "1999-09-14"
                   category_id: 2
                   '@controls':
                     item:
@@ -188,7 +188,7 @@ paths:
                   title: Apocalypse now
                   director: Francis Copola
                   length: 8820
-                  release_date: 1979-05-19
+                  release_date: "1979-05-19"
                   category_id: 3
                   '@controls':
                     item:
@@ -208,7 +208,7 @@ paths:
               title: Dune
               director: Denis Villeneuve
               length: 9360
-              release_date: 2021-09-22
+              release_date: "2021-09-22"
               category_id: 1
       responses:
         '201':
@@ -220,6 +220,8 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be JSON.
 
@@ -240,7 +242,7 @@ paths:
                 title: Leon, the professional
                 director: Luc Besson
                 length: 6600
-                release_date: 1999-09-14
+                release_date: "1999-09-14"
                 category_id: 2
                 '@namespaces':
                   moviereviewmeta:
@@ -281,12 +283,14 @@ paths:
                 title: Leon, the professional
                 director: Luc Besson
                 length: 8160
-                release_date: 1999-09-14
+                release_date: "1999-09-14"
                 category_id: 2
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
           description: The movie/endpoint was not found.
+        '409':
+          description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
     delete:
