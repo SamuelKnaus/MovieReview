@@ -17,7 +17,7 @@ export default class App extends React.PureComponent {
               element={<StartComponent />}
             />
             <Route
-              path="/movie/:movie_id"
+              path="/movie/:movieId"
               element={<Movie />}
             />
           </Routes>
