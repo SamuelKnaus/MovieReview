@@ -58,7 +58,7 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
         <ul>
           {this.state.movies.map((movie) => (
             <li>
-              {movie}
+              Hallo
             </li>
           ))}
         </ul>
