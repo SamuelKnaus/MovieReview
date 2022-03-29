@@ -4,6 +4,7 @@ All endpoints, the database models and the url converters are defined in here
 """
 
 from flask import Flask, send_from_directory
+from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -15,6 +16,7 @@ from url_converters.url_converter import CategoryConverter, MovieConverter
 from url_converters.url_converter import ReviewConverter, UserConverter
 
 APP = Flask(__name__, static_folder="static")
+CORS(APP)
 APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///movie-review.db"
 APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 APP.url_map.strict_slashes = False
