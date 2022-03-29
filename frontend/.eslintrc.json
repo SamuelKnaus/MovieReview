@@ -26,6 +26,7 @@
         }
     },
     "rules": {
+        "class-methods-use-this": "off",
         "react/jsx-props-no-spreading": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "no-use-before-define": "off",
