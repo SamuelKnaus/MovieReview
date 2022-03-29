@@ -1,34 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
-import Test from './components/Test';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Start from './components/Start';
+import Movie from './components/Movie';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Test
-          message="sdd"
-        />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.PureComponent {
+  render() {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<Start />}
+          />
+          <Route
+            path="/movie/:movie_id"
+            element={<Movie />}
+          />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 }
-
-export default App;
