@@ -2,7 +2,8 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
-import Fetch, { ServerResponse } from '../helper/Fetch';
+import { Collection } from '../models/Collection';
+import Fetch from '../helper/Fetch';
 
 type MovieListComponentState = {
   error: boolean,
@@ -24,15 +25,15 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
     Fetch.getMovieList(this.requestResponseHandler, this.requestErrorHandler);
   }
 
-  requestResponseHandler = (serverResponse: ServerResponse<Movie[]>) => {
-    console.log(serverResponse.payload);
+  requestResponseHandler = (serverResponse: Collection<Movie>) => {
+    console.log(serverResponse);
     this.setState({
       isLoaded: true,
-      movies: serverResponse.payload ?? [],
+      movies: serverResponse.items ?? [],
     });
   };
 
-  requestErrorHandler = (serverResponse: ServerResponse<any>) => {
+  requestErrorHandler = (serverResponse: any) => {
     this.setState({
       isLoaded: true,
     });
@@ -57,8 +58,10 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
       content = (
         <ul>
           {this.state.movies.map((movie) => (
-            <li>
-              Hallo
+            <li
+              key={movie.id}
+            >
+              {movie.title}
             </li>
           ))}
         </ul>

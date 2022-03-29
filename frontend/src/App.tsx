@@ -5,18 +5,18 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Movie from './components/MovieItemComponent';
 import MovieListComponent from './components/MovieListComponent';
-import Fetch, { ServerResponse } from './helper/Fetch';
+import Fetch from './helper/Fetch';
 
 export default class App extends React.PureComponent {
   componentDidMount() {
     Fetch.getBasicUrls(this.requestSuccessful, this.requestError);
   }
 
-  requestSuccessful = (serverResponse: ServerResponse<any>) => {
+  requestSuccessful = (serverResponse: any) => {
     console.log(serverResponse);
   };
 
-  requestError = (serverResponse: ServerResponse<any>) => {
+  requestError = (serverResponse: any) => {
     console.log(serverResponse);
   };
 

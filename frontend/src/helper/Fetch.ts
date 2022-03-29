@@ -2,12 +2,6 @@ import { Movie } from '../models/Movie';
 
 const baseUrl = 'http://127.0.0.1:5000';
 
-export interface ServerResponse<T> {
-  payload?: T;
-  exception: Exception;
-  path: string;
-}
-
 interface Exception {
   name: string;
   description: string;
@@ -17,8 +11,8 @@ interface Exception {
 
 export default class Fetch {
   public static getBasicUrls(
-    responseHandler: (serverResponse: ServerResponse<boolean>) => void,
-    errorHandler: (serverResponse: ServerResponse<boolean>) => void,
+    responseHandler: (serverResponse: boolean) => void,
+    errorHandler: (serverResponse: boolean) => void,
   ) {
     const path = '/';
     this.handleJsonResponse(
@@ -30,8 +24,8 @@ export default class Fetch {
   }
 
   public static getMovieList(
-    responseHandler: (serverResponse: ServerResponse<Movie[]>) => void,
-    errorHandler: (serverResponse: ServerResponse<Movie[]>) => void,
+    responseHandler: (serverResponse: any) => void,
+    errorHandler: (serverResponse: any) => void,
   ) {
     const path = '/api/movies/';
     this.handleJsonResponse(
@@ -62,14 +56,11 @@ export default class Fetch {
   private static handleJsonResponse(
     fetch: Promise<Response>,
     path: string,
-    responseHandler: (serverResponse: ServerResponse<any>) => void,
-    errorHandler: (serverResponse: ServerResponse<any>) => void,
+    responseHandler: (serverResponse: any) => void,
+    errorHandler: (serverResponse: any) => void,
   ) {
     fetch
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((responseJson) => {
         // tslint:disable-next-line:no-console
         console.log(responseJson);
