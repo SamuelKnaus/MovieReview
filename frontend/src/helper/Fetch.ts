@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:5001';
+const baseUrl = 'http://localhost:5000';
 
 export interface ServerResponse <T> {
     payload?: T;
