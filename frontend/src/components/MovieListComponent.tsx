@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
+import Fetch, { ServerResponse } from '../helper/Fetch';
 
 type MovieListComponentState = {
   error: boolean,
@@ -20,23 +21,22 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
   }
 
   componentDidMount() {
-    fetch('http://127.0.0.1:5000/api/movies/')
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            movies: result.items,
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        },
-      );
+    Fetch.getMovieList(this.requestResponseHandler, this.requestErrorHandler);
   }
+
+  requestResponseHandler = (serverResponse: ServerResponse<Movie[]>) => {
+    console.log(serverResponse.payload);
+    this.setState({
+      isLoaded: true,
+      movies: serverResponse.payload ?? [],
+    });
+  };
+
+  requestErrorHandler = (serverResponse: ServerResponse<any>) => {
+    this.setState({
+      isLoaded: true,
+    });
+  };
 
   render() {
     let content;

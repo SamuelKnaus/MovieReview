@@ -1,9 +1,11 @@
-const baseUrl = 'http://localhost:5000';
+import { Movie } from '../models/Movie';
 
-export interface ServerResponse <T> {
-    payload?: T;
-    exception: Exception;
-    path: string;
+const baseUrl = 'http://127.0.0.1:5000';
+
+export interface ServerResponse<T> {
+  payload?: T;
+  exception: Exception;
+  path: string;
 }
 
 interface Exception {
@@ -19,6 +21,19 @@ export default class Fetch {
     errorHandler: (serverResponse: ServerResponse<boolean>) => void,
   ) {
     const path = '/';
+    this.handleJsonResponse(
+      this.getRequest(path),
+      path,
+      responseHandler,
+      errorHandler,
+    );
+  }
+
+  public static getMovieList(
+    responseHandler: (serverResponse: ServerResponse<Movie[]>) => void,
+    errorHandler: (serverResponse: ServerResponse<Movie[]>) => void,
+  ) {
+    const path = '/api/movies/';
     this.handleJsonResponse(
       this.getRequest(path),
       path,
@@ -51,7 +66,10 @@ export default class Fetch {
     errorHandler: (serverResponse: ServerResponse<any>) => void,
   ) {
     fetch
-      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
       .then((responseJson) => {
         // tslint:disable-next-line:no-console
         console.log(responseJson);
