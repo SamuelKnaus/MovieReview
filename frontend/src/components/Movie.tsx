@@ -1,20 +1,33 @@
-import React from 'react';
-import useParams from 'react-router-dom';
+import React, { PureComponent } from 'react';
+import withRouter from '../helper/RouterHelper';
 
+type MovieProps = {
+  params: {
+    movieId: number
+  }
+}
 
 type MovieState = {
   movieId: number
 }
 
-function MovieComponent() {
-  let { movieId } = useParams();
+class MovieComponent extends PureComponent <MovieProps, MovieState> {
+  constructor(props: MovieProps) {
+    super(props);
 
-  return (
-    <h1>
-      Start
-      {this.state.movieId}
-    </h1>
-  );
+    this.state = {
+      movieId: this.props.params.movieId,
+    };
+  }
+
+  render() {
+    return (
+      <h1>
+        Start
+        {this.state.movieId}
+      </h1>
+    );
+  }
 }
 
-export default MovieComponent;
+export default withRouter(MovieComponent);
