@@ -7,24 +7,12 @@ type MovieProps = {
   }
 }
 
-type MovieState = {
-  movieId: number
-}
-
-class MovieComponent extends PureComponent <MovieProps, MovieState> {
-  constructor(props: MovieProps) {
-    super(props);
-
-    this.state = {
-      movieId: this.props.params.movieId,
-    };
-  }
-
+class MovieComponent extends PureComponent <MovieProps> {
   render() {
     return (
       <h1>
         Start
-        {this.state.movieId}
+        {this.props.params.movieId}
       </h1>
     );
   }
