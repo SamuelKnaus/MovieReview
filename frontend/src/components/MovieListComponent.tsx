@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
 import { Collection } from '../models/Collection';
@@ -56,22 +56,41 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
       );
     } else {
       content = (
-        <ul>
-          {this.state.movies.map((movie) => (
-            <li
-              key={movie.id}
-            >
-              {movie.title}
-            </li>
-          ))}
-        </ul>
+        <Table striped bordered hover className="movie-list-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Director</th>
+              <th>Length</th>
+              <th>Category</th>
+              <th>Release Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.movies.map((movie, index) => (
+              <tr className="movie-list-item">
+                <td>{index + 1}</td>
+                <td>{movie.title}</td>
+                <td>{movie.director}</td>
+                <td>{movie.length}</td>
+                <td>{movie.category_id}</td>
+                <td>{movie.release_date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       );
     }
     return (
-      <Container>
+      <div className="movie-list">
         <HeaderComponent pageTitle="Movie List" />
-        {content}
-      </Container>
+        <div className="main">
+          <Container>
+            {content}
+          </Container>
+        </div>
+      </div>
     );
   }
 }

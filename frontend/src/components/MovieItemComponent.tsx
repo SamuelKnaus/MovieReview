@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
+import { Container } from 'react-bootstrap';
 import withRouter from '../helper/RouterHelper';
+import HeaderComponent from './HeaderComponent';
 
 type MovieProps = {
   params: {
@@ -10,10 +12,14 @@ type MovieProps = {
 class MovieItemComponent extends PureComponent <MovieProps> {
   render() {
     return (
-      <h1>
-        Start
-        {this.props.params.movieId}
-      </h1>
+      <div className="movie-item">
+        <HeaderComponent pageTitle="Movie Item" />
+        <div className="main">
+          <Container>
+            {this.props.params.movieId}
+          </Container>
+        </div>
+      </div>
     );
   }
 }
