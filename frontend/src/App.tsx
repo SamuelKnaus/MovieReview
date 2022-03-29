@@ -3,8 +3,8 @@ import './App.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
-import Movie from './components/Movie';
-import StartComponent from './components/StartComponent';
+import Movie from './components/MovieItemComponent';
+import MovieListComponent from './components/MovieListComponent';
 
 export default class App extends React.PureComponent {
   render() {
@@ -14,7 +14,7 @@ export default class App extends React.PureComponent {
           <Routes>
             <Route
               path="/"
-              element={<StartComponent />}
+              element={<MovieListComponent />}
             />
             <Route
               path="/movie/:movieId"

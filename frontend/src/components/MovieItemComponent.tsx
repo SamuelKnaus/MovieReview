@@ -7,7 +7,7 @@ type MovieProps = {
   }
 }
 
-class MovieComponent extends PureComponent <MovieProps> {
+class MovieItemComponent extends PureComponent <MovieProps> {
   render() {
     return (
       <h1>
@@ -18,4 +18,4 @@ class MovieComponent extends PureComponent <MovieProps> {
   }
 }
 
-export default withRouter(MovieComponent);
+export default withRouter(MovieItemComponent);
