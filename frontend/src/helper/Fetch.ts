@@ -1,13 +1,4 @@
-import { Movie } from '../models/Movie';
-
 const baseUrl = 'http://127.0.0.1:5000';
-
-interface Exception {
-  name: string;
-  description: string;
-  stackTrace: string;
-  path?: string;
-}
 
 export default class Fetch {
   public static getBasicUrls(
