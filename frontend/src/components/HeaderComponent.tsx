@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClapperboard } from '@fortawesome/free-solid-svg-icons';
 import {
   Col,
   Container,
@@ -19,7 +21,10 @@ export default class HeaderComponent extends React.PureComponent<HeaderComponent
           <Row>
             <Col>
               <div className="site-title-wrapper">
-                <h1 className="site-title">Movie Review</h1>
+                <h1 className="site-title">
+                  <FontAwesomeIcon icon={faClapperboard} />
+                  &nbsp;Movie Review
+                </h1>
                 <h2 className="page-title">{this.props.pageTitle}</h2>
               </div>
             </Col>

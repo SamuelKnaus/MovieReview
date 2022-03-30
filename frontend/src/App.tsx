@@ -2,9 +2,9 @@ import React from 'react';
 import './App.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import MovieItemComponent from './components/MovieItemComponent';
 import MovieListComponent from './components/MovieListComponent';
 import Fetch from './helper/Fetch';
+import MovieDetailComponent from './components/MovieDetailComponent';
 
 export default class App extends React.PureComponent {
   componentDidMount() {
@@ -29,7 +29,7 @@ export default class App extends React.PureComponent {
           />
           <Route
             path="/movie/:movieId"
-            element={<MovieItemComponent />}
+            element={<MovieDetailComponent />}
           />
         </Routes>
       </BrowserRouter>

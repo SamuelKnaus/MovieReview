@@ -4,8 +4,6 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import HeaderComponent from './components/HeaderComponent';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(

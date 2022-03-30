@@ -1,4 +1,10 @@
+@use '../styles/predefined';
+
 header {
+  background-color: predefined.$basic-green;
+  color: predefined.$white-accent;
+  margin-bottom: 30px;
+
   .site-title-wrapper {
     text-align: center;
     padding: 20px 0;
@@ -6,11 +12,11 @@ header {
     .site-title {
       padding-bottom: 16px;
       margin-bottom: 16px;
-      border-bottom: 1px solid;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .page-title {
-      margin-bottom: 16px;
+      margin-bottom: 0;
     }
   }
 }
