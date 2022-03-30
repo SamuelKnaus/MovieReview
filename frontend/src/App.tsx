@@ -7,7 +7,10 @@ import Fetch from './helper/Fetch';
 import MovieDetailComponent from './components/MovieDetailComponent';
 import { MasonDoc } from './models/MasonDoc';
 import withAppState from './helper/ReduxHelper';
-import { SET_ADD_CATEGORY_URL, SET_ADD_MOVIE_URL, SET_ADD_USER_URL, SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL } from './redux/Reducer';
+import {
+  SET_ADD_CATEGORY_URL, SET_ADD_MOVIE_URL, SET_ADD_USER_URL,
+  SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL,
+} from './redux/Reducer';
 
 class App extends React.PureComponent<any> {
   componentDidMount() {
