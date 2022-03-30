@@ -8,6 +8,7 @@ import { Movie } from '../models/Movie';
 
 type MovieProps = {
   movie?: Movie
+  categoryTitle: string
 }
 
 export default class MovieDetailInformationComponent extends PureComponent <MovieProps> {
@@ -34,7 +35,7 @@ export default class MovieDetailInformationComponent extends PureComponent <Movi
             </li>
             <li>
               {'Category: '}
-              {this.props.movie?.category_id}
+              {this.props.categoryTitle}
             </li>
           </ul>
         </Container>

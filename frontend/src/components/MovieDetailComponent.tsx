@@ -14,6 +14,7 @@ type MovieDetailComponentProps = {
   location: {
     state: {
       movieRequestUrl: string
+      categoryTitle: string
     }
   }
 }
@@ -66,6 +67,7 @@ class MovieDetailComponent
         <div className="main">
           <MovieDetailInformationComponent
             movie={this.state.movie}
+            categoryTitle={this.props.location.state.categoryTitle}
           />
           <MovieDetailReviewsComponent />
         </div>
