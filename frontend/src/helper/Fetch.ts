@@ -1,9 +1,11 @@
+import { HttpError } from '../models/HttpError';
+
 const baseUrl = 'http://127.0.0.1:5000';
 
 export default class Fetch {
   public static getBasicUrls(
     responseHandler: (serverResponse: boolean) => void,
-    errorHandler: (serverResponse: boolean) => void,
+    errorHandler: (serverResponse: HttpError) => void,
   ) {
     const path = '/';
     this.handleJsonResponse(
@@ -16,7 +18,7 @@ export default class Fetch {
 
   public static getMovieList(
     responseHandler: (serverResponse: any) => void,
-    errorHandler: (serverResponse: any) => void,
+    errorHandler: (serverResponse: HttpError) => void,
   ) {
     const path = '/api/movies/';
     this.handleJsonResponse(
@@ -50,15 +52,17 @@ export default class Fetch {
     responseHandler: (serverResponse: any) => void,
     errorHandler: (serverResponse: any) => void,
   ) {
+    let resp: Response;
     fetch
-      .then((response) => response.json())
+      .then((response) => {
+        resp = response;
+        return response.json();
+      })
       .then((responseJson) => {
-        // tslint:disable-next-line:no-console
-        console.log(responseJson);
-        if (responseJson.status === '401' || responseJson.status === '403') {
+        if (resp.status === 401 || resp.status === 403) {
           // TODO navigate to login page
           errorHandler(responseJson);
-        } else if (responseJson.status > 300) {
+        } else if (resp.status > 300) {
           errorHandler(responseJson);
         } else {
           responseHandler(responseJson);

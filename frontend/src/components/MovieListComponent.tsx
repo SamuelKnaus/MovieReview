@@ -4,6 +4,7 @@ import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
 import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
+import { HttpError } from '../models/HttpError';
 
 type MovieListComponentState = {
   error: boolean,
@@ -33,7 +34,7 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
     });
   };
 
-  requestErrorHandler = (serverResponse: any) => {
+  requestErrorHandler = (serverResponse: HttpError) => {
     this.setState({
       isLoaded: true,
     });
