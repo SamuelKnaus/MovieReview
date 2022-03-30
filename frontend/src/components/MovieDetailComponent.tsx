@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Location } from 'react-router-dom';
 import withRouter from '../helper/RouterHelper';
 import HeaderComponent from './HeaderComponent';
 import MovieDetailInformationComponent from './MovieDetailInformationComponent';
@@ -65,7 +64,9 @@ class MovieDetailComponent
       <div className="movie-item">
         <HeaderComponent pageTitle="Movie Title" />
         <div className="main">
-          <MovieDetailInformationComponent />
+          <MovieDetailInformationComponent
+            movie={this.state.movie}
+          />
           <MovieDetailReviewsComponent />
         </div>
         <FooterComponent />

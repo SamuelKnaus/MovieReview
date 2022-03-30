@@ -2,17 +2,15 @@ import React, { PureComponent } from 'react';
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import withRouter from '../helper/RouterHelper';
 
 import './MovieDetailInformationComponent.scss';
+import { Movie } from '../models/Movie';
 
 type MovieProps = {
-  params: {
-    movieId: number
-  }
+  movie?: Movie
 }
 
-class MovieDetailInformationComponent extends PureComponent <MovieProps> {
+export default class MovieDetailInformationComponent extends PureComponent <MovieProps> {
   render() {
     return (
       <div className="move-item-information">
@@ -21,17 +19,26 @@ class MovieDetailInformationComponent extends PureComponent <MovieProps> {
             <FontAwesomeIcon icon={faCircleInfo} />
             &nbsp;Information
           </h3>
-          {this.props.params.movieId}
           <ul>
-            <li>Director: abc</li>
-            <li>Length: 123</li>
-            <li>Release Date: 01.02.1998</li>
-            <li>Category: Crime</li>
+            <li>
+              {'Director: '}
+              {this.props.movie?.director}
+            </li>
+            <li>
+              {'Length: '}
+              {this.props.movie?.length}
+            </li>
+            <li>
+              {'Release Date: '}
+              {this.props.movie?.release_date}
+            </li>
+            <li>
+              {'Category: '}
+              {this.props.movie?.category_id}
+            </li>
           </ul>
         </Container>
       </div>
     );
   }
 }
-
-export default withRouter(MovieDetailInformationComponent);

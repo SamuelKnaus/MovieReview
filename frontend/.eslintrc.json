@@ -26,6 +26,7 @@
         }
     },
     "rules": {
+        "react/require-default-props": "off",
         "react/no-unused-prop-types": "warn",
         "react/no-unused-state": "warn",
         "class-methods-use-this": "off",
