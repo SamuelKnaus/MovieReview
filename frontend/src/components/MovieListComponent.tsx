@@ -1,18 +1,22 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
+import { NavigateFunction } from 'react-router-dom';
+import withRouter from '../helper/RouterHelper';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
 import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
 import { HttpError } from '../models/HttpError';
+import FooterComponent from './FooterComponent';
+
+import './MovieListComponent.scss';
 
 type MovieListComponentProps = {
   allMoviesUrl: string
   allUsersUrl: string
   allCategoriesUrl: string
+  navigate: NavigateFunction
 }
-
-import './MovieListComponent.scss';
 
 type MovieListComponentState = {
   error: boolean,
@@ -20,7 +24,7 @@ type MovieListComponentState = {
   movies: Movie[]
 }
 
-export default class MovieListComponent
+class MovieListComponent
   extends React.PureComponent<MovieListComponentProps, MovieListComponentState> {
   constructor(props: MovieListComponentProps) {
     super(props);
@@ -86,7 +90,7 @@ export default class MovieListComponent
           </thead>
           <tbody>
             {this.state.movies.map((movie, index) => (
-              <tr className="movie-list-item">
+              <tr className="movie-list-item" onClick={() => this.props.navigate(`/movie/${movie.id}`)}>
                 <td>{index + 1}</td>
                 <td>{movie.title}</td>
                 <td>{movie.director}</td>
@@ -109,7 +113,10 @@ export default class MovieListComponent
             </Container>
           </div>
         </div>
+        <FooterComponent />
       </div>
     );
   }
 }
+
+export default withRouter(MovieListComponent);

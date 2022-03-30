@@ -1,0 +1,8 @@
+@use '../styles/predefined';
+
+footer {
+  background-color: predefined.$basic-green;
+  color: predefined.$white-accent;
+  padding: 20px 40px;
+  text-align: center;
+}

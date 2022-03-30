@@ -3,5 +3,11 @@
 .movie-list {
   .movie-list-table {
     @include predefined.section-padding;
+
+    tbody {
+      tr {
+        cursor: pointer;
+      }
+    }
   }
 }

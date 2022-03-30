@@ -1,0 +1,6 @@
+@use '../styles/predefined';
+
+.move-item-information {
+  @include predefined.section-padding;
+  background-color: predefined.$light-gray-background;
+}
