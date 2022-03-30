@@ -26,6 +26,8 @@
         }
     },
     "rules": {
+        "react/no-unused-prop-types": "warn",
+        "react/no-unused-state": "warn",
         "class-methods-use-this": "off",
         "react/jsx-props-no-spreading": "off",
         "@typescript-eslint/no-explicit-any": "off",

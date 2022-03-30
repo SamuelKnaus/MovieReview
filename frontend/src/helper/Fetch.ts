@@ -17,10 +17,10 @@ export default class Fetch {
   }
 
   public static getMovieList(
+    path: string,
     responseHandler: (serverResponse: any) => void,
     errorHandler: (serverResponse: HttpError) => void,
   ) {
-    const path = '/api/movies/';
     this.handleJsonResponse(
       this.getRequest(path),
       path,
