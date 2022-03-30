@@ -1,4 +1,6 @@
-export type Movie = {
+import { MasonDoc } from './MasonDoc';
+
+export interface Movie extends MasonDoc {
   id: number,
   title: string,
   director: string

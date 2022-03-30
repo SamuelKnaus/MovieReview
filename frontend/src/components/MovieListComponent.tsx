@@ -4,6 +4,13 @@ import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
 import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
+import { HttpError } from '../models/HttpError';
+
+type MovieListComponentProps = {
+  allMoviesUrl: string
+  allUsersUrl: string
+  allCategoriesUrl: string
+}
 
 import './MovieListComponent.scss';
 
@@ -13,8 +20,9 @@ type MovieListComponentState = {
   movies: Movie[]
 }
 
-export default class MovieListComponent extends React.PureComponent<any, MovieListComponentState> {
-  constructor(props: any) {
+export default class MovieListComponent
+  extends React.PureComponent<MovieListComponentProps, MovieListComponentState> {
+  constructor(props: MovieListComponentProps) {
     super(props);
     this.state = {
       error: false,
@@ -23,8 +31,15 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
     };
   }
 
-  componentDidMount() {
-    Fetch.getMovieList(this.requestResponseHandler, this.requestErrorHandler);
+  componentDidUpdate(prevProps: MovieListComponentProps) {
+    if (prevProps.allMoviesUrl !== this.props.allMoviesUrl) {
+      Fetch.getMovieList(
+        this.props.allMoviesUrl,
+        this.requestResponseHandler,
+        this.requestErrorHandler,
+      );
+    }
+    return null;
   }
 
   requestResponseHandler = (serverResponse: Collection<Movie>) => {
@@ -35,7 +50,7 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
     });
   };
 
-  requestErrorHandler = (serverResponse: any) => {
+  requestErrorHandler = (serverResponse: HttpError) => {
     this.setState({
       isLoaded: true,
     });
