@@ -5,6 +5,8 @@ import { Movie } from '../models/Movie';
 import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
 
+import './MovieListComponent.scss';
+
 type MovieListComponentState = {
   error: boolean,
   isLoaded: boolean,
@@ -56,7 +58,7 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
       );
     } else {
       content = (
-        <Table striped bordered hover className="movie-list-table">
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>#</th>
@@ -86,9 +88,11 @@ export default class MovieListComponent extends React.PureComponent<any, MovieLi
       <div className="movie-list">
         <HeaderComponent pageTitle="Movie List" />
         <div className="main">
-          <Container>
-            {content}
-          </Container>
+          <div className="movie-list-table">
+            <Container>
+              {content}
+            </Container>
+          </div>
         </div>
       </div>
     );

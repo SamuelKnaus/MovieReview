@@ -3,3 +3,8 @@ $hover-light-green: #009977FF;
 $basic-green: #087056;
 $headings: #007057;
 $white-accent: #ffffff;
+$light-gray-background: #efefef;
+
+@mixin section-padding() {
+  padding: 20px 40px;
+}

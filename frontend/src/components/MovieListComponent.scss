@@ -1,0 +1,7 @@
+@use '../styles/predefined';
+
+.movie-list {
+  .movie-list-table {
+    @include predefined.section-padding;
+  }
+}

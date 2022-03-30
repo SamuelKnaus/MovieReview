@@ -1,0 +1,14 @@
+@use '../styles/predefined';
+
+.movie-item {
+  .main {
+    .move-item-card {
+      @include predefined.section-padding;
+      background-color: predefined.$light-gray-background;
+    }
+
+    .reviews {
+      @include predefined.section-padding;
+    }
+  }
+}
