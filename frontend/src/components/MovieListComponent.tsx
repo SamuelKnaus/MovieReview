@@ -34,14 +34,14 @@ class MovieListComponent
     };
   }
 
-  componentDidUpdate(prevProps: ReduxState) {
-    if (prevProps.appState.allMoviesUrl !== this.props.appState.allMoviesUrl) {
-      Fetch.getMovieList(
-        this.props.appState.allMoviesUrl,
-        this.requestResponseHandler,
-        this.requestErrorHandler,
-      );
+  componentDidMount() {
+    if (this.props.appState.allMoviesUrl) {
+      this.fetchMovieList();
     }
+  }
+
+  componentDidUpdate(prevProps: ReduxState) {
+    this.fetchMovieList();
   }
 
   requestResponseHandler = (serverResponse: Collection<Movie>) => {
@@ -57,6 +57,16 @@ class MovieListComponent
       isLoaded: true,
     });
   };
+
+  fetchMovieList() {
+    if (this.props.appState.allMoviesUrl) {
+      Fetch.getMovieList(
+        this.props.appState.allMoviesUrl,
+        this.requestResponseHandler,
+        this.requestErrorHandler,
+      );
+    }
+  }
 
   render() {
     let content;
