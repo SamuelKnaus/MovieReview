@@ -69,7 +69,9 @@ class MovieDetailComponent
             movie={this.state.movie}
             categoryTitle={this.props.location.state.categoryTitle}
           />
-          <MovieDetailReviewsComponent />
+          <MovieDetailReviewsComponent
+            reviewsUrl={this.state.movie?.['@controls']['moviereviewmeta:reviews-for-movie']?.href}
+          />
         </div>
         <FooterComponent />
       </div>

@@ -5,11 +5,61 @@ import {
   faQuoteRight, faComments, faQuoteLeft, faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
-import withRouter from '../helper/RouterHelper';
 
 import './MovieDetailReviewsComponent.scss';
+import { Collection } from '../models/Collection';
+import { Review } from '../models/Review';
+import Fetch from '../helper/Fetch';
+import { HttpError } from '../models/HttpError';
 
-class MovieDetailReviewsComponent extends PureComponent {
+type MovieDetailReviewsComponentProps = {
+  reviewsUrl?: string
+}
+
+type MovieDetailReviewsComponentState = {
+  isLoaded: boolean,
+  reviews?: Review[]
+}
+
+export default class MovieDetailReviewsComponent
+  extends PureComponent<MovieDetailReviewsComponentProps, MovieDetailReviewsComponentState> {
+  constructor(props: MovieDetailReviewsComponentProps) {
+    super(props);
+
+    this.state = {
+      isLoaded: false,
+    };
+  }
+
+  componentDidUpdate(prevProps: MovieDetailReviewsComponentProps) {
+    if (this.props.reviewsUrl && prevProps.reviewsUrl !== this.props.reviewsUrl) {
+      this.fetchReviewList();
+    }
+  }
+
+  requestResponseHandler = (serverResponse: Collection<Review>) => {
+    this.setState({
+      isLoaded: true,
+      reviews: serverResponse.items ?? [],
+    });
+  };
+
+  requestErrorHandler = (serverResponse: HttpError) => {
+    this.setState({
+      isLoaded: true,
+    });
+  };
+
+  fetchReviewList() {
+    if (this.props.reviewsUrl) {
+      Fetch.getRequest(
+        this.props.reviewsUrl,
+        this.requestResponseHandler,
+        this.requestErrorHandler,
+      );
+    }
+  }
+
   render() {
     return (
       <div className="reviews">
@@ -115,5 +165,3 @@ class MovieDetailReviewsComponent extends PureComponent {
     );
   }
 }
-
-export default withRouter(MovieDetailReviewsComponent);
