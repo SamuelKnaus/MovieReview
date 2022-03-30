@@ -8,31 +8,27 @@ export default class Fetch {
     errorHandler: (serverResponse: HttpError) => void,
   ) {
     const path = '/';
-    this.handleJsonResponse(
-      this.getRequest(path),
+
+    this.getRequest(
       path,
       responseHandler,
       errorHandler,
     );
   }
 
-  public static getMovieList(
+  public static getRequest(
     path: string,
     responseHandler: (serverResponse: any) => void,
     errorHandler: (serverResponse: HttpError) => void,
   ) {
     this.handleJsonResponse(
-      this.getRequest(path),
+      fetch(baseUrl + path, {
+        method: 'GET',
+      }),
       path,
       responseHandler,
       errorHandler,
     );
-  }
-
-  private static getRequest(url: string) {
-    return fetch(baseUrl + url, {
-      method: 'GET',
-    });
   }
 
   private static postRequest(url: string, postObject: any) {

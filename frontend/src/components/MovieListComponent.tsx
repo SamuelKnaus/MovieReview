@@ -60,7 +60,7 @@ class MovieListComponent
 
   fetchMovieList() {
     if (this.props.appState.allMoviesUrl) {
-      Fetch.getMovieList(
+      Fetch.getRequest(
         this.props.appState.allMoviesUrl,
         this.requestResponseHandler,
         this.requestErrorHandler,
