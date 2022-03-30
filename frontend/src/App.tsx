@@ -6,35 +6,22 @@ import MovieListComponent from './components/MovieListComponent';
 import Fetch from './helper/Fetch';
 import MovieDetailComponent from './components/MovieDetailComponent';
 import { MasonDoc } from './models/MasonDoc';
+import withAppState from './helper/ReduxHelper';
+import { SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL } from './redux/Reducer';
 
-type AppState = {
-  allMoviesUrl: string
-  allUsersUrl: string
-  allCategoriesUrl: string
-}
-
-export default class App extends React.PureComponent<any, AppState> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      allMoviesUrl: '',
-      allUsersUrl: '',
-      allCategoriesUrl: '',
-    };
-  }
-
+class App extends React.PureComponent<any> {
   componentDidMount() {
     Fetch.getBasicUrls(this.requestSuccessful, this.requestError);
   }
 
   requestSuccessful = (serverResponse: MasonDoc) => {
-    this.setState({
-      allMoviesUrl: serverResponse['@controls']['moviereviewmeta:movies-all']?.href ?? '',
-      allUsersUrl: serverResponse['@controls']['moviereviewmeta:users-all']?.href ?? '',
-      allCategoriesUrl: serverResponse['@controls']['moviereviewmeta:categories-all']?.href ?? '',
-    });
-    console.log(serverResponse['@controls']);
+    const allMoviesUrl = serverResponse['@controls']['moviereviewmeta:movies-all']?.href ?? '';
+    const allUsersUrl = serverResponse['@controls']['moviereviewmeta:users-all']?.href ?? '';
+    const allCategoriesUrl = serverResponse['@controls']['moviereviewmeta:categories-all']?.href ?? '';
+
+    this.props.appStateDispatch({ type: SET_ALL_MOVIES_URL, url: allMoviesUrl });
+    this.props.appStateDispatch({ type: SET_ALL_USERS_URL, url: allUsersUrl });
+    this.props.appStateDispatch({ type: SET_ALL_CATEGORIES_URL, url: allCategoriesUrl });
   };
 
   requestError = (serverResponse: any) => {
@@ -47,13 +34,7 @@ export default class App extends React.PureComponent<any, AppState> {
         <Routes>
           <Route
             path="/"
-            element={(
-              <MovieListComponent
-                allMoviesUrl={this.state.allMoviesUrl}
-                allUsersUrl={this.state.allUsersUrl}
-                allCategoriesUrl={this.state.allCategoriesUrl}
-              />
-            )}
+            element={(<MovieListComponent />)}
           />
           <Route
             path="/movie/:movieId"
@@ -64,3 +45,5 @@ export default class App extends React.PureComponent<any, AppState> {
     );
   }
 }
+
+export default withAppState(App);

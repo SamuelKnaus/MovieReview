@@ -8,13 +8,12 @@ import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
 import { HttpError } from '../models/HttpError';
 import FooterComponent from './FooterComponent';
+import withAppState, { ReduxState } from '../helper/ReduxHelper';
+import { AppState } from '../redux/Store';
 
 import './MovieListComponent.scss';
 
-type MovieListComponentProps = {
-  allMoviesUrl: string
-  allUsersUrl: string
-  allCategoriesUrl: string
+interface MovieListComponentProps extends ReduxState {
   navigate: NavigateFunction
 }
 
@@ -35,15 +34,14 @@ class MovieListComponent
     };
   }
 
-  componentDidUpdate(prevProps: MovieListComponentProps) {
-    if (prevProps.allMoviesUrl !== this.props.allMoviesUrl) {
+  componentDidUpdate(prevProps: ReduxState) {
+    if (prevProps.appState.allMoviesUrl !== this.props.appState.allMoviesUrl) {
       Fetch.getMovieList(
-        this.props.allMoviesUrl,
+        this.props.appState.allMoviesUrl,
         this.requestResponseHandler,
         this.requestErrorHandler,
       );
     }
-    return null;
   }
 
   requestResponseHandler = (serverResponse: Collection<Movie>) => {
@@ -119,4 +117,4 @@ class MovieListComponent
   }
 }
 
-export default withRouter(MovieListComponent);
+export default withRouter(withAppState(MovieListComponent, (state: AppState) => state));
