@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { NavigateFunction } from 'react-router-dom';
+import moment from 'moment';
 import withRouter from '../helper/RouterHelper';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
@@ -87,16 +88,21 @@ class MovieListComponent
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie, index) => (
-              <tr className="movie-list-item" onClick={() => this.props.navigate(`/movie/${movie.id}`)}>
-                <td>{index + 1}</td>
-                <td>{movie.title}</td>
-                <td>{movie.director}</td>
-                <td>{movie.length}</td>
-                <td>{movie.category_id}</td>
-                <td>{movie.release_date}</td>
-              </tr>
-            ))}
+            {this.state.movies.map((movie, index) => {
+              const parsedDate = moment(movie.release_date, 'YYYY-MM-DD');
+              const outputDate = parsedDate.format('DD.MM.YYYY');
+
+              return (
+                <tr className="movie-list-item" key={movie.id} onClick={() => this.props.navigate(`/movie/${movie.id}`)}>
+                  <td>{index + 1}</td>
+                  <td>{movie.title}</td>
+                  <td>{movie.director}</td>
+                  <td>{movie.length}</td>
+                  <td>{movie.category_id}</td>
+                  <td>{outputDate}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       );
