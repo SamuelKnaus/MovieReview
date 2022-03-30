@@ -139,7 +139,17 @@ class MovieListComponent
               minutes %= 60;
 
               return (
-                <tr className="movie-list-item" key={movie.id} onClick={() => this.props.navigate(`/movie/${movie.id}`)}>
+                <tr
+                  className="movie-list-item"
+                  key={movie.id}
+                  onClick={
+                    () => this.props.navigate(`/movie/${movie.id}`, {
+                      state: {
+                        movieRequestUrl: movie['@controls'].item?.href,
+                      },
+                    })
+                  }
+                >
                   <td>{index + 1}</td>
                   <td>{movie.title}</td>
                   <td>{movie.director}</td>
