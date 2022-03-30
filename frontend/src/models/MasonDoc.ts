@@ -20,9 +20,9 @@ export interface MasonDoc {
  }
 
  type Control = {
-    encoding: string,
+    encoding?: string,
     href: string,
-    method: string,
-    schema: any,
+    method?: string,
+    schema?: any,
     title: string
  }
