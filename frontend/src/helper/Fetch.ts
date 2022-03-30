@@ -4,7 +4,7 @@ const baseUrl = 'http://127.0.0.1:5000';
 
 export default class Fetch {
   public static getBasicUrls(
-    responseHandler: (serverResponse: boolean) => void,
+    responseHandler: (serverResponse: any) => void,
     errorHandler: (serverResponse: HttpError) => void,
   ) {
     const path = '/';
