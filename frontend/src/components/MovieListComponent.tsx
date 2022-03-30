@@ -5,6 +5,7 @@ import moment from 'moment';
 import withRouter from '../helper/RouterHelper';
 import HeaderComponent from './HeaderComponent';
 import { Movie } from '../models/Movie';
+import { Category } from '../models/Category';
 import { Collection } from '../models/Collection';
 import Fetch from '../helper/Fetch';
 import { HttpError } from '../models/HttpError';
@@ -21,7 +22,8 @@ interface MovieListComponentProps extends ReduxState {
 type MovieListComponentState = {
   error: boolean,
   isLoaded: boolean,
-  movies: Movie[]
+  movies?: Movie[],
+  categoryTitleMap?: Map<number, string>,
 }
 
 class MovieListComponent
@@ -31,28 +33,49 @@ class MovieListComponent
     this.state = {
       error: false,
       isLoaded: false,
-      movies: [],
     };
   }
 
   componentDidMount() {
     this.fetchMovieList();
+    this.fetchCategoryList();
   }
 
   componentDidUpdate(prevProps: ReduxState) {
     if (prevProps.appState.allMoviesUrl !== this.props.appState.allMoviesUrl) {
       this.fetchMovieList();
     }
+    if (prevProps.appState.allCategoriesUrl !== this.props.appState.allCategoriesUrl) {
+      this.fetchCategoryList();
+    }
   }
 
-  requestResponseHandler = (serverResponse: Collection<Movie>) => {
+  movieRequestResponseHandler = (serverResponse: Collection<Movie>) => {
     this.setState({
       isLoaded: true,
       movies: serverResponse.items ?? [],
     });
   };
 
-  requestErrorHandler = (serverResponse: HttpError) => {
+  movieRequestErrorHandler = (serverResponse: HttpError) => {
+    this.setState({
+      isLoaded: true,
+    });
+  };
+
+  categoryRequestResponseHandler = (serverResponse: Collection<Category>) => {
+    const categoryList = serverResponse.items ?? [];
+    const categoryMap = new Map<number, string>();
+    categoryList.forEach((category) => {
+      categoryMap.set(category.id, category.title);
+    });
+    this.setState({
+      isLoaded: true,
+      categoryTitleMap: categoryMap,
+    });
+  };
+
+  categoryRequestErrorHandler = (serverResponse: HttpError) => {
     this.setState({
       isLoaded: true,
     });
@@ -62,8 +85,18 @@ class MovieListComponent
     if (this.props.appState.allMoviesUrl) {
       Fetch.getRequest(
         this.props.appState.allMoviesUrl,
-        this.requestResponseHandler,
-        this.requestErrorHandler,
+        this.movieRequestResponseHandler,
+        this.movieRequestErrorHandler,
+      );
+    }
+  }
+
+  fetchCategoryList() {
+    if (this.props.appState.allCategoriesUrl) {
+      Fetch.getRequest(
+        this.props.appState.allCategoriesUrl,
+        this.categoryRequestResponseHandler,
+        this.categoryRequestErrorHandler,
       );
     }
   }
@@ -97,7 +130,7 @@ class MovieListComponent
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie, index) => {
+            {this.state.movies?.map((movie, index) => {
               const parsedDate = moment(movie.release_date, 'YYYY-MM-DD');
               const outputDate = parsedDate.format('DD.MM.YYYY');
 
@@ -116,7 +149,7 @@ class MovieListComponent
                     {minutes}
                     &nbsp;h
                   </td>
-                  <td>{movie.category_id}</td>
+                  <td>{this.state.categoryTitleMap?.get(movie.category_id)}</td>
                   <td>{outputDate}</td>
                 </tr>
               );
