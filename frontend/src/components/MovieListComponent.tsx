@@ -35,13 +35,13 @@ class MovieListComponent
   }
 
   componentDidMount() {
-    if (this.props.appState.allMoviesUrl) {
-      this.fetchMovieList();
-    }
+    this.fetchMovieList();
   }
 
   componentDidUpdate(prevProps: ReduxState) {
-    this.fetchMovieList();
+    if (prevProps.appState.allMoviesUrl !== this.props.appState.allMoviesUrl) {
+      this.fetchMovieList();
+    }
   }
 
   requestResponseHandler = (serverResponse: Collection<Movie>) => {
