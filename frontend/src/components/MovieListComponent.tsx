@@ -46,7 +46,6 @@ class MovieListComponent
   }
 
   requestResponseHandler = (serverResponse: Collection<Movie>) => {
-    console.log(serverResponse);
     this.setState({
       isLoaded: true,
       movies: serverResponse.items ?? [],
@@ -102,12 +101,21 @@ class MovieListComponent
               const parsedDate = moment(movie.release_date, 'YYYY-MM-DD');
               const outputDate = parsedDate.format('DD.MM.YYYY');
 
+              let minutes = Math.floor(movie.length / 60);
+              const hours = Math.floor(minutes / 60);
+              minutes %= 60;
+
               return (
                 <tr className="movie-list-item" key={movie.id} onClick={() => this.props.navigate(`/movie/${movie.id}`)}>
                   <td>{index + 1}</td>
                   <td>{movie.title}</td>
                   <td>{movie.director}</td>
-                  <td>{movie.length}</td>
+                  <td>
+                    {hours}
+                    :
+                    {minutes}
+                    &nbsp;h
+                  </td>
                   <td>{movie.category_id}</td>
                   <td>{outputDate}</td>
                 </tr>
