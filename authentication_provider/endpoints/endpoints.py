@@ -1,7 +1,7 @@
 """
     All the endpoints for the user resources
 """
-
+import werkzeug
 from flask import request
 from flask_restful import Resource
 
@@ -77,7 +77,9 @@ class UserItem(Resource):
     def __update_review_object(cls, user, update_user):
         update_user.deserialize(request.json)
 
-        user.username = update_user.username
+        if user.username != update_user.username:
+            raise werkzeug.exceptions.BadRequest("The username cannot be changed")
+
         user.email_address = update_user.email_address
         user.password = update_user.password
         user.role = update_user.role
