@@ -9,6 +9,7 @@ from flask_restful import Resource
 import api
 
 from database.models import User
+from helper.encryption_helper import EncryptionHelper
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 
 
@@ -36,6 +37,7 @@ class UserCollection(Resource):
 
     @classmethod
     def __get_url_for_created_item(cls, user):
+        user.password = EncryptionHelper.encrypt_password(user.password)
         return api.API.url_for(UserItem, user=user)
 
     def post(self):
@@ -81,7 +83,7 @@ class UserItem(Resource):
             raise werkzeug.exceptions.BadRequest("The username cannot be changed")
 
         user.email_address = update_user.email_address
-        user.password = update_user.password
+        user.password = EncryptionHelper.encrypt_password(update_user.password)
         user.role = update_user.role
 
     def put(self, user):

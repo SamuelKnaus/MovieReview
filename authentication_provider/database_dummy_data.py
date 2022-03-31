@@ -5,6 +5,7 @@ It uses the definitions of the api module and adds dummy data to the database
 
 import api
 from database.models import User, UserType
+from helper.encryption_helper import EncryptionHelper
 
 DB = api.DB
 
@@ -16,35 +17,35 @@ DB.session.rollback()
 USER_1 = User(
     username="dummyGuy",
     email_address="red.unicorn@gmail.com",
-    password="thisisnotapassword",
+    password=EncryptionHelper.encrypt_password("thisisnotapassword"),
     role=UserType.BASIC_USER
 )
 
 USER_2 = User(
     username="dummyAdmin",
     email_address="omnipotent.pencil@yahoo.com",
-    password="1234",
+    password=EncryptionHelper.encrypt_password("1234"),
     role=UserType.ADMIN
 )
 
 USER_3 = User(
     username="grantorinohurricane",
     email_address="grantorinohurricane@gmail.com",
-    password="Grantorino1234",
+    password=EncryptionHelper.encrypt_password("Grantorino1234"),
     role=UserType.BASIC_USER
 )
 
 USER_4 = User(
     username="lightningbasketball",
     email_address="lightningbasketbal@gmail.com",
-    password="Basketball1234",
+    password=EncryptionHelper.encrypt_password("Basketball1234"),
     role=UserType.BASIC_USER
 )
 
 USER_5 = User(
     username="johnkennedy",
     email_address="kennedyj@moviereview.com",
-    password="$KenJon9908",
+    password=EncryptionHelper.encrypt_password("$KenJon9908"),
     role=UserType.ADMIN
 )
 
