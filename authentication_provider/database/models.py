@@ -78,4 +78,3 @@ class User(api.DB.Model, Serializer):
             "enum": ["Admin", "Basic User"]
         }
         return schema
-

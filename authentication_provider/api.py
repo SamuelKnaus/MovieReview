@@ -7,7 +7,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from UserURLConverter import UserConverter
+from url_converter.user_converter import UserConverter
 
 APP = Flask(__name__, static_folder="static")
 CORS(APP)
@@ -25,4 +25,3 @@ from endpoints.endpoints import UserCollection, UserItem
 API.add_resource(UserCollection, "/api/users/")
 APP.url_map.converters["user"] = UserConverter
 API.add_resource(UserItem, "/api/users/<user:user>/")
-

@@ -3,7 +3,6 @@ This module is used to set up a dummy database
 It uses the definitions of the api module and adds dummy data to the database
 """
 
-import datetime
 import api
 from database.models import User, UserType
 
@@ -55,4 +54,3 @@ DB.session.add(USER_3)
 DB.session.add(USER_4)
 DB.session.add(USER_5)
 DB.session.commit()
-

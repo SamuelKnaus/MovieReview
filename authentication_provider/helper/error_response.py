@@ -2,7 +2,7 @@
     Contains the error response helper class
 """
 import json
-from flask import Response, render_template
+from flask import Response
 
 from constants import DATA_TYPE_JSON
 

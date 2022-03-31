@@ -1,3 +1,7 @@
+"""
+    Includes the url converter for the user object
+"""
+
 from werkzeug.exceptions import NotFound
 from werkzeug.routing import BaseConverter
 import database
