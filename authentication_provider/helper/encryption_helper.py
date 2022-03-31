@@ -15,7 +15,7 @@ class EncryptionHelper:
             Encrypts a password including salts
             input:
                 password: The password which is to be encrypted as string
-                return: The salted and encrypted password as string
+            output: The salted and encrypted password as string
         """
         salt = bcrypt.gensalt()
         return bcrypt.hashpw(password.encode('utf8'), salt)

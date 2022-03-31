@@ -9,7 +9,7 @@ class AuthenticationToken(Serializer):
     """
         This class represents the authentication token object used for authentication
     """
-    def __init__(self, token):
+    def __init__(self, token=None):
         self.token = token
 
     def serialize(self):
@@ -29,3 +29,19 @@ class AuthenticationToken(Serializer):
             It is used to decode the json body of requests
         """
         self.token = doc["token"]
+
+    @staticmethod
+    def json_schema():
+        """
+            returns the json schema of an authentication token object
+        """
+        schema = {
+            "type": "object",
+            "required": ["token"]
+        }
+
+        props = schema["properties"] = {}
+        props["token"] = {
+            "type": "string"
+        }
+        return schema
