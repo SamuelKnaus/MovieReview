@@ -134,14 +134,12 @@ class MovieListComponent
               const parsedDate = moment(movie.release_date, 'YYYY-MM-DD');
               const outputDate = parsedDate.format('DD.MM.YYYY');
 
-              let minutes = Math.floor(movie.length / 60);
-              const hours = Math.floor(minutes / 60);
-              minutes %= 60;
+              const minutes = Math.floor(movie.length / 60);
 
               return (
                 <tr
                   className="movie-list-item"
-                  key={movie.id}
+                  key={index.valueOf()}
                   onClick={
                     () => this.props.navigate(`/movie/${movie.id}`, {
                       state: {
@@ -155,10 +153,8 @@ class MovieListComponent
                   <td>{movie.title}</td>
                   <td>{movie.director}</td>
                   <td>
-                    {hours}
-                    :
                     {minutes}
-                    &nbsp;h
+                    {' minutes'}
                   </td>
                   <td>{this.state.categoryTitleMap?.get(movie.category_id)}</td>
                   <td>{outputDate}</td>

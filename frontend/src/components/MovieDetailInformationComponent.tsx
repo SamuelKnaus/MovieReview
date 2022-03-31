@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
+import { Movie } from '../models/Movie';
 
 import './MovieDetailInformationComponent.scss';
-import { Movie } from '../models/Movie';
 
 type MovieProps = {
   movie?: Movie
@@ -13,6 +14,12 @@ type MovieProps = {
 
 export default class MovieDetailInformationComponent extends PureComponent <MovieProps> {
   render() {
+    const movieLength = this.props.movie?.length;
+    const minutes = Math.floor((movieLength ?? 60) / 60);
+
+    const parsedDate = moment(this.props.movie?.release_date, 'YYYY-MM-DD');
+    const outputDate = parsedDate.format('DD.MM.YYYY');
+
     return (
       <div className="move-item-information">
         <Container>
@@ -27,11 +34,12 @@ export default class MovieDetailInformationComponent extends PureComponent <Movi
             </li>
             <li>
               {'Length: '}
-              {this.props.movie?.length}
+              {minutes}
+              {' minutes'}
             </li>
             <li>
               {'Release Date: '}
-              {this.props.movie?.release_date}
+              {outputDate}
             </li>
             <li>
               {'Category: '}

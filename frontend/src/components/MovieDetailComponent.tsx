@@ -39,7 +39,6 @@ class MovieDetailComponent
   }
 
   requestResponseHandler = (serverResponse: Movie) => {
-    console.log(serverResponse);
     this.setState({
       movie: serverResponse ?? [],
       isLoaded: true,
@@ -63,7 +62,7 @@ class MovieDetailComponent
   render() {
     return (
       <div className="movie-item">
-        <HeaderComponent pageTitle="Movie Title" />
+        <HeaderComponent pageTitle={this.state.movie?.title ?? 'Movie Item'} />
         <div className="main">
           <MovieDetailInformationComponent
             movie={this.state.movie}

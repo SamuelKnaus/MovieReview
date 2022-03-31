@@ -5,12 +5,13 @@ import {
   faQuoteRight, faComments, faQuoteLeft, faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
-
-import './MovieDetailReviewsComponent.scss';
+import moment from 'moment';
 import { Collection } from '../models/Collection';
 import { Review } from '../models/Review';
 import Fetch from '../helper/Fetch';
 import { HttpError } from '../models/HttpError';
+
+import './MovieDetailReviewsComponent.scss';
 
 type MovieDetailReviewsComponentProps = {
   reviewsUrl?: string
@@ -70,95 +71,34 @@ export default class MovieDetailReviewsComponent
           </h3>
 
           <Row>
-            <Col>
-              <div className="review">
-                <div className="author">
-                  <h4>Curt Cobain</h4>
-                </div>
-                <div className="meta-information">
-                  <div className="date">01.02.19941</div>
-                  <div className="rating">
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                  </div>
-                </div>
-                <div className="comment">
-                  <FontAwesomeIcon icon={faQuoteLeft} />
-                  &nbsp;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-                  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-                  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-                  dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                  invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-                  et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-                  takimata sanctus est Lorem ipsum dolor sit amet.&nbsp;
-                  <FontAwesomeIcon icon={faQuoteRight} />
-                </div>
-              </div>
-            </Col>
+            {this.state.reviews?.map((review, index) => {
+              const parsedDate = moment(review.date, 'YYYY-MM-DD HH:mm:ss.SSS');
+              const outputDate = parsedDate.format('DD.MM.YYYY HH:mm');
 
-            <Col>
-              <div className="review">
-                <div className="author">
-                  <h4>Max Mustermann</h4>
-                </div>
-                <div className="meta-information">
-                  <div className="date">12.34.5678</div>
-                  <div className="rating">
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStarEmpty} />
+              return (
+                <Col md={4} key={index.valueOf()}>
+                  <div className="review">
+                    <div className="author">
+                      <h4>{review.author_id}</h4>
+                    </div>
+                    <div className="meta-information">
+                      <div className="date">{outputDate}</div>
+                      <div className="rating">
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStarEmpty} />
+                      </div>
+                    </div>
+                    <div className="comment">
+                      <FontAwesomeIcon icon={faQuoteLeft} />
+                      &nbsp;
+                      {review.comment}
+                      &nbsp;
+                      <FontAwesomeIcon icon={faQuoteRight} />
+                    </div>
                   </div>
-                </div>
-                <div className="comment">
-                  <FontAwesomeIcon icon={faQuoteLeft} />
-                  &nbsp;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-                  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-                  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-                  dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                  invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-                  et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-                  takimata sanctus est Lorem ipsum dolor sit amet.&nbsp;
-                  <FontAwesomeIcon icon={faQuoteRight} />
-                </div>
-              </div>
-            </Col>
-
-            <Col>
-              <div className="review">
-                <div className="author">
-                  <h4>Deine Mutter</h4>
-                </div>
-                <div className="meta-information">
-                  <div className="date">24.02.2021</div>
-                  <div className="rating">
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStarEmpty} />
-                    <FontAwesomeIcon icon={faStarEmpty} />
-                    <FontAwesomeIcon icon={faStarEmpty} />
-                    <FontAwesomeIcon icon={faStarEmpty} />
-                  </div>
-                </div>
-                <div className="comment">
-                  <FontAwesomeIcon icon={faQuoteLeft} />
-                  &nbsp;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-                  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-                  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-                  dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                  invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-                  et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-                  takimata sanctus est Lorem ipsum dolor sit amet.&nbsp;
-                  <FontAwesomeIcon icon={faQuoteRight} />
-                </div>
-              </div>
-            </Col>
+                </Col>
+              );
+            })}
           </Row>
         </Container>
       </div>

@@ -8,10 +8,15 @@ header {
     text-align: center;
     padding: 20px 0;
 
-    .site-title {
-      padding-bottom: 16px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    a {
+      color: predefined.$white-accent;
+      text-decoration: none;
+
+      .site-title {
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      }
     }
 
     .page-title {
