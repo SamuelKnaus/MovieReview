@@ -21,7 +21,8 @@ class Login(Resource):
     """
         Contains the login functionality
     """
-    def post(self):
+    @classmethod
+    def post(cls):
         """
             Validates the given user data
             return: An http response indicating the result of the login
@@ -61,7 +62,8 @@ class TokenValidator(Resource):
     """
         Contains the token endpoints
     """
-    def post(self):
+    @classmethod
+    def post(cls):
         """
             Validates a given authentication token
             return: An http response indicating the result of the validation
