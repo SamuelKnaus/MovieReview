@@ -34,7 +34,7 @@ class ErrorResponse:
     @staticmethod
     def get_unsupported_media_type():
         """
-            static helper function to get consistent 417 http error responses
+            static helper function to get consistent 415 http error responses
             result:
                 A http response with the http error code 415
         """
