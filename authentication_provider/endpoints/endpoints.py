@@ -33,11 +33,11 @@ class UserCollection(Resource):
     @classmethod
     def __create_user_object(cls, created_user):
         created_user.deserialize(request.json)
+        created_user.password = EncryptionHelper.encrypt_password(created_user.password)
         return created_user
 
     @classmethod
     def __get_url_for_created_item(cls, user):
-        user.password = EncryptionHelper.encrypt_password(user.password)
         return api.API.url_for(UserItem, user=user)
 
     def post(self):
