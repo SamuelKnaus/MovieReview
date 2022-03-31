@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from endpoints.authentication_endpoints import Login, TokenValidator, Logout
+from endpoints.authentication_endpoints import Login, TokenValidator
 from url_converter.user_converter import UserConverter
 
 APP = Flask(__name__, static_folder="static")
