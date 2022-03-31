@@ -29,5 +29,4 @@ APP.url_map.converters["user"] = UserConverter
 API.add_resource(UserItem, "/api/users/<user:user>/")
 
 API.add_resource(Login, "/login")
-API.add_resource(Logout, "/logout")
 API.add_resource(TokenValidator, "/validateToken")

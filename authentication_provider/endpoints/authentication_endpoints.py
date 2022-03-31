@@ -46,18 +46,6 @@ class Login(Resource):
         return Response(json.dumps(token.serialize()), status=200, mimetype=DATA_TYPE_JSON)
 
 
-class Logout(Resource):
-    """
-        Contains the logout functionality
-    """
-    def get(self):
-        """
-            Represents the logout endpoint
-            return: An http response indicating the result of the logout
-        """
-        return ''
-
-
 class TokenValidator(Resource):
     """
         Contains the token endpoints
