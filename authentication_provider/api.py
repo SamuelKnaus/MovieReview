@@ -7,6 +7,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+
+from endpoints.authentication_endpoints import Login, TokenValidator, Logout
 from url_converter.user_converter import UserConverter
 
 APP = Flask(__name__, static_folder="static")
@@ -19,9 +21,13 @@ API = Api(APP)
 DB = SQLAlchemy(APP)
 
 
-from endpoints.endpoints import UserCollection, UserItem
+from endpoints.user_endpoints import UserCollection, UserItem
 
 
 API.add_resource(UserCollection, "/api/users/")
 APP.url_map.converters["user"] = UserConverter
 API.add_resource(UserItem, "/api/users/<user:user>/")
+
+API.add_resource(Login, "/login")
+API.add_resource(Logout, "/logout")
+API.add_resource(TokenValidator, "/validateToke")

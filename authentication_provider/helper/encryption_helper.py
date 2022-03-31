@@ -30,4 +30,4 @@ class EncryptionHelper:
             output: A boolean indicating if the encrypted_password is the encrypted
                 version of the given plaintext
         """
-        return print(bcrypt.checkpw(password, encrypted_password))
+        return bcrypt.checkpw(password.encode('utf8'), encrypted_password)
