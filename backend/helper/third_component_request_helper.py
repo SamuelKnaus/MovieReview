@@ -16,7 +16,7 @@ def forward(original_request):
     try:
         response = original_request()
     except requests.exceptions.ConnectionError:
-        return ErrorResponse.get_unsupported_media_type()
+        return ErrorResponse.get_gateway_timeout()
 
     status_code = response.status_code
     body = json.dumps(response.json())\

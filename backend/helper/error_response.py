@@ -66,3 +66,12 @@ class ErrorResponse:
                 A http response with the http error code 404
         """
         return Response(render_template('404.html'), 404, mimetype=DATA_TYPE_HTML)
+
+    @staticmethod
+    def get_gateway_timeout():
+        """
+            static helper function to get consistent 504 http error responses
+            result:
+                A http response with the http error code 504
+        """
+        return ErrorResponse("Gateway Timeout", 504).get_http_response()
