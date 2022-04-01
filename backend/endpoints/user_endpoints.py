@@ -4,12 +4,8 @@
 
 from flask import request
 from flask_restful import Resource
-
-import api
-from database.models import User
-from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
-from json_schemas.user_json_schema import get_user_json_schema
-from mason.mason_builder import MasonBuilder
+from helper.third_component_request_helper import get_request, forward, post_request, put_request, \
+    delete_request
 
 
 class UserCollection(Resource):
@@ -25,30 +21,10 @@ class UserCollection(Resource):
                 the http response object containing either the list of users
                 or a http error with the corresponding error message
         """
-        users = User.query.all()
-        user_items = []
-        for user in users:
-            item = MasonBuilder(user.serialize())
-            item.add_control_get_user(user, "item")
-            user_items.append(item)
-
-        body = MasonBuilder()
-        body.add_api_namespace()
-        body.add_control_get_users("self")
-        body.add_control_post_user()
-        body["items"] = user_items
-        return get_blueprint(body)
+        return forward(lambda: get_request("/api/users"))
 
     @classmethod
-    def __create_user_object(cls, created_user):
-        created_user.deserialize(request.json)
-        return created_user
-
-    @classmethod
-    def __get_url_for_created_item(cls, user):
-        return api.API.url_for(UserItem, user=user)
-
-    def post(self):
+    def post(cls):
         """
             This method represents the post endpoint of this resource,
             which is used to add a new user to the database
@@ -56,14 +32,7 @@ class UserCollection(Resource):
             output:
                 a http response object representing the result of this operation
         """
-        user = User()
-        return post_blueprint(
-            request,
-            get_user_json_schema,
-            api.DB,
-            lambda: self.__create_user_object(user),
-            lambda: self.__get_url_for_created_item(user)
-        )
+        return forward(lambda: post_request(request.path, request.json))
 
 
 class UserItem(Resource):
@@ -72,7 +41,7 @@ class UserItem(Resource):
         It contains the definition of a get, a put and a delete endpoint
     """
     @classmethod
-    def get(cls, user):
+    def get(cls, _username):
         """
             This method represents the get endpoint of this resource
             input:
@@ -81,25 +50,10 @@ class UserItem(Resource):
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
         """
-        body = MasonBuilder(user.serialize())
-        body.add_api_namespace()
-        body.add_control_get_users("collection")
-        body.add_control_get_user(user)
-        body.add_control_update_user(user)
-        body.add_control_delete_user(user)
-        body.add_control_get_reviews_of_user(user)
-        return get_blueprint(body)
+        return forward(lambda: get_request(request.path))
 
     @classmethod
-    def __update_review_object(cls, user, update_user):
-        update_user.deserialize(request.json)
-
-        user.username = update_user.username
-        user.email_address = update_user.email_address
-        user.password = update_user.password
-        user.role = update_user.role
-
-    def put(self, user):
+    def put(cls, _username):
         """
             This method represents the put endpoint of this resource,
             which is used to update a user in the database
@@ -109,16 +63,10 @@ class UserItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
-        update_user = User()
-        return put_blueprint(
-            request,
-            get_user_json_schema,
-            api.DB,
-            lambda: self.__update_review_object(user, update_user)
-        )
+        return forward(lambda: put_request(request.path, request.json))
 
     @classmethod
-    def delete(cls, user):
+    def delete(cls, _username):
         """
             This method represents the delete endpoint of this resource,
             which is used to remove a user from the database
@@ -128,4 +76,4 @@ class UserItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
-        return delete_blueprint(api.DB, user)
+        return forward(lambda: delete_request(request.path))

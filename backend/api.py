@@ -61,10 +61,9 @@ API.add_resource(MovieReviewItem, "/api/movies/<movie:movie>/reviews/<review:rev
 
 # USERS LOGIC
 API.add_resource(UserCollection, "/api/users/")
+API.add_resource(UserItem, "/api/users/<_username>/")
+
 APP.url_map.converters["user"] = UserConverter
-API.add_resource(UserItem, "/api/users/<user:user>/")
-
-
 API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
 
 

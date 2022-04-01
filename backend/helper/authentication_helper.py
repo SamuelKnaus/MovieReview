@@ -1,14 +1,17 @@
 """
     Contains helper functions to handle authentication for endpoints
 """
-import json
 from functools import wraps
+
+import requests
 from flask import request
 
 from constants import TOKEN_VALIDATION_ENDPOINT
 from database.models import UserType, User
 from helper.error_response import ErrorResponse
-import requests
+
+
+from helper.third_component_request_helper import post_request
 
 
 def __role_requirement_satisfied(role, required_role):
@@ -31,18 +34,11 @@ def authorize(_func=None, *, required_role=UserType.BASIC_USER):
                 ).get_http_response()
     
             # validate the token by using the third component
-            headers = {
-                "Content-Type": 'application/json'
-            }
             body = {
                 "token": token
             }
             try:
-                r = requests.post(
-                    TOKEN_VALIDATION_ENDPOINT,
-                    json.dumps(body),
-                    headers=headers,
-                )
+                r = post_request(TOKEN_VALIDATION_ENDPOINT, body)
             except requests.exceptions.ConnectionError:
                 return ErrorResponse.get_unauthorized()
 
