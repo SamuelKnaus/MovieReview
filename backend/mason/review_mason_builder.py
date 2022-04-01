@@ -19,7 +19,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
         self.movie_review_collection = api.MovieReviewCollection
         self.user_review_collection = api.UserReviewCollection
 
-    def add_control_get_reviews_of_user(self, user, rel=NAMESPACE + ":reviews-of-user"):
+    def add_control_get_reviews_of_user(self, username, rel=NAMESPACE + ":reviews-of-user"):
         """
             This method adds the mason documentation for the get all reviews of a user endpoint
         """
@@ -28,7 +28,7 @@ class ReviewMasonBuilder(GenericMasonBuilder):
             title="Get a list of all reviews of this user",
             href=self.api.url_for(
                 self.user_review_collection,
-                user=user
+                username=username
             )
         )
 

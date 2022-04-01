@@ -9,7 +9,7 @@ def get_review_json_schema():
     """
     schema = {
         "type": "object",
-        "required": ["rating", "comment", "date", "author_id", "movie_id"]
+        "required": ["rating", "comment", "date", "author", "movie_id"]
     }
 
     props = schema["properties"] = {}
@@ -28,9 +28,9 @@ def get_review_json_schema():
         "type": "string",
         "format": "date-time"
     }
-    props["author_id"] = {
-        "description": "The id of the user which created the review which acts as foreign key",
-        "type": "integer",
+    props["author"] = {
+        "description": "The username of the user which created the review",
+        "type": "string",
     }
     props["movie_id"] = {
         "description": "The id of the movie this review was created for which acts as foreign key",

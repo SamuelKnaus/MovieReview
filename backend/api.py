@@ -13,7 +13,7 @@ from sqlalchemy.engine import Engine
 from constants import NAMESPACE_LINK
 from mason.mason_builder import MasonBuilder
 from url_converters.url_converter import CategoryConverter, MovieConverter
-from url_converters.url_converter import ReviewConverter, UserConverter
+from url_converters.url_converter import ReviewConverter
 
 APP = Flask(__name__, static_folder="static")
 CORS(APP)
@@ -63,8 +63,7 @@ API.add_resource(MovieReviewItem, "/api/movies/<movie:movie>/reviews/<review:rev
 API.add_resource(UserCollection, "/api/users/")
 API.add_resource(UserItem, "/api/users/<_username>/")
 
-APP.url_map.converters["user"] = UserConverter
-API.add_resource(UserReviewCollection, "/api/users/<user:user>/reviews/")
+API.add_resource(UserReviewCollection, "/api/users/<username>/reviews/")
 
 
 @APP.route(NAMESPACE_LINK)

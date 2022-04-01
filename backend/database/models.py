@@ -55,15 +55,6 @@ class Movie(api.DB.Model, Serializer):
         self.category_id = doc.get("category_id")
 
 
-class UserType(str, enum.Enum):
-    """
-    This enum represents the possible roles for a user
-    It is used to authorize the use of endpoints
-    """
-    ADMIN = "Admin"
-    BASIC_USER = "Basic User"
-
-
 class Category(api.DB.Model, Serializer):
     """
         This class represents the database model of a category
@@ -99,9 +90,8 @@ class Review(api.DB.Model, Serializer):
     rating = api.DB.Column(api.DB.Integer, nullable=False)
     comment = api.DB.Column(api.DB.Text, nullable=False)
     date = api.DB.Column(api.DB.DateTime, nullable=False)
-    author_id = api.DB.Column(
+    author = api.DB.Column(
         api.DB.Integer,
-        api.DB.ForeignKey("user.id", ondelete="SET NULL"),
         nullable=True
     )
     movie_id = api.DB.Column(
@@ -111,7 +101,6 @@ class Review(api.DB.Model, Serializer):
     )
 
     movie = api.DB.relationship("Movie")
-    user = api.DB.relationship("User")
 
     def serialize(self):
         """
@@ -123,7 +112,7 @@ class Review(api.DB.Model, Serializer):
             "rating": self.rating,
             "comment": self.comment,
             "date": self.date.strftime(DATETIME_FORMAT),
-            "author_id": self.author_id,
+            "author": self.author,
             "movie_id": self.movie_id
         }
 
@@ -135,40 +124,5 @@ class Review(api.DB.Model, Serializer):
         self.rating = doc["rating"]
         self.comment = doc.get("comment")
         self.date = parser.isoparse(doc["date"])
-        self.author_id = doc.get("author_id")
+        self.author = doc.get("author")
         self.movie_id = doc.get("movie_id")
-
-
-class User(api.DB.Model, Serializer):
-    """
-        This class represents the database model of a user
-    """
-    id = api.DB.Column(api.DB.Integer, primary_key=True, autoincrement=True)
-    username = api.DB.Column(api.DB.String, nullable=False, unique=True)
-    email_address = api.DB.Column(api.DB.String, nullable=False, unique=True)
-    password = api.DB.Column(api.DB.String, nullable=False)
-    role = api.DB.Column(api.DB.Enum(UserType), nullable=False)
-
-    review = api.DB.relationship("Review", back_populates="user")
-
-    def serialize(self):
-        """
-            This function is used to transform a user python object to its json representation
-            It is used to encode the json body of requests responses
-        """
-        return {
-            "id": self.id,
-            "username": self.username,
-            "email_address": self.email_address,
-            "role": self.role
-        }
-
-    def deserialize(self, doc):
-        """
-            This function is used to transform a user json object to an actual python object
-            It is used to decode the json body of requests
-        """
-        self.username = doc["username"]
-        self.email_address = doc.get("email_address")
-        self.password = doc.get("password")
-        self.role = doc.get("role")

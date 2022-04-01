@@ -8,7 +8,8 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
 from api import API, DB
-from database.models import User, UserType, Movie, Category, Review
+from database.models import Movie, Category, Review
+from datamodels.user import UserType, User
 
 
 @event.listens_for(Engine, "connect")
@@ -60,20 +61,11 @@ def _populate_db():
             rating=idx,
             comment=letter + " REVIEW",
             date=datetime.datetime(2020, idx, 1),
-        )
-
-        usr = User(
-            id=idx,
-            username="dummyGuy" + str(idx),
-            email_address="dummyGuy" + str(idx) + "@gmail.com",
-            password="dummyGuy1234" + str(idx),
-            role=UserType.BASIC_USER  # DO: RANDOMIZE THE ROLE
+            author='dummyGuy'
         )
 
         rev.movie = mov  # Relationship
-        rev.user = usr  # Relationship
 
-        DB.session.add(usr)
         DB.session.add(rev)
         DB.session.add(mov)
         DB.session.add(cat)
@@ -589,7 +581,7 @@ def _get_review_json(number=1):
             "rating": 1,
             "comment": "extra-comment-{}".format(number),
             "date": "2020-01-01T00:00:00.000000Z",
-            "author_id": 1,
+            "author": "dummyGuy",
             "movie_id": 1}
 
 
@@ -630,7 +622,7 @@ class TestMovieReviewCollection(object):
 
         # test with valid and see that it exists afterward
         resp = client.post(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 201  # RETURNING 400
+        assert resp.status_code == 201
 
         """ NA Code from sensorhub example: 
         # assert resp.headers["Location"].endswith(self.RESOURCE_URL + valid["name"] + "/")
@@ -644,12 +636,6 @@ class TestMovieReviewCollection(object):
         valid.pop("comment")
         resp = client.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
-
-        # invalid movie_id
-        valid = _get_review_json()
-        valid["author_id"] = 30
-        resp = client.post(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 409  # foreign key user failed
 
         # invalid rating
         valid = _get_review_json()
@@ -709,7 +695,7 @@ class TestMovieReviewItem(object):
 
         # test with valid (only change model)
         resp = client.put(self.RESOURCE_URL, json=valid)
-        assert resp.status_code == 204  # 400
+        assert resp.status_code == 204
 
         # remove field for 400
         valid.pop("comment")

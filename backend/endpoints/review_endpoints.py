@@ -22,7 +22,7 @@ class UserReviewCollection(Resource):
         To add new reviews you have to use the MovieReviewCollection endpoints
     """
     @classmethod
-    def get(cls, user):
+    def get(cls, username):
         """
             This method represents the get endpoint of this resource
             input:
@@ -31,7 +31,7 @@ class UserReviewCollection(Resource):
                 the http response object containing either the list of reviews written by this
                 user or a http error with the corresponding error message
         """
-        reviews = Review.query.filter_by(author_id=user.id).all()
+        reviews = Review.query.filter_by(author=username).all()
         items = []
         for review in reviews:
             movie = Movie.query.filter_by(id=review.movie_id).first()
@@ -41,8 +41,8 @@ class UserReviewCollection(Resource):
             items.append(item)
 
         body = MasonBuilder()
-        body.add_control_get_user(user, "up")
-        body.add_control_get_reviews_of_user(user=user, rel="self")
+        body.add_control_get_user(username, "up")
+        body.add_control_get_reviews_of_user(username=username, rel="self")
         body["items"] = items
         return get_blueprint(body)
 
@@ -145,16 +145,14 @@ class MovieReviewItem(Resource):
     def __update_review_object(cls, review, update_review):
         update_review.deserialize(request.json)
 
-        if review.author_id != update_review.author_id:
-            raise werkzeug.exceptions.BadRequest("The author_id cannot be changed")
+        if review.author != update_review.author:
+            raise werkzeug.exceptions.BadRequest("The author cannot be changed")
         if review.movie_id != update_review.movie_id:
             raise werkzeug.exceptions.BadRequest("The movie_id cannot be changed")
 
         review.rating = update_review.rating
         review.comment = update_review.comment
         review.date = update_review.date
-        review.author_id = update_review.author_id
-        review.movie_id = update_review.movie_id
 
     def put(self, movie, review):
         """

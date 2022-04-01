@@ -7,7 +7,7 @@ import requests
 from flask import request
 
 from constants import TOKEN_VALIDATION_ENDPOINT
-from database.models import UserType, User
+from datamodels.user import UserType, User
 from helper.error_response import ErrorResponse
 
 

@@ -40,7 +40,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             schema=get_user_json_schema()
         )
 
-    def add_control_get_user(self, user, rel="self"):
+    def add_control_get_user(self, username, rel="self"):
         """
             This method adds the mason documentation for the get a single user endpoint
         """
@@ -49,11 +49,11 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Get a single user",
             href=self.api.url_for(
                 self.user_item,
-                user=user
+                _username=username
             )
         )
 
-    def add_control_update_user(self, user):
+    def add_control_update_user(self, username):
         """
             This method adds the mason documentation for the update an existing user endpoint
         """
@@ -62,12 +62,12 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Update a user",
             href=self.api.url_for(
                 self.user_item,
-                user=user
+                _username=username
             ),
             schema=get_user_json_schema()
         )
 
-    def add_control_delete_user(self, user):
+    def add_control_delete_user(self, username):
         """
             This method adds the mason documentation for the delete a user endpoint
         """
@@ -76,6 +76,6 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Delete a user",
             href=self.api.url_for(
                 self.user_item,
-                user=user
+                _username=username
             )
         )
