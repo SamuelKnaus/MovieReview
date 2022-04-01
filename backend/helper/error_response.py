@@ -41,6 +41,24 @@ class ErrorResponse:
         return ErrorResponse("Unsupported media type", 415).get_http_response()
 
     @staticmethod
+    def get_unauthorized():
+        """
+            static helper function to get consistent 401 http error responses
+            result:
+                A http response with the http error code 401
+        """
+        return ErrorResponse("Unauthorized", 401).get_http_response()
+
+    @staticmethod
+    def get_forbidden():
+        """
+            static helper function to get consistent 403 http error responses
+            result:
+                A http response with the http error code 403
+        """
+        return ErrorResponse("Forbidden", 403).get_http_response()
+
+    @staticmethod
     def get_not_found():
         """
             static helper function to get consistent 404 http error responses
