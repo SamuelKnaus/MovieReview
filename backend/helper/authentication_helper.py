@@ -19,7 +19,7 @@ def __role_requirement_satisfied(role, required_role):
         role == UserType.BASIC_USER and required_role == UserType.BASIC_USER
 
 
-def authorize(_func=None, *, required_role=UserType.BASIC_USER):
+def authorize(_func=None, *, required_role=UserType.BASIC_USER, return_authenticated_user=False):
     def inner_token_required(func):
         @wraps(func)
         def wrapper_token_required(*args, **kwargs):
@@ -50,7 +50,9 @@ def authorize(_func=None, *, required_role=UserType.BASIC_USER):
                 user = User()
                 user.deserialize(r.json())
                 if __role_requirement_satisfied(user.role, required_role):
-                    return func(*args, **kwargs)
+                    return func(*args, **kwargs, authenticated_user=user)\
+                        if return_authenticated_user \
+                        else func(*args, **kwargs)
                 else:
                     return ErrorResponse.get_forbidden()
     
