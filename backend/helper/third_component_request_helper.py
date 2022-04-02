@@ -12,7 +12,7 @@ HEADERS = {
 }
 
 
-def forward(original_request):
+def forward(original_request, mason_inject=None):
     try:
         response = original_request()
     except requests.exceptions.ConnectionError:
@@ -22,6 +22,8 @@ def forward(original_request):
     body = json.dumps(response.json())\
         if response.headers.get('content-type') == 'application/json'\
         else None
+    if status_code < 300 and mason_inject is not None:
+        body = mason_inject(json.loads(body))
     headers = response.headers.get('Location')
     if headers is not None:
         url = urllib.parse.urlparse(headers)
