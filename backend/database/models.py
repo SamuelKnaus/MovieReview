@@ -2,7 +2,6 @@
     Contains the database definition
 """
 
-import enum
 from datetime import date
 from dateutil import parser
 
