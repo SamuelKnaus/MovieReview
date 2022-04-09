@@ -1,14 +1,17 @@
 """
     All the endpoints for the review resources
 """
+import requests
 import werkzeug
 from flask import request
 from flask_restful import Resource
 
 import api
 from database.models import Review, Movie
+from endpoints.user_endpoints import UserItem
 from helper.error_response import ErrorResponse
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
+from helper.third_component_request_helper import get_request
 from json_schemas.review_json_schema import get_review_json_schema
 from mason.mason_builder import MasonBuilder
 
@@ -31,6 +34,16 @@ class UserReviewCollection(Resource):
                 the http response object containing either the list of reviews written by this
                 user or a http error with the corresponding error message
         """
+        # check if the user exists first
+        url = api.API.url_for(UserItem, _username=username)
+        try:
+            response = get_request(url)
+        except requests.exceptions.ConnectionError:
+            return ErrorResponse.get_gateway_timeout()
+        if response.status_code == 404:
+            return ErrorResponse.get_not_found()
+
+        # now check for its reviews
         reviews = Review.query.filter_by(author=username).all()
         items = []
         for review in reviews:

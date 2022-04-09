@@ -31,6 +31,8 @@ def forward(original_request, mason_inject=None):
         return ErrorResponse.get_gateway_timeout()
 
     status_code = response.status_code
+    if status_code == 404:
+        return ErrorResponse.get_not_found()
     body = json.dumps(response.json())\
         if response.headers.get('content-type') == 'application/json'\
         else None
