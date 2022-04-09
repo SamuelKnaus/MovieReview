@@ -26,6 +26,17 @@ class User(Serializer):
         self.role = role
         self.email_address = email_address
 
+    def serialize(self):
+        """
+            This function is used to transform a user python object to its json representation
+            It is used to encode the json body of request responses
+        """
+        return {
+            "username": self.username,
+            "email_address": self.email_address,
+            "role": self.role,
+        }
+
     def deserialize(self, doc):
         """
             This function is used to transform a user json object to an actual python object

@@ -25,7 +25,7 @@ API = Api(APP)
 DB = SQLAlchemy(APP)
 
 from endpoints.movie_endpoints import MovieCollection, MovieItem
-from endpoints.user_endpoints import UserCollection, UserItem
+from endpoints.user_endpoints import UserCollection, UserItem, AuthenticatedUserItem
 from endpoints.review_endpoints import UserReviewCollection, MovieReviewCollection, MovieReviewItem
 from endpoints.category_endpoints import CategoryCollection, CategoryItem
 
@@ -65,6 +65,8 @@ API.add_resource(UserItem, "/api/users/<_username>/")
 
 API.add_resource(UserReviewCollection, "/api/users/<username>/reviews/")
 
+# CURRENT USER LOGIC
+API.add_resource(AuthenticatedUserItem, "/api/currentUser/")
 
 @APP.route(NAMESPACE_LINK)
 def send_link_relations_html():

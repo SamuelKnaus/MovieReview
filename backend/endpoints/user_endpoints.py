@@ -6,6 +6,8 @@ import json
 from flask import request
 from flask_restful import Resource
 
+from helper.authentication_helper import authorize
+from helper.request_blueprints import get_blueprint
 from helper.third_component_request_helper import get_request, forward, post_request, put_request, \
     delete_request
 from mason.mason_builder import MasonBuilder
@@ -111,3 +113,23 @@ class UserItem(Resource):
                 a http response object representing the result of this operation
         """
         return forward(lambda: delete_request(request.path))
+
+
+class AuthenticatedUserItem(Resource):
+    """
+        This class represents the authenticated user item endpoints
+        It contains the definition of a single get endpoint
+    """
+
+    @classmethod
+    @authorize(return_authenticated_user=True)
+    def get(cls, authenticated_user):
+        """
+            This method represents the get endpoint of this resource
+            input:
+                authenticated_user: the currently authenticated user injected
+                    by the authentication helper
+            output:
+                the http response object containing the currently authenticated user
+        """
+        return get_blueprint(authenticated_user.serialize())
