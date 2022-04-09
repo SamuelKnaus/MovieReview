@@ -66,7 +66,7 @@ API.add_resource(UserItem, "/api/users/<_username>/")
 API.add_resource(UserReviewCollection, "/api/users/<username>/reviews/")
 
 # CURRENT USER LOGIC
-API.add_resource(AuthenticatedUserItem, "/api/currentUser/")
+API.add_resource(AuthenticatedUserItem, "/api/current-user/")
 
 @APP.route(NAMESPACE_LINK)
 def send_link_relations_html():
