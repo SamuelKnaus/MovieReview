@@ -18,6 +18,7 @@ class UserMasonBuilder(GenericMasonBuilder):
         self.api = api.API
         self.user_item = api.UserItem
         self.user_collection = api.UserCollection
+        self.authenticated_user_item = api.AuthenticatedUserItem
 
     def add_control_get_users(self, rel=NAMESPACE+":users-all"):
         """
@@ -77,5 +78,17 @@ class UserMasonBuilder(GenericMasonBuilder):
             href=self.api.url_for(
                 self.user_item,
                 _username=username
+            )
+        )
+
+    def add_control_get_authenticated_user(self):
+        """
+            This method adds the mason documentation for the get the authenticated user endpoint
+        """
+        self._add_control(
+            NAMESPACE + ":current-user",
+            title="Get the currently authenticated user",
+            href=self.api.url_for(
+                self.authenticated_user_item
             )
         )

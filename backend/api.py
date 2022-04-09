@@ -68,6 +68,7 @@ API.add_resource(UserReviewCollection, "/api/users/<username>/reviews/")
 # CURRENT USER LOGIC
 API.add_resource(AuthenticatedUserItem, "/api/current-user/")
 
+
 @APP.route(NAMESPACE_LINK)
 def send_link_relations_html():
     """
@@ -84,6 +85,8 @@ def index():
     """
     body = MasonBuilder()
     body.add_api_namespace()
+
+    body.add_control_get_authenticated_user()
 
     body.add_control_get_categories()
     body.add_control_post_category()
