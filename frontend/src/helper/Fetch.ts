@@ -1,4 +1,5 @@
 import { HttpError } from '../models/HttpError';
+import history from './History';
 
 const baseUrl = 'http://127.0.0.1:5000';
 
@@ -56,7 +57,7 @@ export default class Fetch {
       })
       .then((responseJson) => {
         if (resp.status === 401 || resp.status === 403) {
-          // TODO navigate to login page
+          history.push('/login');
           errorHandler(responseJson);
         } else if (resp.status > 300) {
           errorHandler(responseJson);

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter, Routes, Route } from 'react-router-dom';
 
 import MovieListComponent from './components/MovieListComponent';
 import Fetch from './helper/Fetch';
@@ -11,6 +11,8 @@ import {
   SET_ADD_CATEGORY_URL, SET_ADD_MOVIE_URL, SET_ADD_USER_URL,
   SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL,
 } from './redux/Reducer';
+import LoginComponent from './components/LoginComponent';
+import history from './helper/History';
 
 class App extends React.PureComponent<any> {
   componentDidMount() {
@@ -40,18 +42,22 @@ class App extends React.PureComponent<any> {
 
   render() {
     return (
-      <BrowserRouter>
+      <HistoryRouter history={history}>
         <Routes>
           <Route
             path="/"
             element={(<MovieListComponent />)}
           />
           <Route
+            path="/login"
+            element={<LoginComponent />}
+          />
+          <Route
             path="/movie/:movieId"
             element={<MovieDetailComponent />}
           />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     );
   }
 }
