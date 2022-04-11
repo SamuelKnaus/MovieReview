@@ -2,16 +2,16 @@ import React from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { NavigateFunction } from 'react-router-dom';
 import moment from 'moment';
-import withRouter from '../helper/RouterHelper';
-import HeaderComponent from './HeaderComponent';
-import { Movie } from '../models/Movie';
-import { Category } from '../models/Category';
-import { Collection } from '../models/Collection';
-import Fetch from '../helper/Fetch';
-import { HttpError } from '../models/HttpError';
-import FooterComponent from './FooterComponent';
-import withAppState, { ReduxState } from '../helper/ReduxHelper';
-import { AppState } from '../redux/Store';
+import withRouter from '../../helper/RouterHelper';
+import HeaderComponent from '../header_footer/HeaderComponent';
+import { Movie } from '../../models/Movie';
+import { Category } from '../../models/Category';
+import { Collection } from '../../models/Collection';
+import Fetch from '../../helper/Fetch';
+import { HttpError } from '../../models/HttpError';
+import FooterComponent from '../header_footer/FooterComponent';
+import withAppState, { ReduxState } from '../../helper/ReduxHelper';
+import { AppState } from '../../redux/Store';
 
 import './MovieListComponent.scss';
 

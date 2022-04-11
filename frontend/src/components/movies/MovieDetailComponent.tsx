@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import withRouter from '../helper/RouterHelper';
-import HeaderComponent from './HeaderComponent';
+import withRouter from '../../helper/RouterHelper';
+import HeaderComponent from '../header_footer/HeaderComponent';
 import MovieDetailInformationComponent from './MovieDetailInformationComponent';
 import MovieDetailReviewsComponent from './MovieDetailReviewsComponent';
-import FooterComponent from './FooterComponent';
-import { Movie } from '../models/Movie';
-import Fetch from '../helper/Fetch';
-import { HttpError } from '../models/HttpError';
+import FooterComponent from '../header_footer/FooterComponent';
+import { Movie } from '../../models/Movie';
+import Fetch from '../../helper/Fetch';
+import { HttpError } from '../../models/HttpError';
 
 import './MovieDetailComponent.scss';
 

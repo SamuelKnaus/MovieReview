@@ -3,9 +3,9 @@ import './App.scss';
 import {
   unstable_HistoryRouter as HistoryRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import MovieListComponent from './components/MovieListComponent';
+import MovieListComponent from './components/movies/MovieListComponent';
 import Fetch from './helper/Fetch';
-import MovieDetailComponent from './components/MovieDetailComponent';
+import MovieDetailComponent from './components/movies/MovieDetailComponent';
 import { MasonDoc } from './models/MasonDoc';
 import withAppState, { ReduxState } from './helper/ReduxHelper';
 import {
@@ -13,10 +13,10 @@ import {
   SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL,
   SET_CURRENT_USER_URL, SET_LOGIN_URL,
 } from './redux/Reducer';
-import LoginComponent from './components/LoginComponent';
+import LoginComponent from './components/authentication/LoginComponent';
 import history from './helper/History';
-import UserProfileComponent from './components/profile/UserProfileComponent';
-import LogoutComponent from './components/LogoutComponent';
+import UserProfileComponent from './components/user_profile/UserProfileComponent';
+import LogoutComponent from './components/authentication/LogoutComponent';
 
 interface AppState {
   loading: boolean

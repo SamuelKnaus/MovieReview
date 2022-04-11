@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-import { Movie } from '../models/Movie';
+import { Movie } from '../../models/Movie';
 
 import './MovieDetailInformationComponent.scss';
 

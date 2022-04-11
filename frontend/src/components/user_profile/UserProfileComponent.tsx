@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import withRouter from '../../helper/RouterHelper';
-import HeaderComponent from '../HeaderComponent';
-import FooterComponent from '../FooterComponent';
+import HeaderComponent from '../header_footer/HeaderComponent';
+import FooterComponent from '../header_footer/FooterComponent';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
 

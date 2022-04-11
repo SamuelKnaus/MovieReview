@@ -7,10 +7,10 @@ import {
   Row,
 } from 'react-bootstrap';
 import { NavigateFunction } from 'react-router-dom';
-import UserProfileLoginComponent from './profile/UserProfileLoginComponent';
-import withAppState, { ReduxState } from '../helper/ReduxHelper';
-import withRouter from '../helper/RouterHelper';
-import { AppState } from '../redux/Store';
+import UserProfileLoginComponent from '../user_profile/UserProfileLoginComponent';
+import withAppState, { ReduxState } from '../../helper/ReduxHelper';
+import withRouter from '../../helper/RouterHelper';
+import { AppState } from '../../redux/Store';
 
 import './HeaderComponent.scss';
 

@@ -8,10 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
-import { Collection } from '../models/Collection';
-import { Review } from '../models/Review';
-import Fetch from '../helper/Fetch';
-import { HttpError } from '../models/HttpError';
+import { Collection } from '../../models/Collection';
+import { Review } from '../../models/Review';
+import Fetch from '../../helper/Fetch';
+import { HttpError } from '../../models/HttpError';
 
 import './MovieDetailReviewsComponent.scss';
 

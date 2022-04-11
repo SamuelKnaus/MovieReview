@@ -2,19 +2,19 @@ import React, { PureComponent } from 'react';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigateFunction } from 'react-router-dom';
-import withAppState, { ReduxState } from '../helper/ReduxHelper';
-import { Credentials } from '../models/Credentials';
-import Fetch from '../helper/Fetch';
-import { Token } from '../models/Token';
-import { AppState } from '../redux/Store';
+import withAppState, { ReduxState } from '../../helper/ReduxHelper';
+import { Credentials } from '../../models/Credentials';
+import Fetch from '../../helper/Fetch';
+import { Token } from '../../models/Token';
+import { AppState } from '../../redux/Store';
 import {
   DELETE_AUTHENTICATION_TOKEN, DELETE_CURRENT_USER, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER,
-} from '../redux/Reducer';
-import { HttpError } from '../models/HttpError';
-import withRouter from '../helper/RouterHelper';
+} from '../../redux/Reducer';
+import { HttpError } from '../../models/HttpError';
+import withRouter from '../../helper/RouterHelper';
 
 import './LoginComponent.scss';
-import { User } from '../models/User';
+import { User } from '../../models/User';
 
 interface LoginComponentProps extends ReduxState {
   navigate: NavigateFunction
