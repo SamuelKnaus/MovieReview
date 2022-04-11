@@ -4,11 +4,11 @@ import HeaderComponent from './HeaderComponent';
 import MovieDetailInformationComponent from './MovieDetailInformationComponent';
 import MovieDetailReviewsComponent from './MovieDetailReviewsComponent';
 import FooterComponent from './FooterComponent';
-
-import './MovieDetailComponent.scss';
 import { Movie } from '../models/Movie';
 import Fetch from '../helper/Fetch';
 import { HttpError } from '../models/HttpError';
+
+import './MovieDetailComponent.scss';
 
 type MovieDetailComponentProps = {
   location: {
