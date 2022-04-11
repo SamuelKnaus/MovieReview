@@ -8,7 +8,7 @@ import Fetch from '../helper/Fetch';
 import { Token } from '../models/Token';
 import { AppState } from '../redux/Store';
 import {
-  DELETE_AUTHENTICATION_TOKEN, DELETE_CURRENT_USER, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER_URL,
+  DELETE_AUTHENTICATION_TOKEN, DELETE_CURRENT_USER, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER,
 } from '../redux/Reducer';
 import { HttpError } from '../models/HttpError';
 import withRouter from '../helper/RouterHelper';
@@ -63,7 +63,8 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   };
 
   userFetchSuccessful = (serverResponse: User) => {
-    this.props.appStateDispatch({ type: SET_CURRENT_USER_URL, value: serverResponse });
+    console.log(serverResponse);
+    this.props.appStateDispatch({ type: SET_CURRENT_USER, value: serverResponse });
     this.setState({
       errorMessage: '',
     });
