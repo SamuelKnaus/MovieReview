@@ -16,6 +16,7 @@ import {
 import LoginComponent from './components/LoginComponent';
 import history from './helper/History';
 import UserProfileComponent from './components/profile/UserProfileComponent';
+import LogoutComponent from './components/LogoutComponent';
 
 interface AppState {
   loading: boolean
@@ -90,6 +91,10 @@ class App extends React.PureComponent<ReduxState, AppState> {
           <Route
             path="/login"
             element={<LoginComponent />}
+          />
+          <Route
+            path="/logout"
+            element={<LogoutComponent />}
           />
           <Route
             path="/movie/:movieId"

@@ -42,12 +42,12 @@ class UserMasonBuilder(GenericMasonBuilder):
             schema=get_user_json_schema()
         )
 
-    def add_control_get_user(self, username, rel="self"):
+    def add_control_get_user(self, username):
         """
             This method adds the mason documentation for the get a single user endpoint
         """
         self._add_control(
-            rel,
+            "self",
             title="Get a single user",
             href=self.api.url_for(
                 self.user_item,

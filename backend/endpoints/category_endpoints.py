@@ -29,7 +29,7 @@ class CategoryCollection(Resource):
         category_items = []
         for category in categories:
             item = MasonBuilder(category.serialize())
-            item.add_control_get_category(category, rel="item")
+            item.add_control_get_category(category)
             category_items.append(item)
 
         body = MasonBuilder()

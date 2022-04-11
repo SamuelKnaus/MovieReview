@@ -29,7 +29,7 @@ class MovieCollection(Resource):
         movie_items = []
         for movie in movies:
             item = MasonBuilder(movie.serialize())
-            item.add_control_get_movie(movie, "item")
+            item.add_control_get_movie(movie)
             movie_items.append(item)
 
         body = MasonBuilder()

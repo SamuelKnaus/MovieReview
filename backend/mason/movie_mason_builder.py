@@ -38,12 +38,12 @@ class MovieMasonBuilder(GenericMasonBuilder):
             schema=get_movie_json_schema()
         )
 
-    def add_control_get_movie(self, movie, rel="self"):
+    def add_control_get_movie(self, movie):
         """
             This method adds the mason documentation for the get a single movie endpoint
         """
         self._add_control(
-            rel,
+            "self",
             title="Get a single movie",
             href=self.api.url_for(
                 self.movie_item,

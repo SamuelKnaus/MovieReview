@@ -63,7 +63,6 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   };
 
   userFetchSuccessful = (serverResponse: User) => {
-    console.log(serverResponse);
     this.props.appStateDispatch({ type: SET_CURRENT_USER, value: serverResponse });
     this.setState({
       errorMessage: '',

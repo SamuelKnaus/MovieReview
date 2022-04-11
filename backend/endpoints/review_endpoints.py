@@ -50,7 +50,7 @@ class UserReviewCollection(Resource):
             movie = Movie.query.filter_by(id=review.movie_id).first()
 
             item = MasonBuilder(review.serialize())
-            item.add_control_get_review(movie, review, "item")
+            item.add_control_get_review(movie, review)
             items.append(item)
 
         body = MasonBuilder()
@@ -81,7 +81,7 @@ class MovieReviewCollection(Resource):
         review_items = []
         for review in reviews:
             item = MasonBuilder(review.serialize())
-            item.add_control_get_review(movie, review, "item")
+            item.add_control_get_review(movie, review)
             review_items.append(item)
 
         body = MasonBuilder()
