@@ -54,7 +54,7 @@ class UserReviewCollection(Resource):
             items.append(item)
 
         body = MasonBuilder()
-        body.add_control_get_user(username, "up")
+        body.add_control_get_user(username, "author")
         body.add_control_get_reviews_of_user(username=username, rel="self")
         body["items"] = items
         return get_blueprint(body)

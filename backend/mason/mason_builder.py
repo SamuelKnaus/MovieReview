@@ -29,3 +29,13 @@ class MasonBuilder(
             adds the namespace to the mason object
         """
         self._add_namespace(NAMESPACE, NAMESPACE_LINK)
+
+    def add_control_view_function(self, movie):
+        """
+            This method adds the mason documentation for the view function
+        """
+        self._add_control_view_function(
+            "up",
+            title="Get the api documentation root",
+            href='/'
+        )
