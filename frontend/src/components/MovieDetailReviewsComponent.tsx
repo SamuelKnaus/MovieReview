@@ -79,7 +79,7 @@ export default class MovieDetailReviewsComponent
                 <Col md={4} key={index.valueOf()}>
                   <div className="review">
                     <div className="author">
-                      <h4>{review.author_id}</h4>
+                      <h4>{review.author}</h4>
                     </div>
                     <div className="meta-information">
                       <div className="date">{outputDate}</div>

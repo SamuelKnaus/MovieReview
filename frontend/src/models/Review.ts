@@ -5,6 +5,6 @@ export interface Review extends MasonDoc {
     rating: number
     comment: string
     date: string
-    author_id: number,
+    author: string,
     movie_id: number
 }
