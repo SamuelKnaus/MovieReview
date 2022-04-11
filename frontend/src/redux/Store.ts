@@ -10,7 +10,7 @@ export interface AppState {
   addCategoryUrl?: string
   loginUrl?: string
   currentUserUrl?: string
-  authenticationToken: string
+  authenticationToken?: string
 }
 
 const store = createStore(appReducer);
