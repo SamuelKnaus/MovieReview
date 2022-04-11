@@ -9,7 +9,7 @@ export default class FooterComponent extends React.PureComponent {
     return (
       <footer>
         <Container>
-          Movie Review
+          Movie Reviews
         </Container>
       </footer>
     );

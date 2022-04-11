@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Container } from 'react-bootstrap';
 import withRouter from '../../helper/RouterHelper';
 import HeaderComponent from '../header_footer/HeaderComponent';
 import FooterComponent from '../header_footer/FooterComponent';
@@ -14,7 +15,9 @@ class UserProfileComponent
       <div className="user-profile">
         <HeaderComponent pageTitle="My Profile" />
         <div className="main">
-          User
+          <Container>
+            <h2>PLACEHOLDER</h2>
+          </Container>
         </div>
         <FooterComponent />
       </div>

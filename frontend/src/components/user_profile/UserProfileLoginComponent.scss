@@ -1,0 +1,14 @@
+@use '../../styles/predefined';
+
+.user-profile-login-wrapper {
+  .btn-login {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover,
+    &:focus {
+      box-shadow: none;
+      color: predefined.$white-accent;
+    }
+  }
+}

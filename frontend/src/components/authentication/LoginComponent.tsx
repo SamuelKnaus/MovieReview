@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigateFunction } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { Credentials } from '../../models/Credentials';
 import Fetch from '../../helper/Fetch';
@@ -12,9 +13,11 @@ import {
 } from '../../redux/Reducer';
 import { HttpError } from '../../models/HttpError';
 import withRouter from '../../helper/RouterHelper';
+import { User } from '../../models/User';
+import HeaderComponent from '../header_footer/HeaderComponent';
+import FooterComponent from '../header_footer/FooterComponent';
 
 import './LoginComponent.scss';
-import { User } from '../../models/User';
 
 interface LoginComponentProps extends ReduxState {
   navigate: NavigateFunction
@@ -98,33 +101,54 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   render() {
     return (
       <div className="login-page">
-        <FontAwesomeIcon
-          icon={faUserCircle}
-          className="user-icon"
-        />
-        <input
-          type="text"
-          placeholder="Username"
-          value={this.state.username}
-          onChange={(event) => this.setState({ username: event.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={(event) => this.setState({ password: event.target.value })}
-        />
-        <input
-          className="login-button"
-          type="button"
-          value="Login"
-          onClick={() => this.sendLoginRequest()}
-        />
-        <span
-          className="error-message"
-        >
-          {this.state.errorMessage}
-        </span>
+        <HeaderComponent pageTitle="Login" />
+
+        <div className="main">
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col md="3">
+                <div className="login-icon">
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    className="user-icon"
+                  />
+                </div>
+
+                <div className="username">
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    value={this.state.username}
+                    onChange={(event) => this.setState({ username: event.target.value })}
+                  />
+                </div>
+                <div className="password">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={this.state.password}
+                    onChange={(event) => this.setState({ password: event.target.value })}
+                  />
+                </div>
+
+                <div className="error-message">
+                  {this.state.errorMessage}
+                </div>
+
+                <div className="submit">
+                  <input
+                    className="login-button"
+                    type="button"
+                    value="Login"
+                    onClick={() => this.sendLoginRequest()}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+
+        <FooterComponent />
       </div>
     );
   }

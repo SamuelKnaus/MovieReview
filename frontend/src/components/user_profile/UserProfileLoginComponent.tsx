@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigateFunction } from 'react-router-dom';
+import { Dropdown, Button } from 'react-bootstrap';
 import withRouter from '../../helper/RouterHelper';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
@@ -15,33 +16,34 @@ interface UserProfileLoginComponentProps extends ReduxState {
 class UserProfileLoginComponent
   extends PureComponent <UserProfileLoginComponentProps> {
   render() {
-    console.log(this.props.appState);
     if (this.props.appState.currentUser) {
       return (
-        <div
-          role="button"
-          tabIndex={0}
-          className="user-profile-login-wrapper"
-          onClick={() => this.props.navigate('/profile')}
-          onKeyDown={() => this.props.navigate('/profile')}
-        >
-          <FontAwesomeIcon icon={faUser} />
-          {' '}
-          {this.props.appState.currentUser.username}
+        <div className="user-profile-login-wrapper">
+          <Dropdown>
+            <Dropdown.Toggle variant="login">
+              <FontAwesomeIcon icon={faUser} />
+              &nbsp;
+              {this.props.appState.currentUser.username}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.props.navigate('/profile')}>My Profile</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.props.navigate('/logout')}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       );
     }
 
     return (
-      <div
-        role="button"
-        tabIndex={0}
-        className="user-profile-login-wrapper"
-        onClick={() => this.props.navigate('/login')}
-        onKeyDown={() => this.props.navigate('/login')}
-      >
-        <FontAwesomeIcon icon={faUser} />
-        {' Login'}
+      <div className="user-profile-login-wrapper">
+        <Button
+          variant="login"
+          onClick={() => this.props.navigate('/login')}
+        >
+          <FontAwesomeIcon icon={faUser} />
+          {' Login'}
+        </Button>
       </div>
     );
   }
