@@ -38,12 +38,12 @@ class CategoryMasonBuilder(GenericMasonBuilder):
             schema=get_category_json_schema()
         )
 
-    def add_control_get_category(self, category, rel="self"):
+    def add_control_get_category(self, category):
         """
             This method adds the mason documentation for the get a single category endpoint
         """
         self._add_control(
-            rel,
+            "self",
             title="Get a single category",
             href=self.api.url_for(
                 self.category_item,

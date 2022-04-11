@@ -23,7 +23,7 @@ class UserCollection(Resource):
         user_items = []
         for user in user_list_json:
             item = MasonBuilder(user)
-            item.add_control_get_user(user, "item")
+            item.add_control_get_user(user)
             user_items.append(item)
 
         body = MasonBuilder()
