@@ -13,6 +13,8 @@ export interface MasonDoc {
     'moviereviewmeta:reviews-for-movie'?: Control,
     'moviereviewmeta:reviews-of-user'?: Control,
     'moviereviewmeta:delete'?: Control,
+    'moviereviewmeta:current-user'?: Control,
+    'moviereviewmeta:login'?: Control,
     'self'?: Control,
     'up'?: Control,
     'item'?: Control,

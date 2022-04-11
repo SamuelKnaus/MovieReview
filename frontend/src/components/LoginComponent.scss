@@ -1,0 +1,30 @@
+@use '../styles/predefined';
+
+.login-page {
+  @include predefined.section-padding;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+
+  .user-icon {
+    width: 20%;
+    height: auto;
+    margin-bottom: 30px;
+  }
+
+  input {
+      height: 50px;
+      width: 50%;
+      border-radius: 25px;
+      padding: 10px;
+  }
+
+  .login-button {
+      background-color: predefined.$basic-green;
+  }
+
+  .error-message {
+    color: predefined.$error;
+  }
+}

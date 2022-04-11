@@ -10,6 +10,7 @@ import withAppState from './helper/ReduxHelper';
 import {
   SET_ADD_CATEGORY_URL, SET_ADD_MOVIE_URL, SET_ADD_USER_URL,
   SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL,
+  SET_CURRENT_USER_URL, SET_LOGIN_URL,
 } from './redux/Reducer';
 import LoginComponent from './components/LoginComponent';
 import history from './helper/History';
@@ -28,12 +29,17 @@ class App extends React.PureComponent<any> {
     const addUserUrl = serverResponse['@controls']['moviereviewmeta:add-user']?.href;
     const addCategoryUrl = serverResponse['@controls']['moviereviewmeta:add-category']?.href;
 
-    this.props.appStateDispatch({ type: SET_ALL_MOVIES_URL, url: allMoviesUrl });
-    this.props.appStateDispatch({ type: SET_ALL_USERS_URL, url: allUsersUrl });
-    this.props.appStateDispatch({ type: SET_ALL_CATEGORIES_URL, url: allCategoriesUrl });
-    this.props.appStateDispatch({ type: SET_ADD_MOVIE_URL, url: addMovieUrl });
-    this.props.appStateDispatch({ type: SET_ADD_USER_URL, url: addUserUrl });
-    this.props.appStateDispatch({ type: SET_ADD_CATEGORY_URL, url: addCategoryUrl });
+    const loginUrl = serverResponse['@controls']['moviereviewmeta:login']?.href;
+    const currentUserUrl = serverResponse['@controls']['moviereviewmeta:current-user']?.href;
+
+    this.props.appStateDispatch({ type: SET_ALL_MOVIES_URL, value: allMoviesUrl });
+    this.props.appStateDispatch({ type: SET_ALL_USERS_URL, value: allUsersUrl });
+    this.props.appStateDispatch({ type: SET_ALL_CATEGORIES_URL, value: allCategoriesUrl });
+    this.props.appStateDispatch({ type: SET_ADD_MOVIE_URL, value: addMovieUrl });
+    this.props.appStateDispatch({ type: SET_ADD_USER_URL, value: addUserUrl });
+    this.props.appStateDispatch({ type: SET_ADD_CATEGORY_URL, value: addCategoryUrl });
+    this.props.appStateDispatch({ type: SET_LOGIN_URL, value: loginUrl });
+    this.props.appStateDispatch({ type: SET_CURRENT_USER_URL, value: currentUserUrl });
   };
 
   requestError = (serverResponse: any) => {

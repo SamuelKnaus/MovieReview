@@ -8,6 +8,9 @@ export interface AppState {
   addMovieUrl?: string
   addUserUrl?: string
   addCategoryUrl?: string
+  loginUrl?: string
+  currentUserUrl?: string
+  authenticationToken: string
 }
 
 const store = createStore(appReducer);

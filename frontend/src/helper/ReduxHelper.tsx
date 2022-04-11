@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch } from 'redux';
 import { AppState } from '../redux/Store';
 
 export interface ReduxState {
   appState: AppState
-  appStateDispatch: string,
+  appStateDispatch: Dispatch,
 }
 
 export default function withAppState(Child: any, stateSelector: any = null) {
