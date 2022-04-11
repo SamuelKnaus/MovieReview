@@ -88,7 +88,7 @@ paths:
           description: The user was created successfully.
           headers:
             Location:
-              description: URI of the new category
+              description: URI of the new user
               schema:
                 type: string
         '400':
@@ -165,19 +165,26 @@ paths:
     put:
       tags:
       - "Users"
-      description: Update a user by using its ID. Needs a JSON document that contains username, email and password to update user data.
+      description: Update a user by using its ID.
+      requestBody:
+        description: JSON document that contains the username, email, password, and role to update an user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              username: mario456
+              email_address: new.mario.lo@oulu.fi
+              password: e19h63
+              role: Basic User
       responses:
         '204':
           description: The user was updated successfully.
-          content:
-            application/json:
+          headers:
+            Location:
+              description: URI of the updated user
               schema:
-                $ref: '#/components/schemas/User'
-              example:
-                username: mario456
-                email_address: new.mario.lo@oulu.fi
-                password: e19h63
-                role: Basic User
+                type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
@@ -287,7 +294,7 @@ paths:
           description: The movie was created successfully.
           headers:
             Location:
-              description: URI of the new category
+              description: URI of the new movie
               schema:
                 type: string
         '400':
@@ -369,20 +376,27 @@ paths:
     put:
       tags:
       - "Movies"
-      description: Update a movie by using its ID. Needs a JSON document that contains title, director, length, release date and category ID to update movie data.
+      description: Update a movie by using its ID.
+      requestBody:
+        description: JSON document that contains title, director, length, release date and category ID to update movie data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+            example:
+              title: Leon, the professional
+              director: Luc Besson
+              length: 8160
+              release_date: "1999-09-14"
+              category_id: 2
       responses:
         '204':
           description: The movie has been updated
-          content:
-            application/json:
+          headers:
+            Location:
+              description: URI of the updated movie
               schema:
-                $ref: '#/components/schemas/Movie'
-              example:
-                title: Leon, the professional
-                director: Luc Besson
-                length: 8160
-                release_date: "1999-09-14"
-                category_id: 2
+                type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
         '404':
@@ -544,7 +558,7 @@ paths:
           description: The review was created successfully.
           headers:
             Location:
-              description: URI of the new category
+              description: URI of the new review
               schema:
                 type: string
         '400':
@@ -624,20 +638,27 @@ paths:
     put:
       tags:
       - "Reviews"
-      description: Update a review by its ID. Needs a JSON document that contains rating score, comment, comment date, author ID and movie ID to update review data.
+      description: Update a review by its ID
+      requestBody:
+        description: JSON document that contains rating score, comment, comment date, author ID and movie ID to update review data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+            example:
+              rating: 4
+              comment: The movie is ok, but I changed my mind, it's pretty good
+              date: "2021-07-03T04:08:05Z"
+              author_id: 2
+              movie_id: 1
       responses:
         '204':
           description: The review has been updated.
-          content:
-            application/json:
+          headers:
+            Location:
+              description: URI of the updatedreview
               schema:
-                $ref: '#/components/schemas/Review'
-              example:
-                rating: 4
-                comment: The movie is ok, but I changed my mind, it's pretty good
-                date: "2021-07-03T04:08:05Z"
-                author_id: 2
-                movie_id: 1
+                type: string
         '400':
           description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
         '404':
@@ -773,16 +794,23 @@ paths:
     put:
       tags:
       - "Categories"
-      description: Update a category by its ID. Needs a JSON document that contains title to update movie data.
+      description: Update a category by its ID.
+      requestBody:
+        description: JSON document that contains title to update category data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+            example:
+              title: SciFi
       responses:
         '204':
           description: The category has been updated
-          content:
-            application/json:
+          headers:
+            Location:
+              description: URI of the updated category
               schema:
-                $ref: '#/components/schemas/Category'
-              example:
-                title: SF
+                type: string
         '400':
           description: Request doesn't match the JSON schema. Title must be a string
         '404':
