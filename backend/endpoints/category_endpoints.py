@@ -34,6 +34,7 @@ class CategoryCollection(Resource):
 
         body = MasonBuilder()
         body.add_api_namespace()
+        body.add_control_view_function()
         body.add_control_get_categories("self")
         body.add_control_post_category()
         body["items"] = category_items
