@@ -2,7 +2,7 @@ import { AppState } from './Store';
 
 export type SetValueAction = {
   type: string,
-  value: string
+  value: any
 }
 
 export const SET_ALL_MOVIES_URL = 'SET_ALL_MOVIES_URL';
@@ -14,7 +14,9 @@ export const SET_ADD_USER_URL = 'SET_ADD_USER_URL';
 export const SET_LOGIN_URL = 'SET_LOGIN_URL';
 export const SET_CURRENT_USER_URL = 'SET_CURRENT_USER_URL';
 export const SET_AUTHENTICATION_TOKEN = 'SET_AUTHENTICATION_TOKEN';
-export const DELETE_AUTHENTICATION_TOKEN = 'SET_AUTHENTICATION_TOKEN';
+export const DELETE_AUTHENTICATION_TOKEN = 'DELETE_AUTHENTICATION_TOKEN';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const DELETE_CURRENT_USER = 'DELETE_CURRENT_USER';
 
 export default function appReducer(
   // eslint-disable-next-line default-param-last
@@ -75,6 +77,16 @@ export default function appReducer(
       return {
         ...state,
         authenticationToken: undefined,
+      };
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.value,
+      };
+    case DELETE_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: undefined,
       };
     default:
       return state;

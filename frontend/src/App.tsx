@@ -6,7 +6,7 @@ import MovieListComponent from './components/MovieListComponent';
 import Fetch from './helper/Fetch';
 import MovieDetailComponent from './components/MovieDetailComponent';
 import { MasonDoc } from './models/MasonDoc';
-import withAppState from './helper/ReduxHelper';
+import withAppState, { ReduxState } from './helper/ReduxHelper';
 import {
   SET_ADD_CATEGORY_URL, SET_ADD_MOVIE_URL, SET_ADD_USER_URL,
   SET_ALL_CATEGORIES_URL, SET_ALL_MOVIES_URL, SET_ALL_USERS_URL,
@@ -15,7 +15,23 @@ import {
 import LoginComponent from './components/LoginComponent';
 import history from './helper/History';
 
-class App extends React.PureComponent<any> {
+interface AppState {
+  loading: boolean
+  successfullyLoaded: boolean
+}
+
+const initialState = {
+  loading: true,
+  successfullyLoaded: false,
+};
+
+class App extends React.PureComponent<ReduxState, AppState> {
+  constructor(props: ReduxState) {
+    super(props);
+
+    this.state = initialState;
+  }
+
   componentDidMount() {
     Fetch.getBasicUrls(this.requestSuccessful, this.requestError);
   }
@@ -40,13 +56,28 @@ class App extends React.PureComponent<any> {
     this.props.appStateDispatch({ type: SET_ADD_CATEGORY_URL, value: addCategoryUrl });
     this.props.appStateDispatch({ type: SET_LOGIN_URL, value: loginUrl });
     this.props.appStateDispatch({ type: SET_CURRENT_USER_URL, value: currentUserUrl });
+
+    this.setState({
+      loading: false,
+      successfullyLoaded: true,
+    });
   };
 
-  requestError = (serverResponse: any) => {
-    console.log(serverResponse);
+  requestError = () => {
+    this.setState({
+      loading: false,
+    });
   };
 
   render() {
+    if (this.state.loading) {
+      return <div>Loading</div>;
+    }
+
+    if (!this.state.successfullyLoaded) {
+      return <div>Could not be loaded</div>;
+    }
+
     return (
       <HistoryRouter history={history}>
         <Routes>

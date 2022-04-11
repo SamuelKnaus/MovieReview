@@ -7,11 +7,12 @@ import { Credentials } from '../models/Credentials';
 import Fetch from '../helper/Fetch';
 import { Token } from '../models/Token';
 import { AppState } from '../redux/Store';
-import { SET_AUTHENTICATION_TOKEN } from '../redux/Reducer';
+import { DELETE_AUTHENTICATION_TOKEN, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER_URL } from '../redux/Reducer';
 import { HttpError } from '../models/HttpError';
 import withRouter from '../helper/RouterHelper';
 
 import './LoginComponent.scss';
+import { User } from '../models/User';
 
 interface LoginComponentProps extends ReduxState {
   navigate: NavigateFunction
@@ -36,20 +37,41 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     this.state = initialState;
   }
 
-  requestSuccessful = (serverResponse: Token) => {
-    const { token } = serverResponse;
-    this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: token });
+  componentDidMount() {
+    if (this.props.appState.authenticationToken) {
+      this.fetchCurrentUser();
+    }
+  }
+
+  loginSuccessful = (serverResponse: Token) => {
+    this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: serverResponse.token });
+    this.setState({
+      errorMessage: '',
+    });
+    this.fetchCurrentUser();
+  };
+
+  loginError = (serverResponse: HttpError) => {
+    this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: '' });
+    this.setState({
+      password: '',
+      errorMessage: serverResponse.message,
+    });
+  };
+
+  userFetchSuccessful = (serverResponse: User) => {
+    this.props.appStateDispatch({ type: SET_CURRENT_USER_URL, value: serverResponse });
     this.setState({
       errorMessage: '',
     });
     this.props.navigate('/');
   };
 
-  requestError = (serverResponse: HttpError) => {
-    this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: '' });
+  userFetchError = () => {
+    this.props.appStateDispatch({ type: DELETE_AUTHENTICATION_TOKEN });
     this.setState({
       password: '',
-      errorMessage: serverResponse.message,
+      errorMessage: 'Something went wrong during the login',
     });
   };
 
@@ -58,7 +80,15 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
       username: this.state.username,
       password: this.state.password,
     };
-    Fetch.login(this.props.appState.loginUrl ?? '', body, this.requestSuccessful, this.requestError);
+    Fetch.login(this.props.appState.loginUrl ?? '', body, this.loginSuccessful, this.loginError);
+  }
+
+  fetchCurrentUser() {
+    Fetch.getRequest(
+      this.props.appState.currentUserUrl ?? '',
+      this.userFetchSuccessful,
+      this.userFetchError,
+    );
   }
 
   render() {
