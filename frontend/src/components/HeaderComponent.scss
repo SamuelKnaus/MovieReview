@@ -4,23 +4,30 @@ header {
   background-color: predefined.$basic-green;
   color: predefined.$white-accent;
 
-  .site-title-wrapper {
-    text-align: center;
+  .header-wrapper {
     padding: 20px 0;
 
-    a {
+    .site-title-wrapper {
       color: predefined.$white-accent;
       text-decoration: none;
 
       .site-title {
+        text-align: center;
         padding-bottom: 16px;
         margin-bottom: 16px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.4);
       }
     }
 
-    .page-title {
-      margin-bottom: 0;
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+
+      .page-title {
+        margin-bottom: 0;
+      }
     }
   }
 }

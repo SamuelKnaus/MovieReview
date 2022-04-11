@@ -1,6 +1,12 @@
 @use '../styles/predefined';
 
 .reviews {
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .review {
     background-color: predefined.$light-gray-background;
     padding: 40px;

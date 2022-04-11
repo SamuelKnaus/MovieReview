@@ -6,28 +6,50 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
+import { NavigateFunction } from 'react-router-dom';
+import UserProfileLoginComponent from './profile/UserProfileLoginComponent';
+import withAppState, { ReduxState } from '../helper/ReduxHelper';
+import withRouter from '../helper/RouterHelper';
+import { AppState } from '../redux/Store';
 
 import './HeaderComponent.scss';
 
-type HeaderComponentProps = {
+interface HeaderComponentProps extends ReduxState {
+  navigate: NavigateFunction
   pageTitle: string
 }
 
-export default class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
+class HeaderComponent
+  extends React.PureComponent <HeaderComponentProps> {
   render() {
     return (
       <header>
         <Container>
           <Row>
             <Col>
-              <div className="site-title-wrapper">
-                <a href="/">
-                  <h1 className="site-title">
-                    <FontAwesomeIcon icon={faClapperboard} />
-                    &nbsp;Movie Review
-                  </h1>
-                </a>
-                <h2 className="page-title">{this.props.pageTitle}</h2>
+              <div className="header-wrapper">
+                <div className="site-title-wrapper">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className="root-link"
+                    onClick={() => this.props.navigate('/')}
+                    onKeyDown={() => this.props.navigate('/')}
+                  >
+                    <h1 className="site-title">
+                      <FontAwesomeIcon icon={faClapperboard} />
+                      {' Movie Reviews'}
+                    </h1>
+                  </div>
+                </div>
+
+                <div className="bottom-bar">
+                  <div className="page-title-wrapper">
+                    <h2 className="page-title">{this.props.pageTitle}</h2>
+                  </div>
+
+                  <UserProfileLoginComponent />
+                </div>
               </div>
             </Col>
           </Row>
@@ -36,3 +58,5 @@ export default class HeaderComponent extends React.PureComponent<HeaderComponent
     );
   }
 }
+
+export default withRouter(withAppState(HeaderComponent, (state: AppState) => state));

@@ -15,6 +15,7 @@ import {
 } from './redux/Reducer';
 import LoginComponent from './components/LoginComponent';
 import history from './helper/History';
+import UserProfileComponent from './components/profile/UserProfileComponent';
 
 interface AppState {
   loading: boolean
@@ -93,6 +94,10 @@ class App extends React.PureComponent<ReduxState, AppState> {
           <Route
             path="/movie/:movieId"
             element={<MovieDetailComponent />}
+          />
+          <Route
+            path="/profile"
+            element={<UserProfileComponent />}
           />
           <Route
             path="*"

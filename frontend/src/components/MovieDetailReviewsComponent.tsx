@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import {
+  Button, Col, Container, Row, Accordion, Card, useAccordionButton,
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faQuoteRight, faComments, faQuoteLeft, faStar,
+  faQuoteRight, faComments, faQuoteLeft, faStar, faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
@@ -65,10 +67,21 @@ export default class MovieDetailReviewsComponent
     return (
       <div className="reviews">
         <Container>
-          <h3 className="title">
-            <FontAwesomeIcon icon={faComments} />
-            &nbsp;Reviews
-          </h3>
+          <div className="section-title">
+            <div className="title-wrapper">
+              <h3 className="title">
+                <FontAwesomeIcon icon={faComments} />
+                {' Reviews'}
+              </h3>
+            </div>
+
+            <div className="add-review">
+              <Button variant="outline-primary">
+                <FontAwesomeIcon icon={faPlus} />
+                {' add review'}
+              </Button>
+            </div>
+          </div>
 
           <Row>
             {this.state.reviews?.map((review, index) => {
