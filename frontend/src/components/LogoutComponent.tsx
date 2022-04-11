@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Navigate } from 'react-router-dom';
 import withAppState, { ReduxState } from '../helper/ReduxHelper';
-import withRouter from '../helper/RouterHelper';
 import { DELETE_AUTHENTICATION_TOKEN, DELETE_CURRENT_USER } from '../redux/Reducer';
 
 class LogoutComponent extends PureComponent<ReduxState> {
