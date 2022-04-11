@@ -14,9 +14,15 @@ export const SET_ADD_USER_URL = 'SET_ADD_USER_URL';
 export const SET_LOGIN_URL = 'SET_LOGIN_URL';
 export const SET_CURRENT_USER_URL = 'SET_CURRENT_USER_URL';
 export const SET_AUTHENTICATION_TOKEN = 'SET_AUTHENTICATION_TOKEN';
+export const DELETE_AUTHENTICATION_TOKEN = 'SET_AUTHENTICATION_TOKEN';
 
-// eslint-disable-next-line default-param-last
-export default function appReducer(state: AppState = { authenticationToken: '' }, action: SetValueAction): AppState {
+export default function appReducer(
+  // eslint-disable-next-line default-param-last
+  state: AppState = {
+    authenticationToken: localStorage.getItem(SET_AUTHENTICATION_TOKEN) ?? undefined,
+  },
+  action: SetValueAction,
+): AppState {
   switch (action.type) {
     case SET_ALL_MOVIES_URL:
       return {
@@ -59,9 +65,16 @@ export default function appReducer(state: AppState = { authenticationToken: '' }
         currentUserUrl: action.value,
       };
     case SET_AUTHENTICATION_TOKEN:
+      localStorage.setItem(SET_AUTHENTICATION_TOKEN, action.value);
       return {
         ...state,
         authenticationToken: action.value,
+      };
+    case DELETE_AUTHENTICATION_TOKEN:
+      localStorage.removeItem(SET_AUTHENTICATION_TOKEN);
+      return {
+        ...state,
+        authenticationToken: undefined,
       };
     default:
       return state;
