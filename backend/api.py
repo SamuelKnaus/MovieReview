@@ -87,6 +87,7 @@ def index():
     body.add_api_namespace()
 
     body.add_control_get_authenticated_user()
+    body.add_control_login()
 
     body.add_control_get_categories()
     body.add_control_post_category()

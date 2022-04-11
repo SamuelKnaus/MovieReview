@@ -4,8 +4,9 @@
 
 import api
 from json_schemas.user_json_schema import get_user_json_schema
+from json_schemas.credentials_json_schema import get_credentials_json_schema
 from mason.generic_mason_builder import GenericMasonBuilder
-from constants import NAMESPACE
+from constants import NAMESPACE, THIRD_COMPONENT_URL, LOGIN_ENDPOINT
 
 
 class UserMasonBuilder(GenericMasonBuilder):
@@ -91,4 +92,16 @@ class UserMasonBuilder(GenericMasonBuilder):
             href=self.api.url_for(
                 self.authenticated_user_item
             )
+        )
+
+    def add_control_login(self):
+        """
+            This method adds the mason documentation for the login post endpoint
+            of the third component
+        """
+        self._add_control_post(
+            NAMESPACE + ":login",
+            title="Get the currently authenticated user",
+            href=THIRD_COMPONENT_URL + LOGIN_ENDPOINT,
+            schema=get_credentials_json_schema()
         )
