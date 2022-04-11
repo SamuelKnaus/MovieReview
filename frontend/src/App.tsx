@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.scss';
-import { unstable_HistoryRouter as HistoryRouter, Routes, Route } from 'react-router-dom';
-
+import {
+  unstable_HistoryRouter as HistoryRouter, Routes, Route, Navigate,
+} from 'react-router-dom';
 import MovieListComponent from './components/MovieListComponent';
 import Fetch from './helper/Fetch';
 import MovieDetailComponent from './components/MovieDetailComponent';
@@ -92,6 +93,10 @@ class App extends React.PureComponent<ReduxState, AppState> {
           <Route
             path="/movie/:movieId"
             element={<MovieDetailComponent />}
+          />
+          <Route
+            path="*"
+            element={<Navigate to="/" />}
           />
         </Routes>
       </HistoryRouter>
