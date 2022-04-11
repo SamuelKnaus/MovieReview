@@ -7,7 +7,9 @@ import { Credentials } from '../models/Credentials';
 import Fetch from '../helper/Fetch';
 import { Token } from '../models/Token';
 import { AppState } from '../redux/Store';
-import { DELETE_AUTHENTICATION_TOKEN, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER_URL } from '../redux/Reducer';
+import {
+  DELETE_AUTHENTICATION_TOKEN, DELETE_CURRENT_USER, SET_AUTHENTICATION_TOKEN, SET_CURRENT_USER_URL,
+} from '../redux/Reducer';
 import { HttpError } from '../models/HttpError';
 import withRouter from '../helper/RouterHelper';
 
@@ -52,7 +54,8 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   };
 
   loginError = (serverResponse: HttpError) => {
-    this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: '' });
+    this.props.appStateDispatch({ type: DELETE_AUTHENTICATION_TOKEN });
+    this.props.appStateDispatch({ type: DELETE_CURRENT_USER });
     this.setState({
       password: '',
       errorMessage: serverResponse.message,
@@ -69,6 +72,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
 
   userFetchError = () => {
     this.props.appStateDispatch({ type: DELETE_AUTHENTICATION_TOKEN });
+    this.props.appStateDispatch({ type: DELETE_CURRENT_USER });
     this.setState({
       password: '',
       errorMessage: 'Something went wrong during the login',
