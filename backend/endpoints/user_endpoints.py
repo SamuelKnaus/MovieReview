@@ -28,6 +28,7 @@ class UserCollection(Resource):
 
         body = MasonBuilder()
         body.add_api_namespace()
+        body.add_control_view_function()
         body.add_control_get_users("self")
         body.add_control_post_user()
         body["items"] = user_items
