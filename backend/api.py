@@ -23,7 +23,6 @@ APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 APP.config["CACHE_TYPE"] = "SimpleCache"
 APP.config["CACHE_DEFAULT_TIMEOUT"]: CACHING_TIMEOUT
 APP.config["SWAGGER"] = {
-    "title": "Sensorhub API",
     "openapi": "3.0.3",
     "uiversion": 3,
 }
