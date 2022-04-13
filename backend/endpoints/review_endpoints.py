@@ -110,6 +110,9 @@ class MovieReviewCollection(Resource):
             raise werkzeug.exceptions.BadRequest(
                 "The movie_id does not match the given url parameter"
             )
+
+        cls.clear_cache(movie)
+        UserReviewCollection.clear_cache(created_review.author)
         return created_review
 
     @classmethod
@@ -127,9 +130,6 @@ class MovieReviewCollection(Resource):
                 a http response object representing the result of this operation
         """
         review = Review()
-
-        self.clear_cache(movie)
-        UserReviewCollection.clear_cache(review.author)
 
         return post_blueprint(
             request,
@@ -200,12 +200,12 @@ class MovieReviewItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        if movie.id != review.movie_id:
+            return ErrorResponse.get_not_found()
+
         self.clear_cache(movie, review)
         UserReviewCollection.clear_cache(review.author)
         MovieReviewCollection.clear_cache(movie)
-
-        if movie.id != review.movie_id:
-            return ErrorResponse.get_not_found()
 
         update_review = Review()
         return put_blueprint(request, get_review_json_schema, api.DB,
@@ -223,12 +223,12 @@ class MovieReviewItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        if movie.id != review.movie_id:
+            return ErrorResponse.get_not_found()
+
         cls.clear_cache(movie, review)
         UserReviewCollection.clear_cache(review.author)
         MovieReviewCollection.clear_cache(movie)
-
-        if movie.id != review.movie_id:
-            return ErrorResponse.get_not_found()
 
         return delete_blueprint(api.DB, review)
 
