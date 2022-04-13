@@ -1,3 +1,4 @@
+import LocalStorageHelper from '../helper/LocalStorageHelper';
 import { AppState } from './Store';
 
 export type SetValueAction = {
@@ -21,7 +22,8 @@ export const DELETE_CURRENT_USER = 'DELETE_CURRENT_USER';
 export default function appReducer(
   // eslint-disable-next-line default-param-last
   state: AppState = {
-    authenticationToken: localStorage.getItem(SET_AUTHENTICATION_TOKEN) ?? undefined,
+    currentUser: LocalStorageHelper.getCurrentUser(),
+    authenticationToken: LocalStorageHelper.getAuthenticationToken(),
   },
   action: SetValueAction,
 ): AppState {
@@ -67,23 +69,25 @@ export default function appReducer(
         currentUserUrl: action.value,
       };
     case SET_AUTHENTICATION_TOKEN:
-      localStorage.setItem(SET_AUTHENTICATION_TOKEN, action.value);
+      LocalStorageHelper.setAuthenticationToken(action.value);
       return {
         ...state,
         authenticationToken: action.value,
       };
     case DELETE_AUTHENTICATION_TOKEN:
-      localStorage.removeItem(SET_AUTHENTICATION_TOKEN);
+      LocalStorageHelper.deleteAuthenticationToken();
       return {
         ...state,
         authenticationToken: undefined,
       };
     case SET_CURRENT_USER:
+      LocalStorageHelper.setCurrentUser(action.value);
       return {
         ...state,
         currentUser: action.value,
       };
     case DELETE_CURRENT_USER:
+      LocalStorageHelper.deleteCurrentUser();
       return {
         ...state,
         currentUser: undefined,
