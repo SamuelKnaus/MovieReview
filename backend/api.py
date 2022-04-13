@@ -2,7 +2,7 @@
 This module represents the whole api definition of the backend
 All endpoints, the database models and the url converters are defined in here
 """
-
+from flasgger import Swagger
 from flask import Flask, send_from_directory
 from flask_caching import Cache
 from flask_cors import CORS
@@ -22,11 +22,17 @@ APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///movie-review.db"
 APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 APP.config["CACHE_TYPE"] = "SimpleCache"
 APP.config["CACHE_DEFAULT_TIMEOUT"]: CACHING_TIMEOUT
+APP.config["SWAGGER"] = {
+    "title": "Sensorhub API",
+    "openapi": "3.0.3",
+    "uiversion": 3,
+}
 APP.url_map.strict_slashes = False
 
 API = Api(APP)
 DB = SQLAlchemy(APP)
 CACHE = Cache(APP)
+Swagger(APP, template_file=APP.static_folder + "/api_documentation.yml")
 
 from endpoints.movie_endpoints import MovieCollection, MovieItem
 from endpoints.user_endpoints import UserCollection, UserItem, AuthenticatedUserItem
