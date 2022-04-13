@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-  Button, Col, Container, Row, Accordion, Card, useAccordionButton,
+  Button, Col, Container, Row,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {

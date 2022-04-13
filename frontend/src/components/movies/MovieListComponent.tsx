@@ -143,7 +143,7 @@ class MovieListComponent
                   onClick={
                     () => this.props.navigate(`/movie/${movie.id}`, {
                       state: {
-                        movieRequestUrl: movie['@controls'].item?.href,
+                        movieRequestUrl: movie['@controls'].self?.href,
                         categoryTitle: this.state.categoryTitleMap?.get(movie.category_id),
                       },
                     })

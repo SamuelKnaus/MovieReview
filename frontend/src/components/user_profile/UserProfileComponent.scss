@@ -1,2 +1,7 @@
 @use '../../styles/predefined';
 
+.user-profile {
+  .main {
+    @include predefined.section-padding;
+  }
+}

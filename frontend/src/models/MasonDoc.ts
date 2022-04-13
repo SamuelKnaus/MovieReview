@@ -17,7 +17,6 @@ export interface MasonDoc {
     'moviereviewmeta:login'?: Control,
     'self'?: Control,
     'up'?: Control,
-    'item'?: Control,
     'collection'?: Control,
  }
 

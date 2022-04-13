@@ -133,4 +133,8 @@ class AuthenticatedUserItem(Resource):
             output:
                 the http response object containing the currently authenticated user
         """
-        return get_blueprint(authenticated_user.serialize())
+        body = MasonBuilder(authenticated_user.serialize())
+        body.add_control_view_function()
+        body.add_control_get_user(authenticated_user.username)
+        body.add_control_get_reviews_of_user(authenticated_user.username)
+        return get_blueprint(body)

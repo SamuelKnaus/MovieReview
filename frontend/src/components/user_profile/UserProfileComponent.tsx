@@ -1,23 +1,53 @@
 import React, { PureComponent } from 'react';
-import { Container } from 'react-bootstrap';
+import { NavigateFunction } from 'react-router-dom';
+import { Row, Col, Container } from 'react-bootstrap';
 import withRouter from '../../helper/RouterHelper';
 import HeaderComponent from '../header_footer/HeaderComponent';
 import FooterComponent from '../header_footer/FooterComponent';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
+import UserProfileInformationComponent from './UserProfileInformationCardComponent';
+import UserProfileFailedComponent from './UserProfileFailedComponent';
+import UserProfileReviewsComponent from './UserProfileReviewsComponent';
 
 import './UserProfileComponent.scss';
 
+interface UserProfileComponentProps extends ReduxState {
+  navigate: NavigateFunction
+}
+
 class UserProfileComponent
-  extends PureComponent <ReduxState> {
+  extends PureComponent <UserProfileComponentProps> {
   render() {
+    if (this.props.appState.currentUser) {
+      console.log(this.props.appState.currentUser?.['@controls']['moviereviewmeta:reviews-of-user']);
+      return (
+        <div className="user-profile">
+          <HeaderComponent pageTitle="My Profile" />
+          <div className="main">
+            <Container>
+              <Row>
+                <Col md={3}>
+                  <UserProfileInformationComponent />
+                </Col>
+
+                <Col md={{ span: 8, offset: 1 }}>
+                  <UserProfileReviewsComponent
+                    userReviewsUrl={this.props.appState.currentUser?.['@controls']['moviereviewmeta:reviews-of-user']?.href}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </div>
+          <FooterComponent />
+        </div>
+      );
+    }
     return (
       <div className="user-profile">
-        <HeaderComponent pageTitle="My Profile" />
+        <HeaderComponent pageTitle="Login required" />
         <div className="main">
-          <Container>
-            <h2>PLACEHOLDER</h2>
-          </Container>
+          <UserProfileFailedComponent />
         </div>
         <FooterComponent />
       </div>

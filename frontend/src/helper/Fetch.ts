@@ -109,7 +109,9 @@ export default class Fetch {
         }
       })
       .catch((error) => {
-        console.log(error);
+        errorHandler({
+          errorMessage: 'No JSON content found',
+        });
       });
   }
 }

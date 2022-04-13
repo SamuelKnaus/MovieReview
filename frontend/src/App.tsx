@@ -3,6 +3,7 @@ import './App.scss';
 import {
   unstable_HistoryRouter as HistoryRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import MovieListComponent from './components/movies/MovieListComponent';
 import Fetch from './helper/Fetch';
 import MovieDetailComponent from './components/movies/MovieDetailComponent';
@@ -74,11 +75,21 @@ class App extends React.PureComponent<ReduxState, AppState> {
 
   render() {
     if (this.state.loading) {
-      return <div>Loading</div>;
+      return (
+        <div className="app-loading">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+          &nbsp;
+          Loading...
+        </div>
+      );
     }
 
     if (!this.state.successfullyLoaded) {
-      return <div>Could not be loaded</div>;
+      return (
+        <div>The API is currently unavailable. Please try again later!</div>
+      );
     }
 
     return (
