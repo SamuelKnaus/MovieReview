@@ -6,6 +6,7 @@ from flask import request
 from flask_restful import Resource
 
 import api
+from constants import CACHING_TIMEOUT
 from database.models import Category
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.category_json_schema import get_category_json_schema
@@ -18,6 +19,7 @@ class CategoryCollection(Resource):
         It contains the definition of a get and a post endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls):
         """
             This method represents the get endpoint of this resource
@@ -57,6 +59,8 @@ class CategoryCollection(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        self.clear_cache()
+
         category = Category()
         return post_blueprint(
             request,
@@ -66,6 +70,13 @@ class CategoryCollection(Resource):
             lambda: self.__get_url_for_created_item(category)
         )
 
+    @staticmethod
+    def clear_cache():
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(CategoryCollection.get)
+
 
 class CategoryItem(Resource):
     """
@@ -73,6 +84,7 @@ class CategoryItem(Resource):
         It contains the definition of a get, a put and a delete endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, category):
         """
             This method represents the get endpoint of this resource
@@ -106,6 +118,9 @@ class CategoryItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        self.clear_cache(category)
+        CategoryCollection.clear_cache()
+
         update_category = Category()
         return put_blueprint(request, get_category_json_schema, api.DB,
                              lambda: self.__update_category_object(category, update_category))
@@ -121,4 +136,14 @@ class CategoryItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        cls.clear_cache(category)
+        CategoryCollection.clear_cache()
+
         return delete_blueprint(api.DB, category)
+
+    @staticmethod
+    def clear_cache(category):
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(CategoryItem.get, CategoryItem, category)

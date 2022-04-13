@@ -4,13 +4,14 @@ All endpoints, the database models and the url converters are defined in here
 """
 
 from flask import Flask, send_from_directory
+from flask_caching import Cache
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
-from constants import NAMESPACE_LINK
+from constants import NAMESPACE_LINK, CACHING_TIMEOUT
 from mason.mason_builder import MasonBuilder
 from url_converters.url_converter import CategoryConverter, MovieConverter
 from url_converters.url_converter import ReviewConverter
@@ -19,10 +20,13 @@ APP = Flask(__name__, static_folder="static")
 CORS(APP)
 APP.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///movie-review.db"
 APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+APP.config["CACHE_TYPE"] = "SimpleCache"
+APP.config["CACHE_DEFAULT_TIMEOUT"]: CACHING_TIMEOUT
 APP.url_map.strict_slashes = False
 
 API = Api(APP)
 DB = SQLAlchemy(APP)
+CACHE = Cache(APP)
 
 from endpoints.movie_endpoints import MovieCollection, MovieItem
 from endpoints.user_endpoints import UserCollection, UserItem, AuthenticatedUserItem

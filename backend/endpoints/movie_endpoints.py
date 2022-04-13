@@ -6,6 +6,7 @@ from flask import request
 from flask_restful import Resource
 
 import api
+from constants import CACHING_TIMEOUT
 from database.models import Movie
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.movie_json_schema import get_movie_json_schema
@@ -18,6 +19,7 @@ class MovieCollection(Resource):
         It contains the definition of a get and a post endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls):
         """
             This method represents the get endpoint of this resource
@@ -57,6 +59,8 @@ class MovieCollection(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        self.clear_cache()
+
         movie = Movie()
         return post_blueprint(
             request,
@@ -66,6 +70,13 @@ class MovieCollection(Resource):
             lambda: self.__get_url_for_created_item(movie)
         )
 
+    @staticmethod
+    def clear_cache():
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(MovieCollection.get)
+
 
 class MovieItem(Resource):
     """
@@ -73,6 +84,7 @@ class MovieItem(Resource):
         It contains the definition of a get, a put and a delete endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, movie):
         """
             This method represents the get endpoint of this resource
@@ -111,6 +123,9 @@ class MovieItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        self.clear_cache(movie)
+        MovieCollection.clear_cache()
+
         update_movie = Movie()
         return put_blueprint(
             request,
@@ -130,4 +145,13 @@ class MovieItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        cls.clear_cache(movie)
+        MovieCollection.clear_cache()
         return delete_blueprint(api.DB, movie)
+
+    @staticmethod
+    def clear_cache(movie):
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(MovieItem.get, MovieItem, movie)

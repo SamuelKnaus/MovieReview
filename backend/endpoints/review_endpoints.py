@@ -7,6 +7,7 @@ from flask import request
 from flask_restful import Resource
 
 import api
+from constants import CACHING_TIMEOUT
 from database.models import Review, Movie
 from endpoints.user_endpoints import UserItem
 from helper.error_response import ErrorResponse
@@ -25,6 +26,7 @@ class UserReviewCollection(Resource):
         To add new reviews you have to use the MovieReviewCollection endpoints
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, username):
         """
             This method represents the get endpoint of this resource
@@ -59,6 +61,13 @@ class UserReviewCollection(Resource):
         body["items"] = items
         return get_blueprint(body)
 
+    @staticmethod
+    def clear_cache(username):
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(UserReviewCollection.get, UserReviewCollection, username)
+
 
 class MovieReviewCollection(Resource):
     """
@@ -68,6 +77,7 @@ class MovieReviewCollection(Resource):
         It contains the definition of a get and a post endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, movie):
         """
             This method represents the get endpoint of this resource
@@ -117,6 +127,10 @@ class MovieReviewCollection(Resource):
                 a http response object representing the result of this operation
         """
         review = Review()
+
+        self.clear_cache(movie)
+        UserReviewCollection.clear_cache(review.author)
+
         return post_blueprint(
             request,
             get_review_json_schema,
@@ -125,6 +139,13 @@ class MovieReviewCollection(Resource):
             lambda: self.__get_url_for_created_item(movie, review)
         )
 
+    @staticmethod
+    def clear_cache(movie):
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(MovieReviewCollection.get, MovieReviewCollection, movie)
+
 
 class MovieReviewItem(Resource):
     """
@@ -132,6 +153,7 @@ class MovieReviewItem(Resource):
         It contains the definition of a get, a put and a delete endpoint
     """
     @classmethod
+    @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, movie, review):
         """
             This method represents the get endpoint of this resource
@@ -178,6 +200,10 @@ class MovieReviewItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        self.clear_cache(movie, review)
+        UserReviewCollection.clear_cache(review.author)
+        MovieReviewCollection.clear_cache(movie)
+
         if movie.id != review.movie_id:
             return ErrorResponse.get_not_found()
 
@@ -197,7 +223,18 @@ class MovieReviewItem(Resource):
             output:
                 a http response object representing the result of this operation
         """
+        cls.clear_cache(movie, review)
+        UserReviewCollection.clear_cache(review.author)
+        MovieReviewCollection.clear_cache(movie)
+
         if movie.id != review.movie_id:
             return ErrorResponse.get_not_found()
 
         return delete_blueprint(api.DB, review)
+
+    @staticmethod
+    def clear_cache(movie, review):
+        """
+            Invalidates the cache for the get endpoint of this resource
+        """
+        api.CACHE.delete_memoized(MovieReviewItem.get, MovieReviewItem, movie, review)
