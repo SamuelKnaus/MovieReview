@@ -17,8 +17,7 @@ export default class MovieDetailInformationComponent extends PureComponent <Movi
     const movieLength = this.props.movie?.length;
     const minutes = Math.floor((movieLength ?? 60) / 60);
 
-    const parsedDate = moment(this.props.movie?.release_date, 'YYYY-MM-DD');
-    const outputDate = parsedDate.format('DD.MM.YYYY');
+    const outputDate = moment(this.props.movie?.release_date).format('DD.MM.YYYY');
 
     return (
       <div className="move-item-information">

@@ -107,8 +107,7 @@ class MovieDetailReviewsComponent
 
           <Row>
             {this.state.reviews?.map((review, index) => {
-              const parsedDate = moment(review.date, 'YYYY-MM-DD HH:mm:ss.SSS');
-              const outputDate = parsedDate.format('DD.MM.YYYY HH:mm');
+              const outputDate = moment(review.date).format('DD.MM.YYYY HH:mm');
 
               return (
                 <Col md={4} key={index.valueOf()}>

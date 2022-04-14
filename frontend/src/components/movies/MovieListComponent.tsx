@@ -131,8 +131,7 @@ class MovieListComponent
           </thead>
           <tbody>
             {this.state.movies?.map((movie, index) => {
-              const parsedDate = moment(movie.release_date, 'YYYY-MM-DD');
-              const outputDate = parsedDate.format('DD.MM.YYYY');
+              const outputDate = moment(movie.release_date).format('DD.MM.YYYY');
 
               const minutes = Math.floor(movie.length / 60);
 

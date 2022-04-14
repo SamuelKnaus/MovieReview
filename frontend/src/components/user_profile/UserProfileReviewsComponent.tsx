@@ -76,8 +76,7 @@ class UserProfileReviewsComponent
 
         <Row>
           {this.state.userReviews?.map((userReview, index) => {
-            const parsedDate = moment(userReview.date, 'YYYY-MM-DD HH:mm:ss.SSS');
-            const outputDate = parsedDate.format('DD.MM.YYYY HH:mm');
+            const outputDate = moment(userReview.date).format('DD.MM.YYYY HH:mm');
 
             return (
               <Col md={6} key={index.valueOf()}>
