@@ -18,8 +18,10 @@ import ModalComponent from './ModalComponent';
 
 import './MovieDetailReviewsComponent.scss';
 import { MasonControl } from '../../models/MasonDoc';
+import { Movie } from '../../models/Movie';
 
 interface MovieDetailReviewsComponentProps extends ReduxState {
+  movie: Movie,
   reviewsUrl?: string,
 }
 
@@ -102,6 +104,11 @@ class MovieDetailReviewsComponent
                   Add Review
                 </Button>
               )}
+              review={{
+                author: this.props.appState.currentUser?.username,
+                movie_id: this.props.movie.id,
+                date: moment().format(),
+              }}
             />
           </div>
 

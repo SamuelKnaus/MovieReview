@@ -53,7 +53,6 @@ class ModalComponent
   };
 
   fetchErrorHandler = () => {
-    console.log('error');
     this.setState({
       errorMessage: 'Failed to execute the action',
       loading: false,
