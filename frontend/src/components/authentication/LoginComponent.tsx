@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigateFunction } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
+import {
+  Col, Container, Row, Form, FloatingLabel, Button,
+} from 'react-bootstrap';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { Credentials } from '../../models/Credentials';
 import Fetch from '../../helper/Fetch';
@@ -83,6 +85,8 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   };
 
   sendLoginRequest() {
+    console.log('test');
+
     const body: Credentials = {
       username: this.state.username,
       password: this.state.password,
@@ -107,42 +111,55 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
           <Container>
             <Row className="justify-content-md-center">
               <Col md="3">
-                <div className="login-icon">
-                  <FontAwesomeIcon
-                    icon={faUserCircle}
-                    className="user-icon"
-                  />
-                </div>
+                <Form>
+                  <div className="login-icon">
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      className="user-icon"
+                    />
+                  </div>
 
-                <div className="username">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChange={(event) => this.setState({ username: event.target.value })}
-                  />
-                </div>
-                <div className="password">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChange={(event) => this.setState({ password: event.target.value })}
-                  />
-                </div>
+                  <Form.Group className="mb-3" controlId="login.Username">
+                    <FloatingLabel
+                      label="Username"
+                    >
+                      <Form.Control
+                        type="text"
+                        placeholder="Username"
+                        value={this.state.username}
+                        onChange={(event) => this.setState({ username: event.target.value })}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
 
-                <div className="error-message">
-                  {this.state.errorMessage}
-                </div>
+                  <Form.Group className="mb-3" controlId="login.Password">
+                    <FloatingLabel
+                      label="Password"
+                    >
+                      <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        value={this.state.password}
+                        onChange={(event) => this.setState({ password: event.target.value })}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
 
-                <div className="submit">
-                  <input
-                    className="login-button"
-                    type="button"
-                    value="Login"
-                    onClick={() => this.sendLoginRequest()}
-                  />
-                </div>
+                  <Form.Group className="mb-3" controlId="login.ErrorMessage">
+                    <Form.Text>
+                      {this.state.errorMessage}
+                    </Form.Text>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="login.Submit">
+                    <Button
+                      variant="primary"
+                      onClick={() => this.sendLoginRequest()}
+                    >
+                      Login
+                    </Button>
+                  </Form.Group>
+                </Form>
               </Col>
             </Row>
           </Container>
