@@ -7,13 +7,13 @@ import withRouter from '../../helper/RouterHelper';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
 
-import './UserProfileLoginComponent.scss';
+import './UserProfileDropdownComponent.scss';
 
 interface UserProfileLoginComponentProps extends ReduxState {
   navigate: NavigateFunction
 }
 
-class UserProfileLoginComponent
+class UserProfileDropdownComponent
   extends PureComponent <UserProfileLoginComponentProps> {
   render() {
     if (this.props.appState.currentUser) {
@@ -49,4 +49,4 @@ class UserProfileLoginComponent
   }
 }
 
-export default withRouter(withAppState(UserProfileLoginComponent, (state: AppState) => state));
+export default withRouter(withAppState(UserProfileDropdownComponent, (state: AppState) => state));

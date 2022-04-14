@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import {
-  Button, Col, Container, Row,
+  Col, Container, Row,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faQuoteRight, faComments, faQuoteLeft, faStar, faPlus,
+  faQuoteRight, faComments, faQuoteLeft, faStar, faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
@@ -12,19 +12,22 @@ import { Collection } from '../../models/Collection';
 import { Review } from '../../models/Review';
 import Fetch from '../../helper/Fetch';
 import { HttpError } from '../../models/HttpError';
+import withAppState, { ReduxState } from '../../helper/ReduxHelper';
+import { AppState } from '../../redux/Store';
+import ModalComponent from '../common/ModalComponent';
 
 import './MovieDetailReviewsComponent.scss';
 
-type MovieDetailReviewsComponentProps = {
-  reviewsUrl?: string
+interface MovieDetailReviewsComponentProps extends ReduxState {
+  reviewsUrl?: string,
 }
 
 type MovieDetailReviewsComponentState = {
   isLoaded: boolean,
-  reviews?: Review[]
+  reviews?: Review[],
 }
 
-export default class MovieDetailReviewsComponent
+class MovieDetailReviewsComponent
   extends PureComponent<MovieDetailReviewsComponentProps, MovieDetailReviewsComponentState> {
   constructor(props: MovieDetailReviewsComponentProps) {
     super(props);
@@ -75,12 +78,10 @@ export default class MovieDetailReviewsComponent
               </h3>
             </div>
 
-            <div className="add-review">
-              <Button variant="outline-primary">
-                <FontAwesomeIcon icon={faPlus} />
-                {' add review'}
-              </Button>
-            </div>
+            <ModalComponent
+              edit={false}
+              title="Add Review"
+            />
           </div>
 
           <Row>
@@ -93,12 +94,28 @@ export default class MovieDetailReviewsComponent
                   <div className="review">
                     <div className="author">
                       <h4>{review.author}</h4>
+                      <ModalComponent
+                        edit
+                        title="Edit Review"
+                      />
                     </div>
                     <div className="meta-information">
                       <div className="date">{outputDate}</div>
                       <div className="rating">
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStarEmpty} />
+                        {Array.from(Array(review.rating).keys())
+                          .map((_, itStar) => (
+                            <FontAwesomeIcon
+                              key={itStar.valueOf()}
+                              icon={faStar}
+                            />
+                          ))}
+                        {Array.from(Array(5 - review.rating).keys())
+                          .map((_, itEmptyStar) => (
+                            <FontAwesomeIcon
+                              key={itEmptyStar.valueOf()}
+                              icon={faStarEmpty}
+                            />
+                          ))}
                       </div>
                     </div>
                     <div className="comment">
@@ -118,3 +135,5 @@ export default class MovieDetailReviewsComponent
     );
   }
 }
+
+export default withAppState(MovieDetailReviewsComponent, (state: AppState) => state);

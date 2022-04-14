@@ -12,6 +12,26 @@
     padding: 40px;
     margin-bottom: 40px;
 
+    &:hover,
+    &:focus {
+      .author {
+        .edit-review-icon {
+          opacity: 1;
+        }
+      }
+    }
+
+    .author {
+      display: flex;
+      justify-content: space-between;
+
+      .edit-review-icon {
+        opacity: 0;
+        transition: opacity .3s ease;
+        cursor: pointer;
+      }
+    }
+
     .meta-information {
       display: flex;
       justify-content: space-between;

@@ -86,9 +86,19 @@ class UserProfileReviewsComponent
                     <div className="date">{outputDate}</div>
                     <div className="rating">
                       {Array.from(Array(userReview.rating).keys())
-                        .map(() => <FontAwesomeIcon icon={faStar} />)}
+                        .map((_, itStar) => (
+                          <FontAwesomeIcon
+                            key={itStar.valueOf()}
+                            icon={faStar}
+                          />
+                        ))}
                       {Array.from(Array(5 - userReview.rating).keys())
-                        .map(() => <FontAwesomeIcon icon={faStarEmpty} />)}
+                        .map((_, itEmptyStar) => (
+                          <FontAwesomeIcon
+                            key={itEmptyStar.valueOf()}
+                            icon={faStarEmpty}
+                          />
+                        ))}
                     </div>
                   </div>
                   <div className="comment">
