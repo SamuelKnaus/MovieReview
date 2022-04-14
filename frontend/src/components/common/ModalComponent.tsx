@@ -51,7 +51,7 @@ class ModalComponent
             onHide={() => this.closeModal()}
             backdrop="static"
             keyboard={false}
-            className="review-modal"
+            className="edit-review-modal"
           >
             <Modal.Header closeButton>
               <Modal.Title>{this.props.title}</Modal.Title>
@@ -98,6 +98,7 @@ class ModalComponent
           onHide={() => this.closeModal()}
           backdrop="static"
           keyboard={false}
+          className="add-review-modal"
         >
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
