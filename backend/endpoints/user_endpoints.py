@@ -3,9 +3,11 @@
 """
 import json
 
+import werkzeug
 from flask import request
 from flask_restful import Resource
 
+from datamodels.user import UserType
 from helper.authentication_helper import authorize
 from helper.request_blueprints import get_blueprint
 from helper.third_component_request_helper import get_request, forward, post_request, put_request, \
@@ -34,6 +36,7 @@ class UserCollection(Resource):
         body["items"] = user_items
         return json.dumps(body)
 
+    @authorize(required_role=UserType.ADMIN)
     def get(self):
         """
             This method represents the get endpoint of this resource
@@ -74,7 +77,8 @@ class UserItem(Resource):
         body.add_control_get_reviews_of_user(user_json['username'])
         return json.dumps(body)
 
-    def get(self, _username):
+    @authorize(return_authenticated_user=True)
+    def get(self, username, authenticated_user):
         """
             This method represents the get endpoint of this resource
             input:
@@ -82,15 +86,25 @@ class UserItem(Resource):
             output:
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
+            exceptions:
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to see the
+                    profile of another user
         """
+        if authenticated_user.username != username and \
+                not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to see the profile of another user"
+            )
+
         response = forward(
             lambda: get_request(request.path),
-            lambda username: self.__inject_mason(username)
+            lambda user_json: self.__inject_mason(user_json)
         )
         return response
 
     @classmethod
-    def put(cls, _username):
+    @authorize(return_authenticated_user=True)
+    def put(cls, username, authenticated_user):
         """
             This method represents the put endpoint of this resource,
             which is used to update a user in the database
@@ -99,11 +113,21 @@ class UserItem(Resource):
                 user: the old user object which is to be updated
             output:
                 a http response object representing the result of this operation
+            exceptions:
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to edit the
+                    profile of another user
         """
+        if authenticated_user.username != username and \
+                not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to edit the profile of another user"
+            )
+
         return forward(lambda: put_request(request.path, request.json))
 
     @classmethod
-    def delete(cls, _username):
+    @authorize(return_authenticated_user=True)
+    def delete(cls, username, authenticated_user):
         """
             This method represents the delete endpoint of this resource,
             which is used to remove a user from the database
@@ -112,7 +136,16 @@ class UserItem(Resource):
                 user: the user object which is to be deleted
             output:
                 a http response object representing the result of this operation
+            exceptions:
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to delete the
+                    profile of another user
         """
+        if authenticated_user.username != username and \
+                not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to delete the profile of another user"
+            )
+
         return forward(lambda: delete_request(request.path))
 
 

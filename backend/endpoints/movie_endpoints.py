@@ -8,6 +8,8 @@ from flask_restful import Resource
 import api
 from constants import CACHING_TIMEOUT
 from database.models import Movie
+from datamodels.user import UserType
+from helper.authentication_helper import authorize
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.movie_json_schema import get_movie_json_schema
 from mason.mason_builder import MasonBuilder
@@ -51,6 +53,7 @@ class MovieCollection(Resource):
     def __get_url_for_created_item(cls, movie):
         return api.API.url_for(MovieItem, movie=movie)
 
+    @authorize(required_role=UserType.ADMIN)
     def post(self):
         """
             This method represents the post endpoint of this resource,
@@ -113,6 +116,7 @@ class MovieItem(Resource):
         movie.release_date = update_movie.release_date
         movie.category_id = update_movie.category_id
 
+    @authorize(required_role=UserType.ADMIN)
     def put(self, movie):
         """
             This method represents the put endpoint of this resource,
@@ -135,6 +139,7 @@ class MovieItem(Resource):
         )
 
     @classmethod
+    @authorize(required_role=UserType.ADMIN)
     def delete(cls, movie):
         """
             This method represents the delete endpoint of this resource,

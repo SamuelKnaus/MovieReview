@@ -51,7 +51,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Get a single user",
             href=self.api.url_for(
                 self.user_item,
-                _username=username
+                username=username
             )
         )
 
@@ -64,7 +64,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Update a user",
             href=self.api.url_for(
                 self.user_item,
-                _username=username
+                username=username
             ),
             schema=get_user_json_schema()
         )
@@ -78,7 +78,7 @@ class UserMasonBuilder(GenericMasonBuilder):
             title="Delete a user",
             href=self.api.url_for(
                 self.user_item,
-                _username=username
+                username=username
             )
         )
 

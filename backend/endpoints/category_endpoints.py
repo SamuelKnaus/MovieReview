@@ -8,6 +8,8 @@ from flask_restful import Resource
 import api
 from constants import CACHING_TIMEOUT
 from database.models import Category
+from datamodels.user import UserType
+from helper.authentication_helper import authorize
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from json_schemas.category_json_schema import get_category_json_schema
 from mason.mason_builder import MasonBuilder
@@ -51,6 +53,7 @@ class CategoryCollection(Resource):
     def __get_url_for_created_item(cls, category):
         return api.API.url_for(CategoryItem, category=category)
 
+    @authorize(required_role=UserType.ADMIN)
     def post(self):
         """
             This method represents the post endpoint of this resource,
@@ -108,6 +111,7 @@ class CategoryItem(Resource):
 
         category.title = update_category.title
 
+    @authorize(required_role=UserType.ADMIN)
     def put(self, category):
         """
             This method represents the put endpoint of this resource,
@@ -126,6 +130,7 @@ class CategoryItem(Resource):
                              lambda: self.__update_category_object(category, update_category))
 
     @classmethod
+    @authorize(required_role=UserType.ADMIN)
     def delete(cls, category):
         """
             This method represents the delete endpoint of this resource,

@@ -9,7 +9,9 @@ from flask_restful import Resource
 import api
 from constants import CACHING_TIMEOUT
 from database.models import Review, Movie
+from datamodels.user import UserType
 from endpoints.user_endpoints import UserItem
+from helper.authentication_helper import authorize
 from helper.error_response import ErrorResponse
 from helper.request_blueprints import get_blueprint, put_blueprint, delete_blueprint, post_blueprint
 from helper.third_component_request_helper import get_request
@@ -25,6 +27,7 @@ class UserReviewCollection(Resource):
         It contains the definition of a get endpoint only
         To add new reviews you have to use the MovieReviewCollection endpoints
     """
+
     @classmethod
     @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, username):
@@ -37,7 +40,7 @@ class UserReviewCollection(Resource):
                 user or a http error with the corresponding error message
         """
         # check if the user exists first
-        url = api.API.url_for(UserItem, _username=username)
+        url = api.API.url_for(UserItem, username=username)
         try:
             response = get_request(url)
         except requests.exceptions.ConnectionError:
@@ -76,6 +79,7 @@ class MovieReviewCollection(Resource):
         so the reviews belong to/are written for one specific movie
         It contains the definition of a get and a post endpoint
     """
+
     @classmethod
     @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, movie):
@@ -103,8 +107,14 @@ class MovieReviewCollection(Resource):
         return get_blueprint(body)
 
     @classmethod
-    def __create_review_object(cls, movie, created_review):
+    def __create_review_object(cls, movie, created_review, authenticated_user):
         created_review.deserialize(request.json)
+
+        if authenticated_user.username != created_review.author and \
+                not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to add reviews for other users"
+            )
 
         if created_review.movie_id != movie.id:
             raise werkzeug.exceptions.BadRequest(
@@ -119,15 +129,23 @@ class MovieReviewCollection(Resource):
     def __get_url_for_created_item(cls, movie, review):
         return api.API.url_for(MovieReviewItem, movie=movie, review=review)
 
-    def post(self, movie):
+    @authorize(return_authenticated_user=True)
+    def post(self, movie, authenticated_user):
         """
             This method represents the post endpoint of this resource,
             which is used to add a new review for the given movie to the database
             It uses the blueprint function of the helper module
             input:
                 movie: the movie which this review is associated to
+                authenticated_user: the currently authenticated user injected
+                    by the authentication helper
             output:
                 a http response object representing the result of this operation
+            exceptions:
+                werkzeug.exceptions.BadRequest: Thrown if the movie_id of the request body
+                    doesn't match the url parameter
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to add a
+                    review for another user
         """
         review = Review()
 
@@ -135,7 +153,7 @@ class MovieReviewCollection(Resource):
             request,
             get_review_json_schema,
             api.DB,
-            lambda: self.__create_review_object(movie, review),
+            lambda: self.__create_review_object(movie, review, authenticated_user),
             lambda: self.__get_url_for_created_item(movie, review)
         )
 
@@ -152,6 +170,7 @@ class MovieReviewItem(Resource):
         This class represents the movie review item endpoints
         It contains the definition of a get, a put and a delete endpoint
     """
+
     @classmethod
     @api.CACHE.memoize(timeout=CACHING_TIMEOUT)
     def get(cls, movie, review):
@@ -189,7 +208,8 @@ class MovieReviewItem(Resource):
         review.comment = update_review.comment
         review.date = update_review.date
 
-    def put(self, movie, review):
+    @authorize(return_authenticated_user=True)
+    def put(self, movie, review, authenticated_user):
         """
             This method represents the put endpoint of this resource,
             which is used to update the review of a movie in the database
@@ -197,9 +217,22 @@ class MovieReviewItem(Resource):
             input:
                 movie: the movie, this review was written for
                 review: the old review object which is to be updated
+                authenticated_user: the currently authenticated user injected
+                    by the authentication helper
             output:
                 a http response object representing the result of this operation
+            exceptions:
+                werkzeug.exceptions.BadRequest: Thrown if the movie_id or the author specified in
+                    the request body are different to the original object
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to edit the
+                    review of another user
         """
+        if authenticated_user.username != review.author and \
+                not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to edit reviews of other users"
+            )
+
         if movie.id != review.movie_id:
             return ErrorResponse.get_not_found()
 
@@ -212,7 +245,8 @@ class MovieReviewItem(Resource):
                              lambda: self.__update_review_object(review, update_review))
 
     @classmethod
-    def delete(cls, movie, review):
+    @authorize(return_authenticated_user=True)
+    def delete(cls, movie, review, authenticated_user):
         """
             This method represents the delete endpoint of this resource,
             which is used to remove a review of a certain movie from the database
@@ -220,9 +254,20 @@ class MovieReviewItem(Resource):
             input:
                 movie: the movie, this review was written for
                 review: the review object which is to be deleted
+                authenticated_user: the currently authenticated user injected
+                    by the authentication helper
             output:
                 a http response object representing the result of this operation
+            exceptions:
+                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to delete
+                    the review of another user
         """
+        if authenticated_user.username != review.author and \
+            not authenticated_user.role == UserType.ADMIN:
+            raise werkzeug.exceptions.Unauthorized(
+                "You are not authorized to delete reviews of other users"
+            )
+
         if movie.id != review.movie_id:
             return ErrorResponse.get_not_found()
 
