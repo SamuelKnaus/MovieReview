@@ -3,6 +3,8 @@
 """
 
 from datetime import date
+
+import dateutil.tz
 from dateutil import parser
 
 import api
@@ -122,6 +124,6 @@ class Review(api.DB.Model, Serializer):
         """
         self.rating = doc["rating"]
         self.comment = doc.get("comment")
-        self.date = parser.isoparse(doc["date"])
+        self.date = parser.isoparse(doc["date"]).astimezone(dateutil.tz.UTC)
         self.author = doc.get("author")
         self.movie_id = doc.get("movie_id")
