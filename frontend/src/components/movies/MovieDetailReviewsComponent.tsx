@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faQuoteRight, faComments, faQuoteLeft, faStar, faPenToSquare,
+  faQuoteRight, faComments, faQuoteLeft, faStar, faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
@@ -94,10 +94,20 @@ class MovieDetailReviewsComponent
                   <div className="review">
                     <div className="author">
                       <h4>{review.author}</h4>
-                      <ModalComponent
-                        edit
-                        title="Edit Review"
-                      />
+
+                      <div className="actions">
+                        <ModalComponent
+                          edit
+                          title="Edit Review"
+                        />
+
+                        <div className="delete-review">
+                          <FontAwesomeIcon
+                            icon={faTrashCan}
+                            className="delete-review-icon"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="meta-information">
                       <div className="date">{outputDate}</div>

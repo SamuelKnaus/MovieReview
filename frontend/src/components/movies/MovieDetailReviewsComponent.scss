@@ -15,8 +15,11 @@
     &:hover,
     &:focus {
       .author {
-        .edit-review-icon {
-          opacity: 1;
+        .actions {
+          .edit-review-icon,
+          .delete-review-icon {
+            opacity: 1;
+          }
         }
       }
     }
@@ -25,10 +28,19 @@
       display: flex;
       justify-content: space-between;
 
-      .edit-review-icon {
-        opacity: 0;
-        transition: opacity .3s ease;
-        cursor: pointer;
+      .actions {
+        display: flex;
+
+        .edit-review-icon {
+          margin-right: 12px;
+        }
+
+        .edit-review-icon,
+        .delete-review-icon {
+          opacity: 0;
+          transition: opacity .3s ease;
+          cursor: pointer;
+        }
       }
     }
 
