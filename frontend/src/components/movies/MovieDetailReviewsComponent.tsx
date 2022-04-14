@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import {
-  Col, Container, Row,
+  Col, Container, Button, Row, Spinner,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faQuoteRight, faComments, faQuoteLeft, faStar, faTrashCan,
+  faQuoteRight, faComments, faQuoteLeft, faStar, faTrashCan, faPenToSquare, faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
@@ -14,9 +14,10 @@ import Fetch from '../../helper/Fetch';
 import { HttpError } from '../../models/HttpError';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
-import ModalComponent from '../common/ModalComponent';
+import ModalComponent from './ModalComponent';
 
 import './MovieDetailReviewsComponent.scss';
+import { MasonControl } from '../../models/MasonDoc';
 
 interface MovieDetailReviewsComponentProps extends ReduxState {
   reviewsUrl?: string,
@@ -25,6 +26,7 @@ interface MovieDetailReviewsComponentProps extends ReduxState {
 type MovieDetailReviewsComponentState = {
   isLoaded: boolean,
   reviews?: Review[],
+  addReviewMasonDoc?: MasonControl
 }
 
 class MovieDetailReviewsComponent
@@ -47,12 +49,13 @@ class MovieDetailReviewsComponent
     this.setState({
       isLoaded: true,
       reviews: serverResponse.items ?? [],
+      addReviewMasonDoc: serverResponse['@controls']['moviereviewmeta:add-review'],
     });
   };
 
   requestErrorHandler = (serverResponse: HttpError) => {
     this.setState({
-      isLoaded: true,
+      isLoaded: false,
     });
   };
 
@@ -67,6 +70,15 @@ class MovieDetailReviewsComponent
   }
 
   render() {
+    if (!this.state.isLoaded) {
+      return (
+        <div className="reviews-loading-spinner">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      );
+    }
     return (
       <div className="reviews">
         <Container>
@@ -79,8 +91,17 @@ class MovieDetailReviewsComponent
             </div>
 
             <ModalComponent
-              edit={false}
               title="Add Review"
+              submitUrl={this.state.addReviewMasonDoc?.href}
+              schema={this.state.addReviewMasonDoc?.schema}
+              httpMethod="POST"
+              button={(
+                <Button variant="outline-primary">
+                  <FontAwesomeIcon icon={faPlus} />
+                  {' '}
+                  Add Review
+                </Button>
+              )}
             />
           </div>
 
@@ -97,14 +118,19 @@ class MovieDetailReviewsComponent
 
                       <div className="actions">
                         <ModalComponent
-                          edit
                           title="Edit Review"
+                          button={<FontAwesomeIcon className="edit-review-icon" icon={faPenToSquare} />}
+                          getMasonDocUrl={review['@controls'].self?.href}
+                          getMasonDocKey="edit"
+                          review={review}
                         />
 
                         <div className="delete-review">
-                          <FontAwesomeIcon
-                            icon={faTrashCan}
-                            className="delete-review-icon"
+                          <ModalComponent
+                            title="Edit Review"
+                            button={<FontAwesomeIcon icon={faTrashCan} className="delete-review-icon" />}
+                            getMasonDocUrl={review['@controls'].self?.href}
+                            getMasonDocKey="moviereviewmeta:delete"
                           />
                         </div>
                       </div>

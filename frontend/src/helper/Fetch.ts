@@ -87,6 +87,43 @@ export default class Fetch {
     );
   }
 
+  public static putRequest(
+    path: string,
+    postObject: any,
+    responseHandler: (serverResponse: any) => void,
+    errorHandler: (serverResponse: HttpError) => void,
+  ) {
+    this.handleJsonResponse(
+      fetch(baseUrl + path, {
+        method: 'PUT',
+        headers: {
+          Authorization: store.getState().authenticationToken ?? '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postObject),
+      }),
+      responseHandler,
+      errorHandler,
+    );
+  }
+
+  public static deleteRequest(
+    path: string,
+    responseHandler: (serverResponse: any) => void,
+    errorHandler: (serverResponse: HttpError) => void,
+  ) {
+    this.handleJsonResponse(
+      fetch(baseUrl + path, {
+        method: 'DELETE',
+        headers: {
+          Authorization: store.getState().authenticationToken ?? '',
+        },
+      }),
+      responseHandler,
+      errorHandler,
+    );
+  }
+
   private static handleJsonResponse(
     fetch: Promise<Response>,
     responseHandler: (serverResponse: any) => void,
@@ -99,7 +136,7 @@ export default class Fetch {
         return response.json();
       })
       .then((responseJson) => {
-        if (resp.status === 401 || resp.status === 403) {
+        if (resp.status === 401) {
           history.push('/login');
           errorHandler(responseJson);
         } else if (resp.status > 300) {
@@ -108,10 +145,14 @@ export default class Fetch {
           responseHandler(responseJson);
         }
       })
-      .catch((error) => {
-        errorHandler({
-          errorMessage: 'No JSON content found',
-        });
+      .catch(() => {
+        if (resp.status < 300) {
+          responseHandler(null);
+        } else {
+          errorHandler({
+            errorMessage: 'No JSON content found',
+          });
+        }
       });
   }
 }

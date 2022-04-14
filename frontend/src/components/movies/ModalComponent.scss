@@ -1,0 +1,12 @@
+@use '../../styles/predefined';
+
+
+.review-modal {
+  .button-container {
+    padding: 0;
+  }
+}
+.review-modal-body {
+  justify-content: center;
+  display: flex;
+}
