@@ -112,7 +112,7 @@ class MovieReviewCollection(Resource):
 
         if authenticated_user.username != created_review.author and \
                 not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to add reviews for other users"
             )
 
@@ -144,7 +144,7 @@ class MovieReviewCollection(Resource):
             exceptions:
                 werkzeug.exceptions.BadRequest: Thrown if the movie_id of the request body
                     doesn't match the url parameter
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to add a
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to add a
                     review for another user
         """
         review = Review()
@@ -224,12 +224,12 @@ class MovieReviewItem(Resource):
             exceptions:
                 werkzeug.exceptions.BadRequest: Thrown if the movie_id or the author specified in
                     the request body are different to the original object
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to edit the
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to edit the
                     review of another user
         """
         if authenticated_user.username != review.author and \
                 not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to edit reviews of other users"
             )
 
@@ -259,12 +259,12 @@ class MovieReviewItem(Resource):
             output:
                 a http response object representing the result of this operation
             exceptions:
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to delete
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to delete
                     the review of another user
         """
         if authenticated_user.username != review.author and \
             not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to delete reviews of other users"
             )
 

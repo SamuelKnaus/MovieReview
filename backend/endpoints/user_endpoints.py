@@ -87,12 +87,12 @@ class UserItem(Resource):
                 the http response object containing either the user with the given id
                 or a 404 http error if no user with the given id exists
             exceptions:
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to see the
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to see the
                     profile of another user
         """
         if authenticated_user.username != username and \
                 not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to see the profile of another user"
             )
 
@@ -114,12 +114,12 @@ class UserItem(Resource):
             output:
                 a http response object representing the result of this operation
             exceptions:
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to edit the
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to edit the
                     profile of another user
         """
         if authenticated_user.username != username and \
                 not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to edit the profile of another user"
             )
 
@@ -137,12 +137,12 @@ class UserItem(Resource):
             output:
                 a http response object representing the result of this operation
             exceptions:
-                werkzeug.exceptions.Unauthorized: Thrown if a non-admin user tries to delete the
+                werkzeug.exceptions.Forbidden: Thrown if a non-admin user tries to delete the
                     profile of another user
         """
         if authenticated_user.username != username and \
                 not authenticated_user.role == UserType.ADMIN:
-            raise werkzeug.exceptions.Unauthorized(
+            raise werkzeug.exceptions.Forbidden(
                 "You are not authorized to delete the profile of another user"
             )
 
