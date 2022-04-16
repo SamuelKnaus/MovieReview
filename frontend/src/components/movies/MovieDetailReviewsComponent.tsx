@@ -19,6 +19,7 @@ import ModalComponent from './ModalComponent';
 import './MovieDetailReviewsComponent.scss';
 import { MasonControl } from '../../models/MasonDoc';
 import { Movie } from '../../models/Movie';
+import { UserType } from '../../models/User';
 
 interface MovieDetailReviewsComponentProps extends ReduxState {
   movie: Movie,
@@ -127,31 +128,36 @@ class MovieDetailReviewsComponent
                     <div className="author">
                       <h4>{review.author}</h4>
 
-                      <div className="actions">
-                        <ModalComponent
-                          title="Edit Review"
-                          button={<FontAwesomeIcon className="edit-review-icon" icon={faPenToSquare} />}
-                          successHandler={(editedReview: Review) => this.setState((prevState) => ({
-                            reviews: (prevState.reviews ?? [])
-                              .map((rev, revIdx) => (revIdx === index ? editedReview : rev)),
-                          }))}
-                          getMasonDocUrl={review['@controls'].self?.href}
-                          getMasonDocKey="edit"
-                          review={review}
-                        />
-
-                        <div className="delete-review">
+                      {(this.props.appState.currentUser?.username === review.author
+                        || this.props.appState.currentUser?.role === UserType.ADMIN) && (
+                        <div className="actions">
                           <ModalComponent
-                            title="Delete Review"
-                            button={<FontAwesomeIcon icon={faTrashCan} className="delete-review-icon" />}
-                            successHandler={() => this.setState((prevState) => ({
-                              reviews: prevState.reviews?.filter((_, revIdx) => index !== revIdx),
-                            }))}
+                            title="Edit Review"
+                            button={<FontAwesomeIcon className="edit-review-icon" icon={faPenToSquare} />}
+                            successHandler={(editedReview: Review) => this.setState(
+                              (prevState) => ({
+                                reviews: (prevState.reviews ?? [])
+                                  .map((rev, revIdx) => (revIdx === index ? editedReview : rev)),
+                              }),
+                            )}
                             getMasonDocUrl={review['@controls'].self?.href}
-                            getMasonDocKey="moviereviewmeta:delete"
+                            getMasonDocKey="edit"
+                            review={review}
                           />
+
+                          <div className="delete-review">
+                            <ModalComponent
+                              title="Delete Review"
+                              button={<FontAwesomeIcon icon={faTrashCan} className="delete-review-icon" />}
+                              successHandler={() => this.setState((prevState) => ({
+                                reviews: prevState.reviews?.filter((_, revIdx) => index !== revIdx),
+                              }))}
+                              getMasonDocUrl={review['@controls'].self?.href}
+                              getMasonDocKey="moviereviewmeta:delete"
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                     <div className="meta-information">
                       <div className="date">{outputDate}</div>
