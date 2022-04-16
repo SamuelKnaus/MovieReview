@@ -7,7 +7,6 @@ import MovieDetailReviewsComponent from './MovieDetailReviewsComponent';
 import FooterComponent from '../header_footer/FooterComponent';
 import { Movie } from '../../models/Movie';
 import Fetch from '../../helper/Fetch';
-import { HttpError } from '../../models/HttpError';
 
 import './MovieDetailComponent.scss';
 

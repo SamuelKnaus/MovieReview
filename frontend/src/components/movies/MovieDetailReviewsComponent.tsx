@@ -11,7 +11,6 @@ import moment from 'moment';
 import { Collection } from '../../models/Collection';
 import { Review } from '../../models/Review';
 import Fetch from '../../helper/Fetch';
-import { HttpError } from '../../models/HttpError';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
 import ModalComponent from './ModalComponent';
