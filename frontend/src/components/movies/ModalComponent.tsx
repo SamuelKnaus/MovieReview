@@ -163,7 +163,9 @@ class ModalComponent
           }
           onSubmit={(element) => {
             const { formData } = element;
-            formData.date = moment().format();
+            if (formData && formData.date) {
+              formData.date = moment().format();
+            }
             switch (this.state.httpMethod) {
               case 'POST':
                 this.postReview(formData);
