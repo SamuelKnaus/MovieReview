@@ -92,27 +92,29 @@ class MovieDetailReviewsComponent
               </h3>
             </div>
 
-            <ModalComponent
-              title="Add Review"
-              submitUrl={this.state.addReviewMasonDoc?.href}
-              schema={this.state.addReviewMasonDoc?.schema}
-              successHandler={(newReview: Review) => this.setState((prevState) => ({
-                reviews: (prevState.reviews ?? []).concat(newReview),
-              }))}
-              httpMethod="POST"
-              button={(
-                <Button variant="outline-primary">
-                  <FontAwesomeIcon icon={faPlus} />
-                  {' '}
-                  Add Review
-                </Button>
-              )}
-              review={{
-                author: this.props.appState.currentUser?.username,
-                movie_id: this.props.movie.id,
-                date: moment().format(),
-              }}
-            />
+            {this.props.appState.currentUser && (
+              <ModalComponent
+                title="Add Review"
+                submitUrl={this.state.addReviewMasonDoc?.href}
+                schema={this.state.addReviewMasonDoc?.schema}
+                successHandler={(newReview: Review) => this.setState((prevState) => ({
+                  reviews: (prevState.reviews ?? []).concat(newReview),
+                }))}
+                httpMethod="POST"
+                button={(
+                  <Button variant="outline-primary">
+                    <FontAwesomeIcon icon={faPlus} />
+                    {' '}
+                    Add Review
+                  </Button>
+                )}
+                review={{
+                  author: this.props.appState.currentUser?.username,
+                  movie_id: this.props.movie.id,
+                  date: moment().format(),
+                }}
+              />
+            )}
           </div>
 
           <Row>
