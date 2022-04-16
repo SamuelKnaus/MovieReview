@@ -34,8 +34,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "eslint": "eslint src/*",
-    "eslint:fix": "eslint src/* --fix",
+    "eslint": "eslint '**/*.{ts,tsx}'",
+    "eslint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
