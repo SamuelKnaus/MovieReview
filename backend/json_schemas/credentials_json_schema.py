@@ -14,10 +14,12 @@ def get_credentials_json_schema():
 
     props = schema["properties"] = {}
     props["username"] = {
+        "Username": "Title",
         "description": "The username",
         "type": "string"
     }
     props["password"] = {
+        "title": "Password",
         "description": "The password",
         "type": "string"
     }

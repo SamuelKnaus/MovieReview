@@ -14,6 +14,7 @@ def get_category_json_schema():
 
     props = schema["properties"] = {}
     props["title"] = {
+        "title": "Title",
         "description": "The name of the category",
         "type": "string"
     }
