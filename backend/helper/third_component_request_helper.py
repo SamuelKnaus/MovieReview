@@ -12,7 +12,8 @@ from constants import THIRD_COMPONENT_URL
 from helper.error_response import ErrorResponse
 
 HEADERS = {
-    "Content-Type": 'application/json'
+    "Content-Type": 'application/json',
+    "Access-Control-Expose-Headers": "Location",
 }
 
 

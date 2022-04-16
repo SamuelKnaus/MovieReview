@@ -50,7 +50,7 @@ def post_blueprint(request, json_schema, db, create_object, get_new_resource_url
     try:
         db.session.add(created_object)
         db.session.commit()
-        headers = {"Location": get_new_resource_url()}
+        headers = {"Location": get_new_resource_url(), "Access-Control-Expose-Headers": "Location"}
         return Response(headers=headers, status=201)
     except exc.IntegrityError as e:
         return ErrorResponse(str(e.orig), 409).get_http_response()
