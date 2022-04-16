@@ -1,6 +1,19 @@
 @use '../../styles/predefined';
 
 .movie-item {
+  .single-movie-loading-spinner {
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+  }
+
+  .single-movie-loading-failed {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .main {
     .reviews {
       @include predefined.section-padding;

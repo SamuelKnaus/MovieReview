@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Spinner } from 'react-bootstrap';
 import withRouter from '../../helper/RouterHelper';
 import HeaderComponent from '../header_footer/HeaderComponent';
 import MovieDetailInformationComponent from './MovieDetailInformationComponent';
@@ -45,7 +46,7 @@ class MovieDetailComponent
     });
   };
 
-  requestErrorHandler = (serverResponse: HttpError) => {
+  requestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
@@ -63,16 +64,32 @@ class MovieDetailComponent
     return (
       <div className="movie-item">
         <HeaderComponent pageTitle={this.state.movie?.title ?? 'Movie Item'} />
-        <div className="main">
-          <MovieDetailInformationComponent
-            movie={this.state.movie}
-            categoryTitle={this.props.location.state.categoryTitle}
-          />
-          <MovieDetailReviewsComponent
-            movie={this.state.movie}
-            reviewsUrl={this.state.movie?.['@controls']['moviereviewmeta:reviews-for-movie']?.href}
-          />
-        </div>
+        {!this.state.isLoaded && (
+          <div className="single-movie-loading-spinner">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        )}
+        {this.state.isLoaded && !this.state.movie && (
+          <div
+            className="single-movie-loading-failed"
+          >
+            Could not be loaded
+          </div>
+        )}
+        {this.state.isLoaded && this.state.movie && (
+          <div className="main">
+            <MovieDetailInformationComponent
+              movie={this.state.movie}
+              categoryTitle={this.props.location.state.categoryTitle}
+            />
+            <MovieDetailReviewsComponent
+              movie={this.state.movie}
+              reviewsUrl={this.state.movie?.['@controls']['moviereviewmeta:reviews-for-movie']?.href}
+            />
+          </div>
+        )}
         <FooterComponent />
       </div>
     );

@@ -42,10 +42,8 @@ class MovieDetailReviewsComponent
     };
   }
 
-  componentDidUpdate(prevProps: MovieDetailReviewsComponentProps) {
-    if (this.props.reviewsUrl && prevProps.reviewsUrl !== this.props.reviewsUrl) {
-      this.fetchReviewList();
-    }
+  componentDidMount() {
+    this.fetchReviewList();
   }
 
   requestResponseHandler = (serverResponse: Collection<Review>) => {
@@ -56,9 +54,9 @@ class MovieDetailReviewsComponent
     });
   };
 
-  requestErrorHandler = (serverResponse: HttpError) => {
+  requestErrorHandler = () => {
     this.setState({
-      isLoaded: false,
+      isLoaded: true,
     });
   };
 
@@ -80,6 +78,11 @@ class MovieDetailReviewsComponent
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
+      );
+    }
+    if (this.state.isLoaded && !this.state.reviews) {
+      return (
+        <div />
       );
     }
     return (
