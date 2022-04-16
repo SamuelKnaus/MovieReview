@@ -4,13 +4,12 @@ import {
   faComments, faQuoteLeft, faQuoteRight, faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import withRouter from '../../helper/RouterHelper';
 import { AppState } from '../../redux/Store';
 import { Review } from '../../models/Review';
 import { Collection } from '../../models/Collection';
-import { HttpError } from '../../models/HttpError';
 import Fetch from '../../helper/Fetch';
 import withAppState from '../../helper/ReduxHelper';
 
@@ -46,7 +45,7 @@ class UserProfileReviewsComponent
     });
   };
 
-  requestErrorHandler = (serverResponse: HttpError) => {
+  requestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
@@ -63,6 +62,24 @@ class UserProfileReviewsComponent
   }
 
   render() {
+    if (!this.state.isLoaded) {
+      return (
+        <div className="my-reviews-loading-spinner">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      );
+    }
+    if (this.state.isLoaded && !this.state.userReviews) {
+      return (
+        <div
+          className="my-reviews-loading-failed"
+        >
+          Could not be loaded
+        </div>
+      );
+    }
     return (
       <div className="my-reviews">
         <div className="section-title">
