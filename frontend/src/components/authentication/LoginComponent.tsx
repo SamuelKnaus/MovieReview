@@ -85,8 +85,6 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
   };
 
   sendLoginRequest() {
-    console.log('test');
-
     const body: Credentials = {
       username: this.state.username,
       password: this.state.password,
