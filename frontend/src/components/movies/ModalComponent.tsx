@@ -10,10 +10,12 @@ import { AppState } from '../../redux/Store';
 import './ModalComponent.scss';
 import { Review } from '../../models/Review';
 import Fetch from '../../helper/Fetch';
+import { MasonControls } from '../../models/MasonDoc';
 
 type ModalComponentProps = {
   title: string,
   button: ReactElement
+  successHandler: (review?: Review) => void,
   getMasonDocUrl?: string
   getMasonDocKey?: 'edit'|'moviereviewmeta:delete'
   submitUrl?: string,
@@ -40,6 +42,18 @@ class ModalComponent
       show: false,
       loading: false,
     };
+  }
+
+  handlePostResponse(serverResponse: string, body: Review) {
+    const reviewWithMasonControls = body;
+    const masonControls: MasonControls = {
+      self: {
+        title: 'self',
+        href: new URL(serverResponse).pathname,
+      },
+    };
+    reviewWithMasonControls['@controls'] = masonControls;
+    this.handleSuccess(reviewWithMasonControls);
   }
 
   fetchMasonDocSuccessHandler = (serverResponse: Review) => {
@@ -76,6 +90,11 @@ class ModalComponent
     });
   };
 
+  handleSuccess = (review?: Review) => {
+    this.props.successHandler(review);
+    this.closeModal();
+  };
+
   initModalContent() {
     if (this.props.schema && this.props.submitUrl) {
       this.setState({
@@ -97,7 +116,7 @@ class ModalComponent
     Fetch.postRequest(
       this.state.submitUrl ?? '',
       body,
-      this.closeModal,
+      (serverResponse) => this.handlePostResponse(serverResponse, body),
       this.fetchErrorHandler,
     );
   }
@@ -106,15 +125,15 @@ class ModalComponent
     Fetch.putRequest(
       this.state.submitUrl ?? '',
       body,
-      this.closeModal,
+      () => this.handleSuccess(body),
       this.fetchErrorHandler,
     );
   }
 
-  deleteNewReview() {
+  deleteReview() {
     Fetch.deleteRequest(
       this.state.submitUrl ?? '',
-      this.closeModal,
+      this.handleSuccess,
       this.fetchErrorHandler,
     );
   }
@@ -174,7 +193,7 @@ class ModalComponent
                 this.putReview(formData);
                 break;
               case 'DELETE':
-                this.deleteNewReview();
+                this.deleteReview();
                 break;
               default:
                 break;

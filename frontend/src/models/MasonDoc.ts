@@ -1,8 +1,8 @@
 export interface MasonDoc {
-    '@controls': Controls
+    '@controls': MasonControls
  }
 
- type Controls = {
+export type MasonControls = {
    'moviereviewmeta:add-category'?: MasonControl,
    'moviereviewmeta:categories-all'?: MasonControl,
    'moviereviewmeta:add-movie'?: MasonControl,
@@ -22,9 +22,9 @@ export interface MasonDoc {
  }
 
 export type MasonControl = {
-    encoding?: string,
+    title: string,
     href: string,
+    encoding?: string,
     method?: string,
-    schema?: any,
-    title: string
+    schema?: any
  }

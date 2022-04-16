@@ -96,6 +96,9 @@ class MovieDetailReviewsComponent
               title="Add Review"
               submitUrl={this.state.addReviewMasonDoc?.href}
               schema={this.state.addReviewMasonDoc?.schema}
+              successHandler={(newReview: Review) => this.setState((prevState) => ({
+                reviews: (prevState.reviews ?? []).concat(newReview),
+              }))}
               httpMethod="POST"
               button={(
                 <Button variant="outline-primary">
@@ -126,6 +129,10 @@ class MovieDetailReviewsComponent
                         <ModalComponent
                           title="Edit Review"
                           button={<FontAwesomeIcon className="edit-review-icon" icon={faPenToSquare} />}
+                          successHandler={(editedReview: Review) => this.setState((prevState) => ({
+                            reviews: (prevState.reviews ?? [])
+                              .map((rev, revIdx) => (revIdx === index ? editedReview : rev)),
+                          }))}
                           getMasonDocUrl={review['@controls'].self?.href}
                           getMasonDocKey="edit"
                           review={review}
@@ -133,8 +140,11 @@ class MovieDetailReviewsComponent
 
                         <div className="delete-review">
                           <ModalComponent
-                            title="Edit Review"
+                            title="Delete Review"
                             button={<FontAwesomeIcon icon={faTrashCan} className="delete-review-icon" />}
+                            successHandler={() => this.setState((prevState) => ({
+                              reviews: prevState.reviews?.filter((_, revIdx) => index !== revIdx),
+                            }))}
                             getMasonDocUrl={review['@controls'].self?.href}
                             getMasonDocKey="moviereviewmeta:delete"
                           />

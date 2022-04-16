@@ -146,7 +146,9 @@ export default class Fetch {
         }
       })
       .catch(() => {
-        if (resp.status < 300) {
+        if (resp.status === 201) {
+          responseHandler(resp.headers.get('Location'));
+        } else if (resp.status < 300) {
           responseHandler(null);
         } else {
           errorHandler({
