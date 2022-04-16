@@ -88,7 +88,11 @@ class App extends React.PureComponent<ReduxState, AppState> {
 
     if (!this.state.successfullyLoaded) {
       return (
-        <div>The API is currently unavailable. Please try again later!</div>
+        <div
+          className="app-loading-error"
+        >
+          The API is currently unavailable. Please try again later!
+        </div>
       );
     }
 
