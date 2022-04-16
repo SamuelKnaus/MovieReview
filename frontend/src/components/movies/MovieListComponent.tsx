@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Spinner, Table } from 'react-bootstrap';
 import { NavigateFunction } from 'react-router-dom';
 import moment from 'moment';
 import withRouter from '../../helper/RouterHelper';
@@ -8,7 +8,6 @@ import { Movie } from '../../models/Movie';
 import { Category } from '../../models/Category';
 import { Collection } from '../../models/Collection';
 import Fetch from '../../helper/Fetch';
-import { HttpError } from '../../models/HttpError';
 import FooterComponent from '../header_footer/FooterComponent';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
@@ -20,7 +19,6 @@ interface MovieListComponentProps extends ReduxState {
 }
 
 type MovieListComponentState = {
-  error: boolean,
   isLoaded: boolean,
   movies?: Movie[],
   categoryTitleMap?: Map<number, string>,
@@ -31,7 +29,6 @@ class MovieListComponent
   constructor(props: MovieListComponentProps) {
     super(props);
     this.state = {
-      error: false,
       isLoaded: false,
     };
   }
@@ -57,7 +54,7 @@ class MovieListComponent
     });
   };
 
-  movieRequestErrorHandler = (serverResponse: HttpError) => {
+  movieRequestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
@@ -75,7 +72,7 @@ class MovieListComponent
     });
   };
 
-  categoryRequestErrorHandler = (serverResponse: HttpError) => {
+  categoryRequestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
@@ -103,17 +100,22 @@ class MovieListComponent
 
   render() {
     let content;
-
-    if (this.state.error) {
+    if (!this.state.isLoaded) {
       content = (
-        <div>
-          Error
+        <div
+          className="loading-spinner"
+        >
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
         </div>
       );
-    } else if (!this.state.isLoaded) {
+    } else if (!this.state.movies) {
       content = (
-        <div>
-          Loading...
+        <div
+          className="loading-failed"
+        >
+          Could not be loaded
         </div>
       );
     } else {

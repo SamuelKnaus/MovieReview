@@ -1,6 +1,19 @@
 @use '../../styles/predefined';
 
 .movie-list {
+  .loading-spinner {
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+  }
+
+  .loading-failed {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .movie-list-table {
     @include predefined.section-padding;
 
