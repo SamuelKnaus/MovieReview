@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Container, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faEnvelope, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import withRouter from '../../helper/RouterHelper';
 import withAppState, { ReduxState } from '../../helper/ReduxHelper';
 import { AppState } from '../../redux/Store';
