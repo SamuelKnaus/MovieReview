@@ -9,4 +9,19 @@
 .review-modal-body {
   justify-content: center;
   display: flex;
+
+  .form-group {
+    padding: 10px 0;
+
+    .control-label {
+      padding-bottom: 5px;
+    }
+
+    .field-description {
+      display: none;
+    }
+    .hidden {
+      display: none;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactElement } from 'react';
 import Form from '@rjsf/core';
+import moment from 'moment';
 import {
   Modal, Container, Spinner,
 } from 'react-bootstrap';
@@ -137,13 +138,38 @@ class ModalComponent
         <Form
           formData={this.props.review}
           schema={this.state.schema ?? {}}
+          uiSchema={
+            {
+              comment: {
+                'ui:widget': 'textarea',
+                'ui:rows': 6,
+              },
+              rating: {
+                'ui:autofocus': true,
+              },
+              author: {
+                classNames: 'hidden',
+                'ui:disabled': true,
+              },
+              date: {
+                classNames: 'hidden',
+                'ui:disabled': true,
+              },
+              movie_id: {
+                classNames: 'hidden',
+                'ui:disabled': true,
+              },
+            }
+          }
           onSubmit={(element) => {
+            const { formData } = element;
+            formData.date = moment().format();
             switch (this.state.httpMethod) {
               case 'POST':
-                this.postReview(element.formData);
+                this.postReview(formData);
                 break;
               case 'PUT':
-                this.putReview(element.formData);
+                this.putReview(formData);
                 break;
               case 'DELETE':
                 this.deleteNewReview();
