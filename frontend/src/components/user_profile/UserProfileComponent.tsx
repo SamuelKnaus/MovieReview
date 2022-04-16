@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { NavigateFunction } from 'react-router-dom';
 import { Row, Col, Container } from 'react-bootstrap';
 import withRouter from '../../helper/RouterHelper';
 import HeaderComponent from '../header_footer/HeaderComponent';
@@ -12,15 +11,10 @@ import UserProfileReviewsComponent from './UserProfileReviewsComponent';
 
 import './UserProfileComponent.scss';
 
-interface UserProfileComponentProps extends ReduxState {
-  navigate: NavigateFunction
-}
-
 class UserProfileComponent
-  extends PureComponent <UserProfileComponentProps> {
+  extends PureComponent <ReduxState> {
   render() {
     if (this.props.appState.currentUser) {
-      console.log(this.props.appState.currentUser?.['@controls']['moviereviewmeta:reviews-of-user']);
       return (
         <div className="user-profile">
           <HeaderComponent pageTitle="My Profile" />
