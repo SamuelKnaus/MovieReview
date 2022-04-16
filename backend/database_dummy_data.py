@@ -45,7 +45,7 @@ DB.session.commit()
 MOVIE_1 = Movie(
     title="Léon: The professional",
     director="Luc Besson",
-    length=110,
+    length=6600,
     release_date=datetime.datetime(1999, 9, 14),
     category_id=CATEGORY_1.id
 )
@@ -53,7 +53,7 @@ MOVIE_1 = Movie(
 MOVIE_2 = Movie(
     title="Apocalypse Now",
     director="Francis Coppola",
-    length=123,
+    length=7380,
     release_date=datetime.datetime(1997, 8, 15),
     category_id=CATEGORY_2.id
 )
@@ -61,7 +61,7 @@ MOVIE_2 = Movie(
 MOVIE_3 = Movie(
     title="Spider-Man: No Way Home",
     director="Jon Watts",
-    length=148,
+    length=8880,
     release_date=datetime.datetime(2021, 12, 13),
     category_id=CATEGORY_3.id
 )
@@ -69,7 +69,7 @@ MOVIE_3 = Movie(
 MOVIE_4 = Movie(
     title="Frozen",
     director="Chris Buck",
-    length=102,
+    length=6120,
     release_date=datetime.datetime(2013, 11, 19),
     category_id=CATEGORY_4.id
 )
@@ -77,7 +77,7 @@ MOVIE_4 = Movie(
 MOVIE_5 = Movie(
     title="Red Notice",
     director="Rawson Marshall Thurber",
-    length=118,
+    length=7080,
     release_date=datetime.datetime(2021, 11, 5),
     category_id=CATEGORY_5.id
 )
