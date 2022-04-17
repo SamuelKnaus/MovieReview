@@ -38,20 +38,20 @@ class MovieDetailComponent
     this.fetchMovie();
   }
 
-  requestResponseHandler = (serverResponse: Movie) => {
+  private requestResponseHandler = (serverResponse: Movie) => {
     this.setState({
       movie: serverResponse ?? [],
       isLoaded: true,
     });
   };
 
-  requestErrorHandler = () => {
+  private requestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
   };
 
-  fetchMovie() {
+  private fetchMovie() {
     Fetch.getRequest(
       this.props.location.state.movieRequestUrl,
       this.requestResponseHandler,

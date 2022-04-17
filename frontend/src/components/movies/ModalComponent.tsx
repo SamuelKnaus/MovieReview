@@ -44,7 +44,7 @@ class ModalComponent
     };
   }
 
-  handlePostResponse(serverResponse: string, body: Review) {
+  private handlePostResponse(serverResponse: string, body: Review) {
     const reviewWithMasonControls = body;
     const masonControls: MasonControls = {
       self: {
@@ -56,7 +56,7 @@ class ModalComponent
     this.handleSuccess(reviewWithMasonControls);
   }
 
-  fetchMasonDocSuccessHandler = (serverResponse: Review) => {
+  private fetchMasonDocSuccessHandler = (serverResponse: Review) => {
     const masonDoc = serverResponse['@controls'][this.props.getMasonDocKey ?? 'edit'];
 
     this.setState({
@@ -67,14 +67,14 @@ class ModalComponent
     });
   };
 
-  fetchErrorHandler = () => {
+  private fetchErrorHandler = () => {
     this.setState({
       errorMessage: 'Failed to execute the action',
       loading: false,
     });
   };
 
-  showModal = () => {
+  private showModal = () => {
     this.setState({
       show: true,
       loading: true,
@@ -82,7 +82,7 @@ class ModalComponent
     this.initModalContent();
   };
 
-  closeModal = () => {
+  private closeModal = () => {
     this.setState({
       show: false,
       errorMessage: undefined,
@@ -90,12 +90,12 @@ class ModalComponent
     });
   };
 
-  handleSuccess = (review?: Review) => {
+  private handleSuccess = (review?: Review) => {
     this.props.successHandler(review);
     this.closeModal();
   };
 
-  initModalContent() {
+  private initModalContent() {
     if (this.props.schema && this.props.submitUrl) {
       this.setState({
         loading: false,
@@ -112,7 +112,7 @@ class ModalComponent
     }
   }
 
-  postReview(body: Review) {
+  private postReview(body: Review) {
     Fetch.postRequest(
       this.state.submitUrl ?? '',
       body,
@@ -121,7 +121,7 @@ class ModalComponent
     );
   }
 
-  putReview(body: Review) {
+  private putReview(body: Review) {
     Fetch.putRequest(
       this.state.submitUrl ?? '',
       body,
@@ -130,7 +130,7 @@ class ModalComponent
     );
   }
 
-  deleteReview() {
+  private deleteReview() {
     Fetch.deleteRequest(
       this.state.submitUrl ?? '',
       this.handleSuccess,

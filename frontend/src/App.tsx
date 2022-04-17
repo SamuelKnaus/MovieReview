@@ -40,7 +40,7 @@ class App extends React.PureComponent<ReduxState, AppState> {
     Fetch.getBasicUrls(this.requestSuccessful, this.requestError);
   }
 
-  requestSuccessful = (serverResponse: MasonDoc) => {
+  private requestSuccessful = (serverResponse: MasonDoc) => {
     const allMoviesUrl = serverResponse['@controls']['moviereviewmeta:movies-all']?.href;
     const allUsersUrl = serverResponse['@controls']['moviereviewmeta:users-all']?.href;
     const allCategoriesUrl = serverResponse['@controls']['moviereviewmeta:categories-all']?.href;
@@ -67,7 +67,7 @@ class App extends React.PureComponent<ReduxState, AppState> {
     });
   };
 
-  requestError = () => {
+  private requestError = () => {
     this.setState({
       loading: false,
     });

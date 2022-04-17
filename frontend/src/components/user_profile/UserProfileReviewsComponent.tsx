@@ -38,20 +38,20 @@ class UserProfileReviewsComponent
     this.fetchUserReviewList();
   }
 
-  requestResponseHandler = (serverResponse: Collection<Review>) => {
+  private requestResponseHandler = (serverResponse: Collection<Review>) => {
     this.setState({
       isLoaded: true,
       userReviews: serverResponse.items ?? [],
     });
   };
 
-  requestErrorHandler = () => {
+  private requestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
   };
 
-  fetchUserReviewList() {
+  private fetchUserReviewList() {
     if (this.props.userReviewsUrl) {
       Fetch.getRequest(
         this.props.userReviewsUrl,

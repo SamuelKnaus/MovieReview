@@ -47,20 +47,20 @@ class MovieListComponent
     }
   }
 
-  movieRequestResponseHandler = (serverResponse: Collection<Movie>) => {
+  private movieRequestResponseHandler = (serverResponse: Collection<Movie>) => {
     this.setState({
       isLoaded: true,
       movies: serverResponse.items ?? [],
     });
   };
 
-  movieRequestErrorHandler = () => {
+  private movieRequestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
   };
 
-  categoryRequestResponseHandler = (serverResponse: Collection<Category>) => {
+  private categoryRequestResponseHandler = (serverResponse: Collection<Category>) => {
     const categoryList = serverResponse.items ?? [];
     const categoryMap = new Map<number, string>();
     categoryList.forEach((category) => {
@@ -72,13 +72,13 @@ class MovieListComponent
     });
   };
 
-  categoryRequestErrorHandler = () => {
+  private categoryRequestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
   };
 
-  fetchMovieList() {
+  private fetchMovieList() {
     if (this.props.appState.allMoviesUrl) {
       Fetch.getRequest(
         this.props.appState.allMoviesUrl,
@@ -88,7 +88,7 @@ class MovieListComponent
     }
   }
 
-  fetchCategoryList() {
+  private fetchCategoryList() {
     if (this.props.appState.allCategoriesUrl) {
       Fetch.getRequest(
         this.props.appState.allCategoriesUrl,

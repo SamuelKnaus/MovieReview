@@ -45,7 +45,7 @@ class MovieDetailReviewsComponent
     this.fetchReviewList();
   }
 
-  requestResponseHandler = (serverResponse: Collection<Review>) => {
+  private requestResponseHandler = (serverResponse: Collection<Review>) => {
     this.setState({
       isLoaded: true,
       reviews: serverResponse.items ?? [],
@@ -53,13 +53,13 @@ class MovieDetailReviewsComponent
     });
   };
 
-  requestErrorHandler = () => {
+  private requestErrorHandler = () => {
     this.setState({
       isLoaded: true,
     });
   };
 
-  fetchReviewList() {
+  private fetchReviewList() {
     if (this.props.reviewsUrl) {
       Fetch.getRequest(
         this.props.reviewsUrl,

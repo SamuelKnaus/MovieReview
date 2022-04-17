@@ -50,7 +50,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     }
   }
 
-  loginSuccessful = (serverResponse: Token) => {
+  private loginSuccessful = (serverResponse: Token) => {
     this.props.appStateDispatch({ type: SET_AUTHENTICATION_TOKEN, value: serverResponse.token });
     this.setState({
       errorMessage: '',
@@ -58,7 +58,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     this.fetchCurrentUser();
   };
 
-  loginError = (serverResponse: HttpError) => {
+  private loginError = (serverResponse: HttpError) => {
     this.props.appStateDispatch({ type: DELETE_AUTHENTICATION_TOKEN });
     this.props.appStateDispatch({ type: DELETE_CURRENT_USER });
     this.setState({
@@ -67,7 +67,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     });
   };
 
-  userFetchSuccessful = (serverResponse: User) => {
+  private userFetchSuccessful = (serverResponse: User) => {
     this.props.appStateDispatch({ type: SET_CURRENT_USER, value: serverResponse });
     this.setState({
       errorMessage: '',
@@ -75,7 +75,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     this.props.navigate('/');
   };
 
-  userFetchError = () => {
+  private userFetchError = () => {
     this.props.appStateDispatch({ type: DELETE_AUTHENTICATION_TOKEN });
     this.props.appStateDispatch({ type: DELETE_CURRENT_USER });
     this.setState({
@@ -84,7 +84,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     });
   };
 
-  sendLoginRequest() {
+  private sendLoginRequest() {
     const body: Credentials = {
       username: this.state.username,
       password: this.state.password,
@@ -92,7 +92,7 @@ class LoginComponent extends PureComponent<LoginComponentProps, LoginComponentSt
     Fetch.login(this.props.appState.loginUrl ?? '', body, this.loginSuccessful, this.loginError);
   }
 
-  fetchCurrentUser() {
+  private fetchCurrentUser() {
     Fetch.getRequest(
       this.props.appState.currentUserUrl ?? '',
       this.userFetchSuccessful,
