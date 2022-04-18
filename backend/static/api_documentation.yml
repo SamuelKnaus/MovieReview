@@ -5,6 +5,137 @@ info:
   version: 1.0.0
 
 paths:
+  /:
+      get:
+        tags:
+        - "View Function"
+        description: Get the root of the hypermedia API description.
+        responses:
+          '200':
+            description: Successfully returns the hypermedia entry point of thie API.
+            content:
+              application/vnd.mason+json:
+                example:
+                  '@controls':
+                      moviereviewmeta:add-category:
+                        encoding: json
+                        href: /api/categories/
+                        method: POST
+                        schema:
+                          properties:
+                            title:
+                              description: The name of the category
+                              title: Title
+                              type: string
+                          required:
+                            - title
+                          type: object
+                        title: Create a new category
+                      moviereviewmeta:add-movie:
+                        encoding: json
+                        href: /api/movies/
+                        method: POST
+                        schema:
+                          properties:
+                            category_id:
+                              description: The id of the movie's category which acts as foreign key
+                              title: Category ID
+                              type: integer
+                            director:
+                              description: The name of the director of the movie
+                              title: Director
+                              type: string
+                            length:
+                              description: The length of the movie in seconds
+                              minimum: 1
+                              title: Length
+                              type: integer
+                            release_date:
+                              description: The release date of the movie
+                              format: date
+                              title: Release Date
+                              type: string
+                            title:
+                              description: Movie's title
+                              title: Title
+                              type: string
+                          required:
+                            - title
+                            - director
+                            - length
+                            - release_date
+                            - category_id
+                          type: object
+                        title: Create a new movie
+                      moviereviewmeta:add-user:
+                        encoding: json
+                        href: /api/users/
+                        method: POST
+                        schema:
+                          properties:
+                            email_address:
+                              description: The email address of the user
+                              format: email
+                              title: Email address
+                              type: string
+                            password:
+                              description: The password of the user
+                              minLength: 6
+                              title: Password
+                              type: string
+                            role:
+                              description: The role of the user
+                              enum:
+                                - Admin
+                                - Basic User
+                              title: Role
+                              type: string
+                            username:
+                              description: The username of the user
+                              title: Username
+                              type: string
+                          required:
+                            - username
+                            - email_address
+                            - password
+                            - role
+                          type: object
+                        title: Create a new user
+                      moviereviewmeta:categories-all:
+                        href: /api/categories/
+                        title: Get a list of all categories
+                      moviereviewmeta:current-user:
+                        href: /api/current-user/
+                        title: Get the currently authenticated user
+                      moviereviewmeta:login:
+                        encoding: json
+                        href: http://localhost:5001/login
+                        method: POST
+                        schema:
+                          properties:
+                            password:
+                              description: The password
+                              title: Password
+                              type: string
+                            username:
+                              Username: Title
+                              description: The username
+                              type: string
+                          required:
+                            - username
+                            - password
+                          type: object
+                        title: Get the currently authenticated user
+                      moviereviewmeta:movies-all:
+                        href: /api/movies/
+                        title: Get a list of all movies
+                      moviereviewmeta:users-all:
+                        href: /api/users/
+                        title: Get a list of all users
+                    '@namespaces':
+                      moviereviewmeta:
+                        name: /moviereviewmeta/link-relations/
+
   /api/users/:
     get:
       tags:
