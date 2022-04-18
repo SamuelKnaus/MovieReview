@@ -77,6 +77,10 @@ paths:
                       self:
                         title: Get a single user
                         href: /api/users/dummyAdmin/
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
     post:
       tags:
       - "Users"
@@ -176,6 +180,10 @@ paths:
                   moviereviewmeta:reviews-of-user:
                     title: Get a list of all reviews of this user
                     href: /api/users/dummyGuy/reviews/
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The username of the currently authenticated user neither matches the url parameter nor does he have the role 'Admin'.
         '404':
           description: The user/endpoint was not found.
     put:
@@ -205,6 +213,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The username of the currently authenticated user neither matches the url parameter nor does he have the role 'Admin'.
         '404':
           description: The user/endpoint was not found.
         '409':
@@ -220,6 +232,10 @@ paths:
       responses:
         '204':
           description: The user was deleted successfully.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The username of the currently authenticated user neither matches the url parameter nor does he have the role 'Admin'.
         '404':
           description: The user/endpoint was not found.
 
@@ -329,6 +345,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '409':
           description: Restrictions from the database e.g., foreign key constraints.
         '415':
@@ -436,6 +456,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. For exanmple title, director must be string, length and category_id must be integers and releas_date must be string with YYYY-MM-DD format.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '404':
           description: The movie/endpoint was not found.
         '409':
@@ -451,6 +475,10 @@ paths:
       responses:
         '204':
           description: The movie has been deleted
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '404':
           description: The movie was not found
 
@@ -615,6 +643,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user is neither the author of the review nor does he have the role 'Admin'.
         '409':
           description: Restrictions from the database e.g., foreign key constraints.
         '415':
@@ -722,6 +754,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. The rating score must be an integer, the comment must be a string, and the comment date must be a string with YYYY-MM-DD.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user is neither the author of the review nor does he have the role 'Admin'.
         '404':
           description: The review/endpoint was not found.
         '409':
@@ -738,6 +774,10 @@ paths:
       responses:
         '204':
           description: The review has been deleted.
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user is neither the author of the review nor does he have the role 'Admin'.
         '404':
           description: The review was not found
 
@@ -813,6 +853,10 @@ paths:
                 type: string
         '400':
           description: Bad Request (Request does not match the JSON schema).
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '415':
           description: Request content type must be JSON
 
@@ -885,6 +929,10 @@ paths:
                 type: string
         '400':
           description: Request doesn't match the JSON schema. Title must be a string
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '404':
           description: The category/endpoint was not found.
         '415':
@@ -898,6 +946,10 @@ paths:
       responses:
         '204':
           description: The category has been deleted
+        '401':
+          description: The authentication failed.
+        '403':
+          description: The user does not have the required role 'Admin'.
         '404':
           description: The category was not found
         '409':
