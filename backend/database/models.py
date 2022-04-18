@@ -92,7 +92,7 @@ class Review(api.DB.Model, Serializer):
     comment = api.DB.Column(api.DB.Text, nullable=False)
     date = api.DB.Column(api.DB.DateTime, nullable=False)
     author = api.DB.Column(
-        api.DB.Integer,
+        api.DB.String,
         nullable=True
     )
     movie_id = api.DB.Column(
