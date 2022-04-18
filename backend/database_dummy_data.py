@@ -34,11 +34,16 @@ CATEGORY_5 = Category(
     title="Action"
 )
 
+CATEGORY_6 = Category(
+    title="Kids & Family"
+)
+
 DB.session.add(CATEGORY_1)
 DB.session.add(CATEGORY_2)
 DB.session.add(CATEGORY_3)
 DB.session.add(CATEGORY_4)
 DB.session.add(CATEGORY_5)
+DB.session.add(CATEGORY_6)
 DB.session.commit()
 
 # create the movies
@@ -82,11 +87,22 @@ MOVIE_5 = Movie(
     category_id=CATEGORY_5.id
 )
 
+MOVIE_6 = Movie(
+    title="Encanto",
+    director="Jared Bush, Bryon Howard",
+    length=5940,
+    release_date=datetime.datetime(2021, 11, 24),
+    category_id=CATEGORY_5.id
+)
+
+
+
 DB.session.add(MOVIE_1)
 DB.session.add(MOVIE_2)
 DB.session.add(MOVIE_3)
 DB.session.add(MOVIE_4)
 DB.session.add(MOVIE_5)
+DB.session.add(MOVIE_6)
 DB.session.commit()
 
 # create the reviews
@@ -135,12 +151,36 @@ REVIEW_5 = Review(
 
 REVIEW_6 = Review(
     rating=2,
-    comment="Not as good as I was anticipating. A few good jokes and fight scenes, "
-            "but the script was bland and the visuals looked fake. An all-star cast "
-            "but no substance to the story or characters.",
+    comment="I think this movie was the best of 2021. When I left the cinema I was speechless. I laughed, cried and  "
+            "was shocked by the reveals in this movie. The actors in this movie all are individual amazing (pun "
+            "intended). This movie is a typical Marvel Blockbuster. The Russo brothers have outdone themselves again. "
+            "The fact that this trilogy now has come to an end is sad, I feel like the story is not over yet.",
     date=datetime.datetime(2021, 12, 1),
     author="johnkennedy",
-    movie_id=MOVIE_5.id
+    movie_id=MOVIE_3.id
+)
+
+REVIEW_7 = Review(
+    rating=5,
+    comment="I think this movie was the best of 2021. When I left the cinema I was speechless. I laughed, cried and  "
+            "was shocked by the reveals in this movie. The actors in this movie all are individual amazing (pun "
+            "intended). This movie is a typical Marvel Blockbuster. The Russo brothers have outdone themselves again. "
+            "The fact that this trilogy now has come to an end is sad, I feel like the story is not over yet.",
+    date=datetime.datetime(2022, 4, 12),
+    author="sannelily",
+    movie_id=MOVIE_3.id
+)
+
+REVIEW_8 = Review(
+    rating=5,
+    comment="This movie is about the family Madrigal. Whitin this family there is magic. All the kids will get a "
+            "special power when grow older. The music in this film is beautiful and Lin Manual Miranda is such a good "
+            "director. The movie has incredible colors and cinematic images. Even if you are an adult you will enjoy "
+            "this movie a lot. It is family-friendly and I promise you, your kids will blast along with all the "
+            "songs. Remember; We don’t talk about Bruno!",
+    date=datetime.datetime(2022, 4, 18),
+    author="sannelily",
+    movie_id=MOVIE_6.id
 )
 
 DB.session.add(REVIEW_1)
@@ -149,5 +189,6 @@ DB.session.add(REVIEW_3)
 DB.session.add(REVIEW_4)
 DB.session.add(REVIEW_5)
 DB.session.add(REVIEW_6)
-
+DB.session.add(REVIEW_7)
+DB.session.add(REVIEW_8)
 DB.session.commit()

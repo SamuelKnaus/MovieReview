@@ -49,9 +49,17 @@ USER_5 = User(
     role=UserType.ADMIN
 )
 
+USER_6 = User(
+    username="sannelily",
+    email_address="sanne.lily@gmail.com",
+    password=EncryptionHelper.encrypt_password("thisisnotapassword"),
+    role=UserType.BASIC_USER
+)
+
 DB.session.add(USER_1)
 DB.session.add(USER_2)
 DB.session.add(USER_3)
 DB.session.add(USER_4)
 DB.session.add(USER_5)
+DB.session.add(USER_6)
 DB.session.commit()
