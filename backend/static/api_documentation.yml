@@ -81,6 +81,8 @@ paths:
           description: The authentication failed.
         '403':
           description: The user does not have the required role 'Admin'.
+        '504':
+          description: The communication between the API and the third component failed.
     post:
       tags:
       - "Users"
@@ -110,6 +112,8 @@ paths:
           description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
+        '504':
+          description: The communication between the API and the third component failed.
 
   /api/users/{username}/:
     parameters:
@@ -186,6 +190,8 @@ paths:
           description: The username of the currently authenticated user neither matches the url parameter nor does he have the role 'Admin'.
         '404':
           description: The user/endpoint was not found.
+        '504':
+          description: The communication between the API and the third component failed.
     put:
       tags:
       - "Users"
@@ -223,6 +229,8 @@ paths:
           description: Restrictions from the database e.g., foreign key constraints.
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
+        '504':
+          description: The communication between the API and the third component failed.
     delete:
       tags:
       - "Users"
@@ -238,6 +246,8 @@ paths:
           description: The username of the currently authenticated user neither matches the url parameter nor does he have the role 'Admin'.
         '404':
           description: The user/endpoint was not found.
+        '504':
+          description: The communication between the API and the third component failed.
 
   /api/movies/:
     get:
@@ -525,6 +535,9 @@ paths:
                         href: /api/movies/2/reviews/2/
         '404':
           description: The user/endpoint was not found.
+        '504':
+          description: The communication between the API and the third component failed.
+            This communication is necessary to validate that the user specified in the URL actually exists.
 
   /api/movies/{movie_id}/reviews/:
     parameters:
