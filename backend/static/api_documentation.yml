@@ -10,6 +10,8 @@ paths:
       tags:
       - "Users"
       description: Fetch a list of all users from the database.
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Successfully returned all users from the database.
@@ -20,6 +22,9 @@ paths:
                   moviereviewmeta:
                     name: /moviereviewmeta/link-relations/
                 '@controls':
+                  up:
+                    title: Get the api documentation root
+                    href: /
                   self:
                     title: Get a list of all users
                     href: /api/users/
@@ -36,38 +41,42 @@ paths:
                         - role
                       properties:
                         username:
+                          title: Username
                           description: The username of the user
                           type: string
                         email_address:
+                          title: Email address
                           description: The email address of the user
                           type: string
                           format: email
                         password:
+                          title: Password
                           description: The password of the user
                           type: string
                           minLength: 6
                         role:
+                          title: Role
                           description: The role of the user
                           type: string
-                          enum: [ Admin, Basic User ]
+                          enum:
+                            - Admin
+                            - Basic User
                     href: /api/users/
                 items:
-                  - id: 1
-                    username: mario456
-                    email_address: mario.lo@oulu.fi
+                  - username: dummyGuy
+                    email_address: red.unicorn@gmail.com
                     role: Basic User
                     '@controls':
-                      item:
+                      self:
                         title: Get a single user
-                        href: /api/users/1/
-                  - id: 2
-                    username: jules
-                    email_address: jules.fte@hotmail.com
+                        href: /api/users/dummyGuy/
+                  - username: dummyAdmin
+                    email_address: omnipotent.pencil@yahoo.com
                     role: Admin
                     '@controls':
-                      item:
+                      self:
                         title: Get a single user
-                        href: /api/users/2/
+                        href: /api/users/dummyAdmin/
     post:
       tags:
       - "Users"
@@ -98,22 +107,23 @@ paths:
         '415':
           description: Unsupported media type. The request content type must be of type JSON.
 
-  /api/users/{user_id}/:
+  /api/users/{username}/:
     parameters:
-    - $ref: '#/components/parameters/user_id'
+    - $ref: '#/components/parameters/username'
     get:
       tags:
       - "Users"
       description: Fetch a single user from the database by using his ID.
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: Successfully fetched data for the requested user.
           content:
             application/vnd.mason+json:
               example:
-                id: 1
-                username: mario456
-                email_address: mario.lo@oulu.fi
+                username: dummyGuy
+                email_address: red.unicorn@gmail.com
                 role: Basic User
                 '@namespaces':
                   moviereviewmeta:
@@ -124,7 +134,7 @@ paths:
                     href: /api/users/
                   self:
                     title: Get a single user
-                    href: /api/users/1/
+                    href: /api/users/dummyGuy/
                   edit:
                     method: PUT
                     encoding: json
@@ -138,34 +148,42 @@ paths:
                         - role
                       properties:
                         username:
+                          title: Username
                           description: The username of the user
                           type: string
                         email_address:
+                          title: Email address
                           description: The email address of the user
                           type: string
                           format: email
                         password:
+                          title: Password
                           description: The password of the user
                           type: string
                           minLength: 6
                         role:
+                          title: Role
                           description: The role of the user
                           type: string
-                          enum: [ Admin, Basic User ]
-                    href: /api/users/1/
+                          enum:
+                            - Admin
+                            - Basic User
+                    href: /api/users/dummyGuy/
                   moviereviewmeta:delete:
                     method: DELETE
                     title: Delete a user
-                    href: /api/users/1/
+                    href: /api/users/dummyGuy/
                   moviereviewmeta:reviews-of-user:
                     title: Get a list of all reviews of this user
-                    href: /api/users/1/reviews/
+                    href: /api/users/dummyGuy/reviews/
         '404':
           description: The user/endpoint was not found.
     put:
       tags:
       - "Users"
       description: Update a user by using its ID.
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains the username, email, password, and role to update an user.
         content:
@@ -197,6 +215,8 @@ paths:
       tags:
       - "Users"
       description: Delete a user by using his ID.
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: The user was deleted successfully.
@@ -215,9 +235,12 @@ paths:
             application/vnd.mason+json:
               example:
                 '@namespaces':
-                    moviereviewmeta:
-                      name: /moviereviewmeta/link-relations/
+                  moviereviewmeta:
+                    name: /moviereviewmeta/link-relations/
                 '@controls':
+                  up:
+                    title: Get the api documentation root
+                    href: /
                   self:
                     title: Get a list of all movies
                     href: /api/movies/
@@ -235,48 +258,55 @@ paths:
                         - category_id
                       properties:
                         title:
-                          description: The title of the movie
+                          title: Title
+                          description: Movie's title
                           type: string
                         director:
-                          description: The director of the movie
+                          title: Director
+                          description: The name of the director of the movie
                           type: string
                         length:
+                          title: Length
                           description: The length of the movie in seconds
                           type: integer
                           minimum: 1
                         release_date:
+                          title: Release Date
                           description: The release date of the movie
                           type: string
                           format: date
                         category_id:
+                          title: Category ID
                           description: The id of the movie's category which acts as foreign key
                           type: integer
                     href: /api/movies/
                 items:
-                - id: 1
-                  title: Leon, the professional
-                  director: Luc Besson
-                  length: 6600
-                  release_date: "1999-09-14"
-                  category_id: 2
-                  '@controls':
-                    item:
-                      title: Get a single movie
-                      href: /api/movies/1/
-                - id: 2
-                  title: Apocalypse now
-                  director: Francis Copola
-                  length: 8820
-                  release_date: "1979-05-19"
-                  category_id: 3
-                  '@controls':
-                    item:
-                      title: Get a single movie
-                      href: /api/movies/2/
+                  - id: 1
+                    title: 'Léon: The professional'
+                    director: Luc Besson
+                    length: 6600
+                    release_date: '1999-09-14'
+                    category_id: 1
+                    '@controls':
+                      self:
+                        title: Get a single movie
+                        href: /api/movies/1/
+                  - id: 2
+                    title: Apocalypse Now
+                    director: Francis Coppola
+                    length: 7380
+                    release_date: '1997-08-15'
+                    category_id: 2
+                    '@controls':
+                      self:
+                        title: Get a single movie
+                        href: /api/movies/2/
     post:
       tags:
       - "Movies"
       description: Create a new movie.
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains the data for creating a new movie
         content:
@@ -318,11 +348,11 @@ paths:
             application/vnd.mason+json:
               example:
                 id: 1
-                title: Leon, the professional
+                title: 'Léon: The professional'
                 director: Luc Besson
                 length: 6600
-                release_date: "1999-09-14"
-                category_id: 2
+                release_date: '1999-09-14'
+                category_id: 1
                 '@namespaces':
                   moviereviewmeta:
                     name: /moviereviewmeta/link-relations/
@@ -331,7 +361,7 @@ paths:
                     title: Get a list of all movies
                     href: /api/movies/
                   self:
-                    title: Get a single user
+                    title: Get a single movie
                     href: /api/movies/1/
                   edit:
                     method: PUT
@@ -347,20 +377,25 @@ paths:
                         - category_id
                       properties:
                         title:
-                          description: The title of the movie
+                          title: Title
+                          description: Movie's title
                           type: string
                         director:
-                          description: The director of the movie
+                          title: Director
+                          description: The name of the director of the movie
                           type: string
                         length:
+                          title: Length
                           description: The length of the movie in seconds
                           type: integer
                           minimum: 1
                         release_date:
+                          title: Release Date
                           description: The release date of the movie
                           type: string
                           format: date
                         category_id:
+                          title: Category ID
                           description: The id of the movie's category which acts as foreign key
                           type: integer
                     href: /api/movies/1/
@@ -368,8 +403,8 @@ paths:
                     method: DELETE
                     title: Delete a movie
                     href: /api/movies/1/
-                  moviereviewmeta:reviews-of-movie:
-                    title: Get a list of all reviews of this movie
+                  moviereviewmeta:reviews-for-movie:
+                    title: Get a list of all reviews for this movie
                     href: /api/movies/1/reviews/
         '404':
           description: The movie was not found.
@@ -377,6 +412,8 @@ paths:
       tags:
       - "Movies"
       description: Update a movie by using its ID.
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains title, director, length, release date and category ID to update movie data.
         content:
@@ -409,15 +446,17 @@ paths:
       tags:
       - "Movies"
       description: Delete a movie by movie_id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: The movie has been deleted
         '404':
           description: The movie was not found
 
-  /api/users/{user_id}/reviews/:
+  /api/users/{username}/reviews/:
     parameters:
-    - $ref: '#/components/parameters/user_id'
+    - $ref: '#/components/parameters/username'
     get:
       tags:
       - "Reviews"
@@ -429,33 +468,33 @@ paths:
             application/vnd.mason+json:
               example:
                 '@controls':
-                  up:
+                  author:
                     title: Get a single user
-                    href: /api/users/1/
+                    href: /api/users/dummyGuy/
                   self:
                     title: Get a list of all reviews of this user
-                    href: /api/users/1/reviews/
+                    href: /api/users/dummyGuy/reviews/
                 items:
-                - id: 1
-                  rating: 3
-                  comment: The movie is ok
-                  date: "2021-03-22T20:35:10Z"
-                  author_id: 2
-                  movie_id: 1
-                  '@controls':
-                    item:
-                      title: Get a single review
-                      href: /api/movies/1/reviews/1
-                - id: 2
-                  rating: 5
-                  comment: The movie is great
-                  date: "2021-03-22T22:54:18Z"
-                  author_id: 2
-                  movie_id: 2
-                  '@controls':
-                    item:
-                      title: Get a single review
-                      href: /api/movies/2/reviews/2
+                  - id: 1
+                    rating: 4
+                    comment: The film is almost perfect but I don’t like Natalie Portman
+                    date: '2016-09-10T00:00:00.000000Z'
+                    author: dummyGuy
+                    movie_id: 1
+                    '@controls':
+                      self:
+                        title: Get a single review
+                        href: /api/movies/1/reviews/1/
+                  - id: 2
+                    rating: 5
+                    comment: Such a masterpiece! I love helicopters
+                    date: '2018-05-23T00:00:00.000000Z'
+                    author: dummyGuy
+                    movie_id: 2
+                    '@controls':
+                      self:
+                        title: Get a single review
+                        href: /api/movies/2/reviews/2/
         '404':
           description: The user/endpoint was not found.
 
@@ -478,10 +517,10 @@ paths:
                 '@controls':
                   up:
                     title: Get a single movie
-                    href: /api/movies/1/
+                    href: /api/movies/4/
                   self:
-                    title: Get a list of all reviews of this movie
-                    href: /api/movies/1/reviews/
+                    title: Get a list of all reviews for this movie
+                    href: /api/movies/4/reviews/
                   moviereviewmeta:add-review:
                     method: POST
                     encoding: json
@@ -489,58 +528,71 @@ paths:
                     schema:
                       type: object
                       required:
-                      - rating
-                      - comment
-                      - date
-                      - author_id
-                      - movie_id
+                        - rating
+                        - comment
+                        - date
+                        - author
+                        - movie_id
                       properties:
                         rating:
+                          title: Rating
                           description: The rating of the movie (from 1 to 5)
                           type: integer
                           minimum: 1
                           maximum: 5
                         comment:
+                          title: Comment
                           description: A textual comment
                           type: string
                         date:
-                          description: The date and time when the review was written
+                          title: Date
+                          description: The date on which the comment was written
                           type: string
                           format: date-time
-                        author_id:
-                          description: The id of the user which created the review which acts as foreign key
-                          type: integer
+                        author:
+                          title: Author
+                          description: The username of the user which created the review
+                          type: string
                         movie_id:
-                          description: The id of the movie this review was created for which acts as foreign key
+                          title: Movie ID
+                          description: >-
+                            The id of the movie this review was created for which acts as
+                            foreign key
                           type: integer
-                    href: /api/movies/1/reviews/
-                  items:
-                  - id: 3
-                    rating:
-                    comment: I didn't like the movie at all
-                    date: "2021-03-25T08:12:46Z"
-                    author_id: 3
-                    movie_id: 1
-                    '@controls':
-                      item:
-                        title: Get a single review
-                        href: /api/movies/1/reviews/3/
+                    href: /api/movies/4/reviews/
+                items:
                   - id: 4
-                    rating: 5
-                    comment: A masterpiece !
-                    date: "2021-03-13T16:23:56Z"
-                    author_id: 1
-                    movie_id: 1
+                    rating: 4
+                    comment: >-
+                      Will melt the iciest of hearts, the best animated film of 2013 by a mile
+                      and one of Disney's best in recent years.
+                    date: '2014-03-15T00:00:00.000000Z'
+                    author: grantorinohurricane
+                    movie_id: 4
                     '@controls':
-                      item:
+                      self:
                         title: Get a single review
-                        href: /api/movies/1/reviews/4/
+                        href: /api/movies/4/reviews/4/
+                  - id: 5
+                    rating: 5
+                    comment: >-
+                      My girls totally love it! Been watching with them every weekend now (seems
+                      boring now), yet my kids every time feel rejuvenated after watching it.
+                    date: '2015-05-31T00:00:00.000000Z'
+                    author: lightningbasketball
+                    movie_id: 4
+                    '@controls':
+                      self:
+                        title: Get a single review
+                        href: /api/movies/4/reviews/5/
         '404':
           description: The movie/endpoint was not found.
     post:
       tags:
       - "Reviews"
       description: Create a new review for a movie.
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains the rating score, the comment and the comment date to create a new review.
         content:
@@ -551,7 +603,7 @@ paths:
               rating: 1
               comment: A real disaster
               date: "2022-01-17T14:22:45Z"
-              author_id: 3
+              author: "dummyGuy"
               movie_id: 3
       responses:
         '201':
@@ -582,10 +634,10 @@ paths:
             application/vnd.mason+json:
               example:
                 id: 1
-                rating: 3
-                comment: The movie is ok
-                date: "2019-04-25T11:40:51Z"
-                author_id: 2
+                rating: 4
+                comment: The film is almost perfect but I don’t like Natalie Portman
+                date: '2016-09-10T00:00:00.000000Z'
+                author: dummyGuy
                 movie_id: 1
                 '@namespaces':
                   moviereviewmeta:
@@ -604,34 +656,41 @@ paths:
                     schema:
                       type: object
                       required:
-                      - rating
-                      - comment
-                      - date
-                      - author_id
-                      - movie_id
+                        - rating
+                        - comment
+                        - date
+                        - author
+                        - movie_id
                       properties:
                         rating:
+                          title: Rating
                           description: The rating of the movie (from 1 to 5)
                           type: integer
                           minimum: 1
                           maximum: 5
                         comment:
+                          title: Comment
                           description: A textual comment
                           type: string
                         date:
+                          title: Date
                           description: The date on which the comment was written
                           type: string
                           format: date-time
-                        author_id:
-                          description: The id of the user which created the review which acts as foreign key
-                          type: integer
+                        author:
+                          title: Author
+                          description: The username of the user which created the review
+                          type: string
                         movie_id:
-                          description: The id of the movie this review was created for which acts as foreign key
+                          title: Movie ID
+                          description: >-
+                            The id of the movie this review was created for which acts as
+                            foreign key
                           type: integer
                     href: /api/movies/1/reviews/1/
                   moviereviewmeta:delete:
                     method: DELETE
-                    title: Delete a user
+                    title: Delete a review
                     href: /api/movies/1/reviews/1/
         '404':
           description: The review/endpoint was not found
@@ -639,6 +698,8 @@ paths:
       tags:
       - "Reviews"
       description: Update a review by its ID
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains rating score, comment, comment date, author ID and movie ID to update review data.
         content:
@@ -649,7 +710,7 @@ paths:
               rating: 4
               comment: The movie is ok, but I changed my mind, it's pretty good
               date: "2021-07-03T04:08:05Z"
-              author_id: 2
+              author: "dummyGuy"
               movie_id: 1
       responses:
         '204':
@@ -672,6 +733,8 @@ paths:
       tags:
       - "Reviews"
       description: Delete a review by its ID.
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: The review has been deleted.
@@ -693,6 +756,9 @@ paths:
                   moviereviewmeta:
                     name: /moviereviewmeta/link-relations/
                 '@controls':
+                  up:
+                    title: Get the api documentation root
+                    href: /
                   self:
                     title: Get a list of all categories
                     href: /api/categories/
@@ -703,29 +769,32 @@ paths:
                     schema:
                       type: object
                       required:
-                      - title
+                        - title
                       properties:
                         title:
+                          title: Title
                           description: The name of the category
                           type: string
                     href: /api/categories/
                 items:
-                - id: 1
-                  title: Science-Fiction
-                  '@controls':
-                    item:
-                      title: Get a single category
-                      href: /api/categories/1/
-                - id: 2
-                  title: Thriller
-                  '@controls':
-                    item:
-                      title: Get a single category
-                      href: /api/categories/2/
+                  - id: 1
+                    title: Thriller
+                    '@controls':
+                      self:
+                        title: Get a single category
+                        href: /api/categories/1/
+                  - id: 2
+                    title: War
+                    '@controls':
+                      self:
+                        title: Get a single category
+                        href: /api/categories/2/
     post:
       tags:
       - "Categories"
       description: Create a new category
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains basic data for a new category
         content:
@@ -761,7 +830,7 @@ paths:
             application/vnd.mason+json:
               example:
                 id: 1
-                title: Science-Fiction
+                title: Thriller
                 '@namespaces':
                   moviereviewmeta:
                     name: /moviereviewmeta/link-relations/
@@ -779,9 +848,10 @@ paths:
                     schema:
                       type: object
                       required:
-                      - title
+                        - title
                       properties:
                         title:
+                          title: Title
                           description: The name of the category
                           type: string
                     href: /api/categories/1/
@@ -795,6 +865,8 @@ paths:
       tags:
       - "Categories"
       description: Update a category by its ID.
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: JSON document that contains title to update category data.
         content:
@@ -821,6 +893,8 @@ paths:
       tags:
       - "Categories"
       description: Delete a category by category_id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: The category has been deleted
@@ -830,6 +904,12 @@ paths:
           description: Restrictions from the database e.g., foreign key constraints.
 
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
   schemas:
     User:
       type: object
@@ -870,9 +950,9 @@ components:
           description: The date and time when the review was written
           type: string
           format: date-time
-        author_id:
-          description: The id of the user which created the review which acts as foreign key
-          type: integer
+        author:
+          description: The username of the user which created the review
+          type: string
         movie_id:
           description: The id of the movie this review was created for which acts as foreign key
           type: integer
@@ -880,7 +960,7 @@ components:
       - rating
       - comment
       - date
-      - author_id
+      - author
       - movie_id
 
     Movie:
@@ -919,13 +999,13 @@ components:
       - title
 
   parameters:
-    user_id:
-      name: user_id
+    username:
+      name: username
       in: path
-      description: Used for selecting a user by his unique ID.
+      description: Used for selecting a user by his unique name.
       required: true
       schema:
-        type: integer
+        type: string
 
     movie_id:
       name: movie_id
