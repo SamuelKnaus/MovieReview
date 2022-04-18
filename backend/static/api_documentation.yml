@@ -249,6 +249,35 @@ paths:
         '504':
           description: The communication between the API and the third component failed.
 
+  /api/current-user/:
+      get:
+        tags:
+        - "Users"
+        description: Get the currently authenticated user. This user is determined by the sent authentication token.
+        security:
+          - ApiKeyAuth: []
+        responses:
+          '200':
+            description: Successfully returns the currently authenticated user.
+            content:
+              application/vnd.mason+json:
+                example:
+                  username: dummyGuy
+                  email_address: red.unicorn@gmail.com
+                  role: Basic User
+                  '@controls':
+                    up:
+                      title: Get the api documentation root
+                      href: /
+                    self:
+                      title: Get a single user
+                      href: /api/users/dummyGuy/
+                    moviereviewmeta:reviews-of-user:
+                      title: Get a list of all reviews of this user
+                      href: /api/users/dummyGuy/reviews/
+          '401':
+            description: The authentication failed.
+
   /api/movies/:
     get:
       tags:
