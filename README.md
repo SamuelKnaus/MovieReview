@@ -33,7 +33,7 @@ Again there is the database setup file `database_dummy_data.py` which needs to b
 
 To start the third component you need to set the value of the environment variable `FLASK_APP` to `api.py`. You also need to specify the port on which the application is run, otherwise you will not be able to run the backend and the IP at the same time. This can be done by setting the environment variable `FLASK_RUN_PORT`. The recommend port is 5001. If you want to use a different port you also need to change the value of the constant `THIRD_COMPONENT_URL` in the file `backend/constants.py` to the according value. Otherwise the backend will not be able to communicate with the Identity Provider.
 
-## CLient
+## Client
 ### Description
 The client is a React application written in Typescript. You can find the source code in the folder `MovieReview/frontend`.
 
